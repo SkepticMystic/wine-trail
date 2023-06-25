@@ -13,15 +13,18 @@ const anyoneAllowed = [
 ];
 
 export const load: LayoutServerLoad = async ({ url, locals }) => {
-  // WineFarms.insertMany(seedData.map((s) => ({
-  //   description: s.desc,
-  //   imageSource: s.imgSrc,
-  //   name: s.title,
-  //   href: s.href,
-  //   location: {
-  //     country: "ZA",
-  //   },
-  // })));
+  // const studios = await Studios.find({}).exec();
+
+  // let i = 0;
+  // for (const studio of studios) {
+  //   console.log(`Updating studio ${++i} of ${studios.length}`);
+  //   const description = studio.description.trim();
+
+  //   await Studios.updateOne(
+  //     { _id: studio._id },
+  //     { $set: { description } },
+  //   ).exec();
+  // }
 
   const session = await locals.auth.validate();
   const user = session?.user ?? null;

@@ -15,7 +15,7 @@
   <input type="text" class="input" bind:value={search} />
 </div>
 
-<div class="my-5 flex flex-wrap gap-5">
+<div class="my-5 flex flex-wrap gap-5 justify-center">
   {#each data.studios.filter((studio) => (search ? studio.name
           .toLowerCase()
           .includes(search) : true)) as studio}

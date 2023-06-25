@@ -1,23 +1,39 @@
+import { COUNTRIES } from "$lib/const/locations";
 import mongoose from "mongoose";
 import { z } from "zod";
 
 export const studioSchema = z.object({
   name: z.string(),
+  /** Based off name */
+  slug: z.string(),
   description: z.string(),
 
-  imageSource: z.string(),
-  href: z.string().url(),
+  logo: z.string(),
+  moreImages: z.array(z.string()).optional(),
+
+  links: z.object({
+    website: z.string().url().optional(),
+    facebook: z.string().url().optional(),
+    instagram: z.string().url().optional(),
+    email: z.string().email().optional(),
+  }),
 
   location: z.object({
-    country: z.string(),
-    // region: z.string(),
-    // town: z.string(),
+    country: z.enum(COUNTRIES),
+    province: z.string().optional(),
+    city: z.string().optional(),
+    town: z.string().optional(),
 
-    // coordinates: z.object({
-    //   latitude: z.number(),
-    //   longitude: z.number(),
-    // }),
+    coordinates: z.object({
+      latitude: z.number(),
+      longitude: z.number(),
+    }).optional(),
   }),
+
+  schedule: z.object({
+    kind: z.enum(["studio-site", "book-a-mat"]),
+    data: z.string(),
+  }).optional(),
 });
 
 export type Studio = z.infer<typeof studioSchema>;
@@ -30,18 +46,36 @@ export const Studios = mongoose.model<Studio>(
       type: String,
       required: true,
     },
+    slug: {
+      type: String,
+      required: true,
+    },
     description: {
       type: String,
       required: true,
     },
 
-    imageSource: {
+    logo: {
       type: String,
       required: true,
     },
-    href: {
-      type: String,
-      required: true,
+    moreImages: {
+      type: [String],
+    },
+
+    links: {
+      website: {
+        type: String,
+      },
+      facebook: {
+        type: String,
+      },
+      instagram: {
+        type: String,
+      },
+      email: {
+        type: String,
+      },
     },
 
     location: {
@@ -49,26 +83,27 @@ export const Studios = mongoose.model<Studio>(
         type: String,
         required: true,
       },
-      //   region: {
-      //     type: String,
-      //     required: true,
-      //   },
-      //   town: {
-      //     type: String,
-      //     required: true,
-      //   },
+      province: {
+        type: String,
+      },
+      city: {
+        type: String,
+      },
+      town: {
+        type: String,
+      },
 
-      //   coordinates: {
-      //     latitude: {
-      //       type: Number,
-      //       required: true,
-      //     },
-      //     longitude: {
-      //       type: Number,
-      //       required: true,
-      //     },
-      //   },
+      coordinates: {
+        latitude: {
+          type: Number,
+        },
+        longitude: {
+          type: Number,
+        },
+      },
     },
+
+    schedule: Object,
   }, { timestamps: true }),
   modelName,
 );

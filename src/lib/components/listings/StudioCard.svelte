@@ -4,15 +4,15 @@
 
   export let studio: Studio;
 
-  const { name, description, imageSource, href } = studio;
+  const { name, description, logo, slug } = studio;
 </script>
 
 <div class="card card-compact w-72 bg-base-100 shadow-lg">
-  <img class="rounded-t-box" src={imageSource} alt={name} />
+  <img class="rounded-t-box" src={logo} alt={name} />
 
   <div class="card-body">
     <h2 class="card-title">{name}</h2>
-    <p>{description}</p>
+    <p>{description.slice(0, 250)}{description.length > 250 ? "..." : ""}</p>
     <div class="card-actions justify-between">
       <p>🔥</p>
       <StudioModal {studio} />
