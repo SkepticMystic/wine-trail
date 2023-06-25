@@ -2,6 +2,7 @@ import { redirect } from "@sveltejs/kit";
 import type { LayoutServerLoad } from "./$types";
 
 const anyoneAllowed = [
+  "/",
   "/signup",
   "/signin",
   "/forgot-password",
@@ -12,13 +13,21 @@ const anyoneAllowed = [
 ];
 
 export const load: LayoutServerLoad = async ({ url, locals }) => {
+  // WineFarms.insertMany(seedData.map((s) => ({
+  //   description: s.desc,
+  //   imageSource: s.imgSrc,
+  //   name: s.title,
+  //   href: s.href,
+  //   location: {
+  //     country: "ZA",
+  //   },
+  // })));
+
   const session = await locals.auth.validate();
   const user = session?.user ?? null;
 
   const { pathname } = url;
-  const onUnauthedRoute = anyoneAllowed.some((route) =>
-    pathname.startsWith(route)
-  );
+  const onUnauthedRoute = anyoneAllowed.some((route) => pathname === route);
   if (onUnauthedRoute) {
     return { user };
   }

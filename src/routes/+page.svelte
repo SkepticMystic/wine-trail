@@ -1,19 +1,24 @@
 <script lang="ts">
+  import Hero from "$lib/components/Hero.svelte";
+  import OpenDrawer from "$lib/components/drawer/OpenDrawer.svelte";
+  import StudioCard from "$lib/components/listings/StudioCard.svelte";
+
+  export let data;
+
+  let search: string = "";
 </script>
 
-<div class="hero mt-32">
-  <div class="hero-content text-center">
-    <div class="max-w-lg">
-      <h1 class="text-5xl font-bold">Generic App</h1>
+<Hero />
 
-      <div class="flex flex-wrap justify-center gap-5 my-14">
-        <a href="/projects">
-          <button class="btn btn-primary">Projects</button>
-        </a>
-        <a href="/tasks">
-          <button class="btn btn-secondary">Tasks</button>
-        </a>
-      </div>
-    </div>
-  </div>
+<div class="flex gap-3">
+  <OpenDrawer />
+  <input type="text" class="input" bind:value={search} />
+</div>
+
+<div class="my-5 flex flex-wrap gap-5">
+  {#each data.studios.filter((studio) => (search ? studio.name
+          .toLowerCase()
+          .includes(search) : true)) as studio}
+    <StudioCard {studio} />
+  {/each}
 </div>
