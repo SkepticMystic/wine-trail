@@ -18,7 +18,7 @@
 <div class="my-5 flex flex-wrap gap-5 justify-center">
   {#each data.studios.filter((studio) => (search ? studio.name
           .toLowerCase()
-          .includes(search) : true)) as studio}
+          .includes(search) : true)) as studio, i (studio.slug)}
     <StudioCard {studio} />
   {/each}
 </div>

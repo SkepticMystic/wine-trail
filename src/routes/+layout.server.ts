@@ -9,20 +9,25 @@ const anyoneAllowed = [
   "/reset-password",
   "/verify-email",
   "/unverified-email",
+  "/studios",
   "/api/team/join",
 ];
 
 export const load: LayoutServerLoad = async ({ url, locals }) => {
-  // const studios = await Studios.find({}).exec();
+  // const studios = await Studios.find({}).lean();
 
   // let i = 0;
   // for (const studio of studios) {
   //   console.log(`Updating studio ${++i} of ${studios.length}`);
-  //   const description = studio.description.trim();
+  //   const email = studio.links?.email;
+  //   if (!email) continue;
 
   //   await Studios.updateOne(
   //     { _id: studio._id },
-  //     { $set: { description } },
+  //     {
+  //       $set: { "contact.email": email },
+  //       $unset: { "links.email": 1 },
+  //     },
   //   ).exec();
   // }
 
@@ -30,7 +35,9 @@ export const load: LayoutServerLoad = async ({ url, locals }) => {
   const user = session?.user ?? null;
 
   const { pathname } = url;
-  const onUnauthedRoute = anyoneAllowed.some((route) => pathname === route);
+  const onUnauthedRoute = anyoneAllowed.some((route) =>
+    route === "/" ? pathname === "/" : pathname.startsWith(route)
+  );
   if (onUnauthedRoute) {
     return { user };
   }

@@ -1,6 +1,5 @@
 <script lang="ts">
   import type { Studio } from "$lib/models/Studio";
-  import StudioModal from "./StudioModal.svelte";
 
   export let studio: Studio;
 
@@ -15,7 +14,9 @@
     <p>{description.slice(0, 250)}{description.length > 250 ? "..." : ""}</p>
     <div class="card-actions justify-between">
       <p>🔥</p>
-      <StudioModal {studio} />
+      <a href="/studios/{slug}">
+        <button class="btn btn-sm btn-secondary"> View Studio </button>
+      </a>
     </div>
   </div>
 </div>

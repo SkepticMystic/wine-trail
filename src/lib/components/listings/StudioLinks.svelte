@@ -1,0 +1,17 @@
+<script lang="ts">
+  import type { Studio } from "$lib/models/Studio";
+
+  export let links: Studio["links"];
+</script>
+
+<div class="flex flex-wrap gap-3 items-center">
+  {#each Object.entries(links) as [type, href]}
+    {#if type === "website"}
+      <a {href} class="link" target="_blank" rel="norefferer"> 🌍 Website </a>
+    {:else if type === "facebook"}
+      <a {href} class="link" target="_blank" rel="norefferer"> 📘 Facebook </a>
+    {:else if type === "instagram"}
+      <a {href} class="link" target="_blank" rel="norefferer"> 📸 Instagram </a>
+    {/if}
+  {/each}
+</div>

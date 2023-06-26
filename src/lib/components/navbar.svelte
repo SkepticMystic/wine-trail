@@ -21,6 +21,12 @@
   const routes: Route[] = [
     {
       side: "center",
+      label: "Studios",
+      href: "/",
+      authed: false,
+    },
+    {
+      side: "center",
       label: "Tasks",
       href: "/tasks",
       authed: true,
