@@ -15,8 +15,12 @@ export const studioSchema = z.object({
     website: z.string().url().optional(),
     facebook: z.string().url().optional(),
     instagram: z.string().url().optional(),
-    email: z.string().email().optional(),
   }),
+
+  contact: z.object({
+    phone: z.string().optional(),
+    email: z.string().email().optional(),
+  }).optional(),
 
   location: z.object({
     country: z.enum(COUNTRIES),
@@ -71,6 +75,15 @@ export const Studios = mongoose.model<Studio>(
         type: String,
       },
       instagram: {
+        type: String,
+      },
+      email: {
+        type: String,
+      },
+    },
+
+    contact: {
+      phone: {
         type: String,
       },
       email: {
