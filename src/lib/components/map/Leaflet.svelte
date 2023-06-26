@@ -9,28 +9,23 @@
   onMount(() => {
     const map = L.map("map").setView(coordArray, 13);
 
-    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 19,
-      attribution:
-        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    }).addTo(map);
+    L.tileLayer(
+      "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png",
+      {
+        maxZoom: 20,
+        attribution:
+          '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+      }
+    ).addTo(map);
+
+    // L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    //   maxZoom: 19,
+    //   attribution:
+    //     '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    // }).addTo(map);
 
     const marker = L.marker(coordArray).addTo(map);
   });
 </script>
 
-<svelte:head>
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-    crossorigin=""
-  />
-  <script
-    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-    crossorigin=""
-  ></script>
-</svelte:head>
-
-<div id="map" class="h-96" />
+<div id="map" class="h-[400px]" />
