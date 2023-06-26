@@ -26,6 +26,10 @@ export const POST: RequestHandler = async ({}) => {
 
     let linksRow = section.querySelector(".image-subtitle");
 
+    let styles = linksRow?.querySelector("p")?.innerText;
+
+    let phone = linksRow?.querySelectorAll("p")?.pop()?.innerText;
+
     let linksArray = linksRow
       ? [...linksRow.querySelectorAll("a")].map((a) => ({
         type: a.innerText.toLowerCase(),
@@ -41,9 +45,8 @@ export const POST: RequestHandler = async ({}) => {
         acc.facebook = l.href;
       } else if (l.type === "instagram") {
         acc.instagram = l.href;
-      } else if (l.type === "email") {
-        acc.email = l.href;
       }
+
       return acc;
     }, {} as NonNullable<ScrapedStudio["links"]>);
 
@@ -85,6 +88,10 @@ export const POST: RequestHandler = async ({}) => {
       {
         $set: {
           dataSource: "yogasouthafrica.co.za",
+          styleStr: styles?.toLowerCase().includes("yoga") ? styles : undefined,
+
+          "contact.phone": /\d+/.test(phone ?? "") ? phone : undefined,
+
           links,
           description,
           moreImages,

@@ -1,4 +1,13 @@
-<div class="drawer">
+<script>
+  import { YOGA_STYLES } from "$lib/const/styles";
+  import { studioFilters } from "$lib/stores/studioFilters";
+  import { setToggle } from "$lib/utils/sets";
+  import YogaStyleBadge from "../listings/YogaStyleBadge.svelte";
+
+  $: console.log($studioFilters);
+</script>
+
+<div class="drawer drawer-open">
   <input id="my-drawer" type="checkbox" class="drawer-toggle" />
   <div class="drawer-content">
     <slot />
@@ -10,22 +19,25 @@
       <li><a>Sidebar Item 2</a></li>
     </ul> -->
 
-    <ul class="menu bg-base-200 w-56 h-full">
+    <ul class="menu bg-base-200 w-72 h-full">
       <li>
         <details open>
-          <summary>Parent</summary>
-          <ul>
-            <li><a>level 2 item 1</a></li>
-            <li><a>level 2 item 2</a></li>
-          </ul>
-        </details>
-      </li>
-      <li>
-        <details open>
-          <summary>Parent</summary>
-          <ul>
-            <li><a>level 2 item 1</a></li>
-            <li><a>level 2 item 2</a></li>
+          <summary>Styles</summary>
+          <ul class="flex flex-wrap gap-x-1.5 gap-y-1 py-2">
+            {#each YOGA_STYLES as style}
+              <li class="p-0">
+                <YogaStyleBadge
+                  {style}
+                  colour={$studioFilters.styles.has(style) ? "info" : "neutral"}
+                  size="md"
+                  cls="text-sm pt-0.5 pb-5 px-1.5"
+                  on:click={() => {
+                    setToggle($studioFilters.styles, style);
+                    $studioFilters.styles = $studioFilters.styles;
+                  }}
+                />
+              </li>
+            {/each}
           </ul>
         </details>
       </li>

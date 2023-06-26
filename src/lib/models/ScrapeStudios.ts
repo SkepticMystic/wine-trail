@@ -6,6 +6,8 @@ export type ScrapedStudio = {
   description?: string;
   imageSource: string;
 
+  styleStr?: string;
+
   dataSource: "yogasouthafrica.co.za";
   sourceMoreInfoHref?: string;
 
@@ -25,6 +27,10 @@ export type ScrapedStudio = {
     websiteHome?: string;
     facebook?: string;
     instagram?: string;
+  };
+
+  contact?: {
+    phone?: string;
     email?: string;
   };
 
@@ -48,6 +54,10 @@ export const ScrapedStudios = mongoose.model<ScrapedStudio>(
       required: true,
     },
     description: {
+      type: String,
+    },
+
+    styleStr: {
       type: String,
     },
 
@@ -103,7 +113,12 @@ export const ScrapedStudios = mongoose.model<ScrapedStudio>(
       instagram: {
         type: String,
       },
+    },
 
+    contact: {
+      phone: {
+        type: String,
+      },
       email: {
         type: String,
       },

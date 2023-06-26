@@ -1,3 +1,4 @@
+import { Studios } from "$lib/models/Studio";
 import { redirect } from "@sveltejs/kit";
 import type { LayoutServerLoad } from "./$types";
 
@@ -13,23 +14,100 @@ const anyoneAllowed = [
   "/api/team/join",
 ];
 
-export const load: LayoutServerLoad = async ({ url, locals }) => {
+// const rename = {
+//   "post natal": "post-natal",
+//   "vinyasa flow": "vinyasa",
+//   "yinyasa": "yin",
+// };
+
+export const load: LayoutServerLoad = async ({ url, locals, fetch }) => {
   // const studios = await Studios.find({}).lean();
+
+  // const styles = new Set<string>();
+  // for (const studio of studios) {
+  //   const studioStyles = studio.styles ?? [];
+
+  //   // const renamedStyles = studioStyles.map((style) => {
+  //   //   if (rename[style]) return rename[style];
+  //   //   return style;
+  //   // });
+
+  //   for (const style of studioStyles) {
+  //     styles.add(style);
+  //   }
+
+  //   // await Studios.updateOne(
+  //   //   { _id: studio._id },
+  //   //   {
+  //   //     $set: {
+  //   //       styles: renamedStyles,
+  //   //     },
+  //   //   },
+  //   // ).exec();
+  // }
+
+  // await Studios.updateMany(
+  //   {},
+  //   {
+  //     $pullAll: {
+  //       styles: [
+  //         "bikram",
+  //       ],
+  //     },
+  //   },
+  // );
+
+  // console.log([...styles].sort());
 
   // let i = 0;
   // for (const studio of studios) {
   //   console.log(`Updating studio ${++i} of ${studios.length}`);
-  //   const email = studio.links?.email;
-  //   if (!email) continue;
+  //   const phone = studio.contact?.phone;
+  //   if (!phone) continue;
 
-  //   await Studios.updateOne(
-  //     { _id: studio._id },
+  //   if (phone.length !== 10) {
+  //     await Studios.updateOne(
+  //       { _id: studio._id },
+  //       {
+  //         $unset: {
+  //           "contact.phone": 1,
+  //         },
+  //       },
+  //     ).exec();
+  //   }
+  // }
+
+  // const scraped = await ScrapedStudios.find({}).lean();
+
+  // let i = 0;
+  // for (const studio of scraped) {
+  //   console.log(`Studio ${++i} of ${scraped.length}`);
+
+  //   const { sourceMoreInfoHref } = studio;
+  //   if (!sourceMoreInfoHref) continue;
+
+  //   const slug = sourceMoreInfoHref.split("/").pop();
+
+  //   const styles = studio.styleStr?.split(",").map((s) =>
+  //     s.toLowerCase().replaceAll("yoga", "").trim()
+  //   );
+
+  //   const phone = studio.contact?.phone;
+
+  //   const update = await Studios.updateOne(
+  //     { slug },
   //     {
-  //       $set: { "contact.email": email },
-  //       $unset: { "links.email": 1 },
+  //       $set: {
+  //         styles,
+  //         "contact.phone": phone,
+  //       },
   //     },
   //   ).exec();
+
+  //   console.log(update.matchedCount, update.modifiedCount);
   // }
+
+  // await fetch("/api/scrape/yogasouthafrica", { method: "POST" });
 
   const session = await locals.auth.validate();
   const user = session?.user ?? null;

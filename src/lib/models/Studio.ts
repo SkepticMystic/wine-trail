@@ -1,4 +1,5 @@
 import { COUNTRIES } from "$lib/const/locations";
+import { YOGA_STYLES } from "$lib/const/styles";
 import mongoose from "mongoose";
 import { z } from "zod";
 
@@ -7,6 +8,8 @@ export const studioSchema = z.object({
   /** Based off name */
   slug: z.string(),
   description: z.string(),
+
+  styles: z.array(z.enum(YOGA_STYLES)).optional(),
 
   logo: z.string(),
   moreImages: z.array(z.string()).optional(),
@@ -57,6 +60,10 @@ export const Studios = mongoose.model<Studio>(
     description: {
       type: String,
       required: true,
+    },
+
+    styles: {
+      type: [String],
     },
 
     logo: {
