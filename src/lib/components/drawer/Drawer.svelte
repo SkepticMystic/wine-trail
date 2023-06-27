@@ -1,8 +1,14 @@
-<script>
+<script lang="ts">
   import { YOGA_STYLES } from "$lib/const/styles";
   import { studioFilters } from "$lib/stores/studioFilters";
-  import { setToggle } from "$lib/utils/sets";
+  import { studios } from "$lib/stores/studios";
+  import { removeDuplicates, setToggle } from "$lib/utils/sets";
+  import Badge from "../daisyui/badge.svelte";
   import YogaStyleBadge from "../listings/YogaStyleBadge.svelte";
+
+  $: cities = removeDuplicates(
+    $studios.map((s) => s.location.city).filter(Boolean)
+  ) as string[];
 
   $: console.log($studioFilters);
 </script>
@@ -28,7 +34,9 @@
               <li class="p-0">
                 <YogaStyleBadge
                   {style}
-                  colour={$studioFilters.styles.has(style) ? "info" : "neutral"}
+                  colour={$studioFilters.styles.has(style)
+                    ? "accent"
+                    : "neutral"}
                   size="md"
                   cls="text-sm pt-0.5 pb-5 px-1.5"
                   on:click={() => {
@@ -36,6 +44,31 @@
                     $studioFilters.styles = $studioFilters.styles;
                   }}
                 />
+              </li>
+            {/each}
+          </ul>
+        </details>
+      </li>
+
+      <li>
+        <details open>
+          <summary>Location</summary>
+          <ul class="flex flex-wrap gap-x-1.5 gap-y-1 py-2">
+            {#each cities as city}
+              <li class="p-0">
+                <Badge
+                  size="md"
+                  colour={$studioFilters.location.city.has(city)
+                    ? "accent"
+                    : "neutral"}
+                  cls="text-sm pt-0.5 pb-5 px-1.5"
+                  on:click={() => {
+                    setToggle($studioFilters.location.city, city);
+                    $studioFilters = $studioFilters;
+                  }}
+                >
+                  {city}
+                </Badge>
               </li>
             {/each}
           </ul>

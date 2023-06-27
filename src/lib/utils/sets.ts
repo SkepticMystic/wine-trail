@@ -5,3 +5,5 @@ export const setToggle = <T>(set: Set<T>, item: T) => {
     set.add(item);
   }
 };
+
+export const removeDuplicates = <T>(array: T[]) => [...new Set(array)];

@@ -25,24 +25,7 @@
       href: "/",
       authed: false,
     },
-    {
-      side: "center",
-      label: "Tasks",
-      href: "/tasks",
-      authed: true,
-    },
-    {
-      side: "center",
-      label: "Projects",
-      href: "/projects",
-      authed: true,
-    },
-    {
-      side: "right",
-      label: "Team",
-      href: "/team",
-      authed: true,
-    },
+
     {
       side: "right",
       label: "Profile",
@@ -56,18 +39,18 @@
       authed: true,
       admin: true,
     },
-    {
-      side: "right",
-      label: "Sign in",
-      href: "/signin",
-      authed: false,
-    },
-    {
-      side: "right",
-      label: "Sign up",
-      href: "/signup",
-      authed: false,
-    },
+    // {
+    //   side: "right",
+    //   label: "Sign in",
+    //   href: "/signin",
+    //   authed: false,
+    // },
+    // {
+    //   side: "right",
+    //   label: "Sign up",
+    //   href: "/signup",
+    //   authed: false,
+    // },
   ];
 
   const showRoute = (
@@ -85,7 +68,7 @@
 
 <nav class="navbar bg-base-100 px-5">
   <div class="navbar-start">
-    <a href="/" class="btn btn-ghost normal-case text-xl">Generic App</a>
+    <a href="/" class="btn btn-ghost normal-case text-xl">Yoga List</a>
   </div>
 
   <div class="navbar-center hidden lg:flex">

@@ -23,36 +23,27 @@ const anyoneAllowed = [
 export const load: LayoutServerLoad = async ({ url, locals, fetch }) => {
   // const studios = await Studios.find({}).lean();
 
-  // const styles = new Set<string>();
+  // let i = 0;
   // for (const studio of studios) {
-  //   const studioStyles = studio.styles ?? [];
+  //   console.log(`Updating studio ${++i} of ${studios.length}`);
 
-  //   // const renamedStyles = studioStyles.map((style) => {
-  //   //   if (rename[style]) return rename[style];
-  //   //   return style;
-  //   // });
+  //   const city = studio.location.city;
 
-  //   for (const style of studioStyles) {
-  //     styles.add(style);
-  //   }
-
-  //   // await Studios.updateOne(
-  //   //   { _id: studio._id },
-  //   //   {
-  //   //     $set: {
-  //   //       styles: renamedStyles,
-  //   //     },
-  //   //   },
-  //   // ).exec();
+  //   await Studios.updateOne(
+  //     { _id: studio._id },
+  //     {
+  //       $set: {
+  //         "location.city": city?.toLowerCase(),
+  //       },
+  //     },
+  //   ).exec();
   // }
 
   // await Studios.updateMany(
-  //   {},
+  //   { "location.city": "JOHANNESBURG, ONLINE" },
   //   {
-  //     $pullAll: {
-  //       styles: [
-  //         "bikram",
-  //       ],
+  //     $set: {
+  //       "location.city": "JOHANNESBURG",
   //     },
   //   },
   // );
