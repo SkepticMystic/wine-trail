@@ -1,4 +1,3 @@
-import { Studios } from "$lib/models/Studio";
 import { redirect } from "@sveltejs/kit";
 import type { LayoutServerLoad } from "./$types";
 
@@ -27,23 +26,26 @@ export const load: LayoutServerLoad = async ({ url, locals, fetch }) => {
   // for (const studio of studios) {
   //   console.log(`Updating studio ${++i} of ${studios.length}`);
 
-  //   const city = studio.location.city;
+  //   const logo = studio.logo.replace(/350w$/, "300w");
 
   //   await Studios.updateOne(
   //     { _id: studio._id },
   //     {
   //       $set: {
-  //         "location.city": city?.toLowerCase(),
+  //         logo,
   //       },
   //     },
   //   ).exec();
   // }
 
   // await Studios.updateMany(
-  //   { "location.city": "JOHANNESBURG, ONLINE" },
+  //   { "location.city": "online" },
   //   {
   //     $set: {
-  //       "location.city": "JOHANNESBURG",
+  //       onlineClasses: true,
+  //     },
+  //     $unset: {
+  //       "location.city": 1,
   //     },
   //   },
   // );

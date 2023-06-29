@@ -3,6 +3,7 @@
   import { page } from "$app/stores";
   import StudioContact from "$lib/components/listings/StudioContact.svelte";
   import StudioLinks from "$lib/components/listings/StudioLinks.svelte";
+  import StudioLocation from "$lib/components/listings/StudioLocation.svelte";
   import YogaStyleBadge from "$lib/components/listings/YogaStyleBadge.svelte";
   import Leaflet from "$lib/components/map/Leaflet.svelte";
   import { studios } from "$lib/stores/studios";
@@ -18,7 +19,7 @@
       {studio.name}
     </h1>
 
-    <div class="flex flex-wrap gap-7 my-7">
+    <div class="flex flex-wrap gap-7 my-7 justify-center">
       <img
         src={studio.logo}
         width={384}
@@ -33,7 +34,7 @@
             <YogaStyleBadge
               {style}
               title="View studios that offer {style} yoga"
-              on:click={async () => await goto(`/?style=${style}`)}
+              on:click={() => goto(`/?style=${style}`)}
             />
           {/each}
         </div>
@@ -47,7 +48,7 @@
           <StudioContact contact={studio.contact} />
         </div>
 
-        <div />
+        <StudioLocation location={studio.location} />
       </div>
     </div>
 

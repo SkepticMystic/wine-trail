@@ -14,6 +14,8 @@ export const studioSchema = z.object({
   logo: z.string(),
   moreImages: z.array(z.string()).optional(),
 
+  onlineClasses: z.boolean().optional(),
+
   links: z.object({
     website: z.string().url().optional(),
     facebook: z.string().url().optional(),
@@ -72,6 +74,10 @@ export const Studios = mongoose.model<Studio>(
     },
     moreImages: {
       type: [String],
+    },
+
+    onlineClasses: {
+      type: Boolean,
     },
 
     links: {

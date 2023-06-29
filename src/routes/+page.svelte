@@ -22,10 +22,11 @@
       ? studio.name.toLowerCase().includes(search.toLowerCase())
       : true;
 
-    const city =
-      $studioFilters.location.city.size && studio.location.city
+    const city = $studioFilters.location.city.size
+      ? studio.location.city
         ? $studioFilters.location.city.has(studio.location.city)
-        : true;
+        : false
+      : true;
 
     const style = $studioFilters.styles.size
       ? studio.styles?.some((style) => $studioFilters.styles.has(style))
@@ -51,31 +52,44 @@
   </p>
 </div>
 
-<div class="my-5 flex flex-wrap gap-1 justify-center">
-  {#each $studioFilters.location.city as city}
-    <Badge
-      title="Remove {city} from filter"
-      on:click={() => {
-        setToggle($studioFilters.location.city, city);
-        $studioFilters = $studioFilters;
-      }}
-    >
-      {city}
-    </Badge>
-  {/each}
-</div>
-<div class="my-5 flex flex-wrap gap-1 justify-center">
-  {#each $studioFilters.styles as style}
-    <YogaStyleBadge
-      {style}
-      title="Remove {style} from filter"
-      on:click={() => {
-        setToggle($studioFilters.styles, style);
-        $studioFilters = $studioFilters;
-      }}
-    />
-  {/each}
-</div>
+{#if $studioFilters.location.city.size}
+  <div class="my-3 flex gap-3 items-center justify-center">
+    <span class="font-semibold">Cities:</span>
+
+    <div class="flex flex-wrap gap-1">
+      {#each $studioFilters.location.city as city}
+        <Badge
+          title="Remove {city} from filter"
+          on:click={() => {
+            setToggle($studioFilters.location.city, city);
+            $studioFilters = $studioFilters;
+          }}
+        >
+          {city}
+        </Badge>
+      {/each}
+    </div>
+  </div>
+{/if}
+
+{#if $studioFilters.styles.size}
+  <div class="my-3 flex gap-3 items-center justify-center">
+    <span class="font-semibold">Styles:</span>
+
+    <div class="flex flex-wrap gap-1 justify-center">
+      {#each $studioFilters.styles as style}
+        <YogaStyleBadge
+          {style}
+          title="Remove {style} from filter"
+          on:click={() => {
+            setToggle($studioFilters.styles, style);
+            $studioFilters = $studioFilters;
+          }}
+        />
+      {/each}
+    </div>
+  </div>
+{/if}
 
 <Loading loading={$studios.length === 0}>
   <div class="my-5 flex flex-wrap gap-5 justify-center">

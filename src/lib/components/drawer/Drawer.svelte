@@ -13,7 +13,7 @@
   $: console.log($studioFilters);
 </script>
 
-<div class="drawer drawer-open">
+<div class="drawer">
   <input id="my-drawer" type="checkbox" class="drawer-toggle" />
   <div class="drawer-content">
     <slot />
@@ -28,7 +28,8 @@
     <ul class="menu bg-base-200 w-72 h-full">
       <li>
         <details open>
-          <summary>Styles</summary>
+          <summary class="text-base font-semibold">Styles</summary>
+
           <ul class="flex flex-wrap gap-x-1.5 gap-y-1 py-2">
             {#each YOGA_STYLES as style}
               <li class="p-0">
@@ -52,7 +53,8 @@
 
       <li>
         <details open>
-          <summary>Location</summary>
+          <summary class="text-base font-semibold">Location</summary>
+
           <ul class="flex flex-wrap gap-x-1.5 gap-y-1 py-2">
             {#each cities as city}
               <li class="p-0">
