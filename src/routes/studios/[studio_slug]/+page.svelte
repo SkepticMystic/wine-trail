@@ -8,15 +8,18 @@
   import Leaflet from "$lib/components/map/Leaflet.svelte";
   import { studios } from "$lib/stores/studios";
 
-  const studio = $studios.find(
-    (studio) => studio.slug === $page.params.studio_slug
-  );
+  const { studio_slug } = $page.params;
+
+  const studio = $studios.find((studio) => studio.slug === studio_slug);
 </script>
 
 {#if studio}
   <div class="flex flex-col items-center">
     <h1 class="text-3xl font-semibold text-center">
       {studio.name}
+      {#if $page.data.user?.admin || $page.data.user?.studio_ids?.includes(studio._id)}
+        <a href="{$page.url.pathname}/edit">✏️</a>
+      {/if}
     </h1>
 
     <div class="flex flex-wrap gap-7 my-7 justify-center">

@@ -34,6 +34,10 @@ export const Users =
         admin: {
           type: Boolean,
         },
+        studio_ids: {
+          type: [String],
+          ref: "Studios",
+        },
       },
       { _id: false },
     ),
@@ -95,7 +99,7 @@ export const auth = lucia({
   }),
 
   getUserAttributes: (
-    { email, emailVerified, team_id, role, admin },
+    { email, emailVerified, team_id, role, admin, studio_ids },
   ) => ({
     // Included by default:
     // userId: id,
@@ -104,6 +108,7 @@ export const auth = lucia({
     emailVerified,
     role,
     team_id,
+    studio_ids,
   }),
 });
 

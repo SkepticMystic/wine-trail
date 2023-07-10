@@ -3,10 +3,8 @@ import { YOGA_STYLES } from "$lib/const/styles";
 import mongoose from "mongoose";
 import { z } from "zod";
 
-export const studioSchema = z.object({
-  name: z.string(),
-  /** Based off name */
-  slug: z.string(),
+export const modifyStudioSchema = z.object({
+  name: z.string().optional(),
   description: z.string(),
 
   styles: z.array(z.enum(YOGA_STYLES)).optional(),
@@ -25,7 +23,7 @@ export const studioSchema = z.object({
   contact: z.object({
     phone: z.string().optional(),
     email: z.string().email().optional(),
-  }).optional(),
+  }),
 
   location: z.object({
     country: z.enum(COUNTRIES),
@@ -45,6 +43,12 @@ export const studioSchema = z.object({
   }).optional(),
 });
 
+export const studioSchema = modifyStudioSchema.extend({
+  /** Based off name */
+  slug: z.string(),
+});
+
+export type ModifyStudio = z.infer<typeof modifyStudioSchema>;
 export type Studio = z.infer<typeof studioSchema>;
 
 const modelName = "Studios";

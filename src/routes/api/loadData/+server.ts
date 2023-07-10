@@ -1,5 +1,5 @@
 import { Studios } from "$lib/models/Studio";
-import { _idToString } from "$lib/utils";
+import { _idToString, shuffleArray } from "$lib/utils";
 import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 
@@ -12,6 +12,6 @@ export const GET: RequestHandler = async () => {
   ]);
 
   return json({
-    studios: studios.map(_idToString),
+    studios: shuffleArray(studios.map(_idToString)),
   });
 };

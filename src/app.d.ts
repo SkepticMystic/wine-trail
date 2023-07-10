@@ -22,6 +22,7 @@ declare global {
       role: import("$lib/auth/roles").Role;
       emailVerified: boolean;
       admin?: boolean;
+      studio_ids?: string[];
     };
 
     type DatabaseSessionAttributes = {};
