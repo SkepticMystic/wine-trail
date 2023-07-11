@@ -1,6 +1,8 @@
 <script lang="ts">
   import type { ModifyStudio } from "$lib/models/Studio";
   import Label from "../label.svelte";
+  import StudioLocation from "../listings/StudioLocation.svelte";
+  import AddressAutocompleteSelector from "../selectors/AddressAutocompleteSelector.svelte";
   import StylesSelector from "../selectors/StylesSelector.svelte";
   import StudioScheduleEditor from "./StudioScheduleEditor.svelte";
 
@@ -33,9 +35,7 @@
   </Label>
 
   <h2 class="text-xl mt-5 font-semibold">Styles</h2>
-  <Label lbl="Styles">
-    <StylesSelector bind:styles={studio.styles} />
-  </Label>
+  <StylesSelector bind:styles={studio.styles} />
 
   <h2 class="text-xl mt-5 font-semibold">Schedule</h2>
   <div class="flex flex-wrap gap-3">
@@ -79,19 +79,8 @@
   </div>
 
   <h2 class="text-xl mt-5 font-semibold">Location</h2>
-  <div class="flex flex-wrap gap-3">
-    <Label lbl="Country">
-      <input type="text" class="input" bind:value={studio.location.country} />
-    </Label>
-    <Label lbl="Province">
-      <input type="text" class="input" bind:value={studio.location.province} />
-    </Label>
 
-    <Label lbl="City">
-      <input type="text" class="input" bind:value={studio.location.city} />
-    </Label>
-    <Label lbl="Town">
-      <input type="text" class="input" bind:value={studio.location.town} />
-    </Label>
-  </div>
+  <StudioLocation location={studio.location} />
+
+  <AddressAutocompleteSelector bind:location={studio.location} />
 </div>

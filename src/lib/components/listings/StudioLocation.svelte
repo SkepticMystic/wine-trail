@@ -3,9 +3,12 @@
 
   export let location: Studio["location"];
 
-  const locationArray = [
+  $: locationArray = [
+    location.houseNumber,
+    location.street,
     location.town,
     location.city,
+    location.postalCode,
     location.province,
     location.country,
   ].filter(Boolean) as string[];

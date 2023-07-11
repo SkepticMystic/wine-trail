@@ -29,7 +29,22 @@ export const GET: RequestHandler = async ({ locals }) => {
           // Otherwise, only show non-hidden studios
           return !s.hidden;
         })
-        .map(_idToString),
+        .map(_idToString)
+        .map((s) => {
+          if (!s.links) {
+            s.links = {};
+          }
+          if (!s.contact) {
+            s.contact = {};
+          }
+          if (!s.schedule) {
+            s.schedule = {
+              kind: "none",
+            };
+          }
+
+          return s;
+        }),
     ),
   });
 };

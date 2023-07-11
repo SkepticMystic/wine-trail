@@ -60,23 +60,45 @@ export const modifyStudioSchema = z.object({
         .enum(COUNTRIES, {
           invalid_type_error: "Country must be a valid country",
         }),
+
       province: z
         .string()
         .toLowerCase()
         .optional(),
+
       city: z
         .string()
         .toLowerCase()
         .optional(),
+
       town: z
         .string()
         .toLowerCase()
         .optional(),
 
+      postalCode: z
+        .string()
+        .toLowerCase()
+        .optional(),
+
+      street: z
+        .string()
+        .toLowerCase()
+        .optional(),
+
+      houseNumber: z
+        .string()
+        .toLowerCase()
+        .optional(),
+
       coordinates: z.object({
-        latitude: z.number(),
-        longitude: z.number(),
-      }).optional(),
+        latitude: z.number({
+          required_error: "Please choose a valid location",
+        }),
+        longitude: z.number({
+          required_error: "Please choose a valid location",
+        }),
+      }),
     }),
 
   schedule: z
@@ -151,7 +173,12 @@ export const Studios = mongoose.model<Studio>(
       required: true,
     },
 
-    schedule: Object,
+    schedule: {
+      type: Object,
+      default: {
+        kind: "none",
+      },
+    },
 
     // TODO: Implement
     hidden: {

@@ -32,7 +32,10 @@
     location: {
       country: "ZA",
       city: undefined,
-      coordinates: undefined,
+      coordinates: {
+        latitude: undefined,
+        longitude: undefined,
+      },
       province: undefined,
       town: undefined,
     },
