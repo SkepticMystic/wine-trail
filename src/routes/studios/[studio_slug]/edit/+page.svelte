@@ -8,6 +8,7 @@
   let { loadObj } = getProps();
 
   let studio = studios.getBySlug($page.params.studio_slug);
+  console.log(studio);
 
   const patchStudio = async () => {
     if (!studio) return;

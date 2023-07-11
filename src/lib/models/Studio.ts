@@ -79,13 +79,18 @@ export const modifyStudioSchema = z.object({
       }).optional(),
     }),
 
-  schedule: z.object({
-    kind: z.enum(["studio-site", "book-a-mat"]),
-    data: z
-      .string()
-      .url("Schedule URL must be a valid URL")
-      .optional(),
-  }).optional(),
+  schedule: z
+    .discriminatedUnion("kind", [
+      z.object({
+        kind: z.literal("none"),
+      }),
+      z.object({
+        kind: z.enum(["studio-site", "book-a-mat"]),
+        data: z
+          .string()
+          .url("Schedule URL must be a valid URL"),
+      }),
+    ]),
 
   hidden: z.boolean().optional(),
 });

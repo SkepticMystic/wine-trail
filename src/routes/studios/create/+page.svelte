@@ -10,7 +10,7 @@
 
   let studio: ModifyStudio = {
     hidden: true,
-    
+
     name: "",
     description: "",
 
@@ -37,8 +37,7 @@
       town: undefined,
     },
     schedule: {
-      data: undefined,
-      kind: "studio-site",
+      kind: "none",
     },
   };
 

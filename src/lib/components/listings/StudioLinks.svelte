@@ -22,7 +22,7 @@
     {/if}
   {/each}
 
-  {#if schedule && schedule.kind === "studio-site"}
+  {#if schedule?.kind === "studio-site" || schedule?.kind === "book-a-mat"}
     <a
       href={schedule.data}
       class="link link-secondary"

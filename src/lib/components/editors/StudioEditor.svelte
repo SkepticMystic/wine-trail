@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { YOGA_STYLES, YOGA_STYLE_EMOJI } from "$lib/const/styles";
   import type { ModifyStudio } from "$lib/models/Studio";
   import Label from "../label.svelte";
   import StylesSelector from "../selectors/StylesSelector.svelte";
+  import StudioScheduleEditor from "./StudioScheduleEditor.svelte";
 
   export let studio: ModifyStudio;
 </script>
@@ -35,13 +35,17 @@
     <StylesSelector bind:styles={studio.styles} />
   </Label>
 
-  <Label lbl="Online Classes">
-    <input
-      type="checkbox"
-      class="checkbox"
-      bind:checked={studio.onlineClasses}
-    />
-  </Label>
+  <div class="flex flex-wrap gap-3">
+    <StudioScheduleEditor bind:schedule={studio.schedule} />
+
+    <Label lbl="Online Classes">
+      <input
+        type="checkbox"
+        class="checkbox"
+        bind:checked={studio.onlineClasses}
+      />
+    </Label>
+  </div>
 
   <Label lbl="Logo">
     <input type="text" class="input" bind:value={studio.logo} />
