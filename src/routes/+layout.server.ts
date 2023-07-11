@@ -10,7 +10,7 @@ const anyoneAllowed = [
   "/verify-email",
   "/unverified-email",
   "/studios",
-  "/api/team/join",
+  "/api/studios/join",
 ];
 
 // const rename = {

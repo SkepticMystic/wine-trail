@@ -1,5 +1,5 @@
 import { auth } from "$lib/auth/lucia";
-import { OTP, type TeamInviteOTP } from "$lib/models/OTPs";
+import { OTP, type StudioOwnerInviteOTP } from "$lib/models/OTPs";
 import { Parsers } from "$lib/schema/parsers";
 import { error, redirect } from "@sveltejs/kit";
 import { z } from "zod";
@@ -10,28 +10,33 @@ const invalidTokenError = error(
   "Invalid token. Please request a new invite link.",
 );
 
+/** Take in a token, and validate
+ * If valid, check if the user with that email exists
+ * If they do, update their studios
+ * If they don't, create a new user which owns the studio
+ */
 export const GET: RequestHandler = async ({ url, locals }) => {
-  const { team_id, token } = Parsers.params(
+  const { studio_id, token } = Parsers.params(
     url,
     z.object({
       token: z.string().min(1),
-      team_id: z.string().min(1),
+      studio_id: z.string().min(1),
     }),
   );
 
-  if (team_id) {
+  if (studio_id) {
     const session = await locals.auth.validate();
     // Check if they've already accepted this invite
-    if (session?.user?.team_id === team_id) {
-      console.log("User already on this team");
+    if (session?.user?.studio_ids?.includes(studio_id)) {
+      console.log("User already a member of this studio");
       // They are already a member of this org
-      throw redirect(302, "/");
+      throw redirect(302, `/studios/${studio_id}`);
     }
   }
 
-  const checkToken = await OTP.validateToken<TeamInviteOTP>({
+  const checkToken = await OTP.validateToken<StudioOwnerInviteOTP>({
     token,
-    kind: "team-invite",
+    kind: "studio-owner-invite",
   });
   if (!checkToken.ok) {
     console.log("validateToken failed", token);
@@ -50,7 +55,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
           encodeURIComponent(
             checkUser.error.id.value,
           )
-        }&team_token=${encodeURIComponent(token)}`,
+        }&studio_owner_token=${encodeURIComponent(token)}`,
       );
     } else {
       console.log("getTokenUser failed", checkUser.error);
@@ -62,25 +67,25 @@ export const GET: RequestHandler = async ({ url, locals }) => {
   // At this point, we know:
   // - The token is valid
   // - The user exists
-  // - The user is not already a member of this team
+  // - The user does not own this studio
   const { user } = checkUser.data;
 
-  // TODO: Do something with their old team
-  // - If they are the only member, delete it
-
-  // Update their team
   await Promise.all([
     auth.updateUserAttributes(user.userId, {
-      team_id: otp.data.team_id,
-      role: otp.data.role,
       // If they are an existing user, but haven't verified their email, it is verified now
       emailVerified: true,
+
+      studio_ids: user.studio_ids
+        ? [...user.studio_ids, studio_id]
+        : [studio_id],
     }),
     otp.deleteOne(),
   ]);
 
   throw redirect(
     302,
-    `/signin?email_hint=${encodeURIComponent(user.email)}&previous=team-invite`,
+    `/signin?email_hint=${
+      encodeURIComponent(user.email)
+    }&previous=studio-owner-invite`,
   );
 };

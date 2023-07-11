@@ -53,3 +53,9 @@ export function shuffleArray<T>(array: T[]) {
 
   return array;
 }
+
+export const makeSlug = (str: string) =>
+  str
+    .toLowerCase()
+    .replace(/[^a-z0-9 -]/g, "")
+    .replace(/\s+/g, "-");

@@ -18,11 +18,10 @@ declare global {
 
     type DatabaseUserAttributes = {
       email: string;
-      team_id: string;
-      role: import("$lib/auth/roles").Role;
       emailVerified: boolean;
-      admin?: boolean;
       studio_ids?: string[];
+
+      admin?: boolean;
     };
 
     type DatabaseSessionAttributes = {};

@@ -1,9 +1,9 @@
 <script lang="ts">
   import { YOGA_STYLES, YOGA_STYLE_EMOJI } from "$lib/const/styles";
-  import type { Studio } from "$lib/models/Studio";
+  import type { ModifyStudio } from "$lib/models/Studio";
   import Label from "../label.svelte";
 
-  export let studio: Studio;
+  export let studio: ModifyStudio;
 </script>
 
 <div class="flex flex-col gap-7">

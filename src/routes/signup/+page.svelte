@@ -1,16 +1,16 @@
 <script lang="ts">
-  import { set_href } from "$lib/auth/client";
-  import ResultText from "$lib/components/resultText.svelte";
-  import Label from "$lib/components/label.svelte";
-  import { getActionErrorMsg } from "$lib/utils/errors";
-  import axios from "axios";
-  import { getProps } from "$lib/utils";
-  import type { ActionResult } from "@sveltejs/kit";
   import { page } from "$app/stores";
+  import { set_href } from "$lib/auth/client";
   import Loading from "$lib/components/Loading.svelte";
+  import Label from "$lib/components/label.svelte";
+  import ResultText from "$lib/components/resultText.svelte";
+  import { getProps } from "$lib/utils";
+  import { getActionErrorMsg } from "$lib/utils/errors";
+  import type { ActionResult } from "@sveltejs/kit";
+  import axios from "axios";
 
-  const teamToken = $page.url.searchParams.get("team_token");
   const emailHint = $page.url.searchParams.get("email_hint");
+  const studioInviteToken = $page.url.searchParams.get("studio_invite_token");
 
   let email: string | undefined = emailHint ?? undefined;
   let password: string;
@@ -40,9 +40,9 @@
   $: if (email || password) err = "";
 </script>
 
-{#if teamToken}
+{#if studioInviteToken}
   <p class="my-3">
-    You've been invited to join a team. Please signup to continue.
+    You've been invited to join a studio, please sign up to continue.
   </p>
 {/if}
 

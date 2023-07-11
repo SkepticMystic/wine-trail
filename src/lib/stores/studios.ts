@@ -1,6 +1,7 @@
 import type { Result, SID } from "$lib/interfaces";
 import type { ModifyStudio, Studio } from "$lib/models/Studio";
 import { err } from "$lib/utils";
+import { getHTTPErrorMsg } from "$lib/utils/errors";
 import axios from "axios";
 import { get, writable } from "svelte/store";
 import { addToast } from "./toast";
@@ -15,11 +16,53 @@ export const studios = {
     return studios.find((studio) => studio.slug === slug);
   },
 
+  create: async (studio: ModifyStudio) => {
+    try {
+      const { data } = await axios.post<
+        Result<
+          { studio: SID<Studio> },
+          string
+        >
+      >("/api/studios", studio);
+
+      console.log(data);
+
+      if (data.ok) {
+        store.update((studios) => [...studios, data.data.studio]);
+
+        addToast({
+          type: "success",
+          message: "Studio created",
+          duration_ms: 5_000,
+        });
+      } else {
+        console.warn(data.error);
+        addToast({
+          type: "warning",
+          message: data.error,
+          duration_ms: 5_000,
+        });
+      }
+
+      return data;
+    } catch (error) {
+      console.error(error);
+
+      addToast({
+        type: "error",
+        message: getHTTPErrorMsg(error),
+        duration_ms: 5_000,
+      });
+
+      return err("Error creating studio");
+    }
+  },
+
   patch: async (_id: string, patch: Partial<ModifyStudio>) => {
     try {
       const { data } = await axios.patch<
         Result<
-          { studio: SID<Studio> },
+          { studio?: SID<Studio> },
           string
         >
       >(
@@ -31,10 +74,9 @@ export const studios = {
 
       if (data.ok) {
         if (data.data.studio) {
+          const newStudio = data.data.studio;
           store.update((studios) =>
-            studios.map((studio) =>
-              studio._id === _id ? data.data.studio : studio
-            )
+            studios.map((studio) => studio._id === _id ? newStudio : studio)
           );
 
           addToast({
@@ -68,6 +110,47 @@ export const studios = {
       });
 
       return err("Error updating studio");
+    }
+  },
+
+  del: async (_id: string) => {
+    try {
+      const { data } = await axios.delete<
+        Result<
+          undefined,
+          string
+        >
+      >(
+        `/api/studios/${_id}`,
+      );
+
+      console.log(data);
+
+      if (data.ok) {
+        addToast({
+          type: "success",
+          message: "Studio deleted",
+          duration_ms: 5_000,
+        });
+      } else {
+        console.warn(data.error);
+        addToast({
+          type: "warning",
+          message: data.error,
+          duration_ms: 5_000,
+        });
+      }
+
+      return data;
+    } catch (error) {
+      console.error(error);
+      addToast({
+        type: "error",
+        message: "Error deleting studio",
+        duration_ms: 5_000,
+      });
+
+      return err("Error deleting studio");
     }
   },
 };

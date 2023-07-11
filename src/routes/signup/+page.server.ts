@@ -1,6 +1,5 @@
 import { auth } from "$lib/auth/lucia";
-import { OTP, OTPs, type TeamInviteOTP } from "$lib/models/OTPs";
-import { Teams } from "$lib/models/Teams";
+import { OTP, OTPs, type StudioOwnerInviteOTP } from "$lib/models/OTPs";
 import { passwordSchema } from "$lib/schema/index";
 import { Parsers } from "$lib/schema/parsers";
 import { INTERNAL_SERVER_ERROR } from "$lib/utils/errors";
@@ -18,40 +17,37 @@ export const actions: Actions = {
       }),
     );
 
-    const { team_token } = Parsers.params(
+    const { studio_owner_token } = Parsers.params(
       url,
       z.object({
-        team_token: z.string().optional(),
+        studio_owner_token: z.string().optional(),
       }),
     );
 
-    // SECTION: Team
+    // SECTION: Studio Owner Invite
+    let attributes: Pick<User, "emailVerified" | "studio_ids">;
 
-    let attributes: Pick<User, "emailVerified" | "role" | "team_id">;
-
-    if (team_token) {
+    if (studio_owner_token) {
       // Find and delete the OTP
       const otp = await OTPs.findOneAndDelete({
-        token: team_token,
-        kind: "team-invite",
+        token: studio_owner_token,
+        kind: "studio-owner-invite",
         identifier: `email:${email}`,
-      }).lean() as TeamInviteOTP | null;
-      if (!otp) throw error(400, "Invalid team token");
+      }).lean() as StudioOwnerInviteOTP | null;
+
+      if (!otp) throw error(400, "Invalid studio invite token");
 
       attributes = {
         emailVerified: true,
-        role: otp.data.role,
-        team_id: otp.data.team_id,
+        studio_ids: [otp.data.studio_id],
       };
     } else {
-      const team = await Teams.create({});
+      // If someone is just randomly signing up, they don't own a studio yet
       attributes = {
         emailVerified: false,
-        role: "owner",
-        team_id: team._id.toString(),
+        studio_ids: [],
       };
     }
-    console.log({ email, password, attributes });
     // !SECTION
 
     try {
@@ -67,14 +63,15 @@ export const actions: Actions = {
         },
       });
 
-      if (!attributes.emailVerified) {
-        await OTP.handleLinks["email-verification"]({
-          url,
-          idValue: userId,
-        });
-      }
-
-      const session = await auth.createSession(userId);
+      const [session] = await Promise.all([
+        auth.createSession(userId),
+        !attributes.emailVerified
+          ? OTP.handleLinks["email-verification"]({
+            url,
+            idValue: userId,
+          })
+          : undefined,
+      ]);
       locals.auth.setSession(session);
     } catch (e) {
       const { message } = e as Error;

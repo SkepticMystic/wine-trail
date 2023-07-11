@@ -1,5 +1,4 @@
 import { Users } from "$lib/auth/lucia";
-import type { Role } from "$lib/auth/roles";
 import { ONE_DAY_MS } from "$lib/const";
 import { err, suc } from "$lib/utils";
 import mongoose, { Model } from "mongoose";
@@ -7,7 +6,7 @@ import mongoose, { Model } from "mongoose";
 const OTP_KINDS = [
   "email-verification",
   "password-reset",
-  "team-invite",
+  "studio-owner-invite",
 ] as const;
 type OTPKind = typeof OTP_KINDS[number];
 
@@ -41,18 +40,18 @@ export interface PasswordResetOTP extends OTPBase {
   data?: undefined;
 }
 
-export interface TeamInviteOTP extends OTPBase {
-  // Some tokens can only identify the user by email, not userId (they might not have signed up yet)
+export type StudioOwnerInviteOTP = OTPBase & {
   identifier: `email:${string}`;
-  kind: "team-invite";
+  kind: "studio-owner-invite";
   data: {
-    team_id: string;
-    role: Role;
-    createdBy: string;
+    studio_id: string;
   };
-}
+};
 
-export type OTP = EmailVerificationOTP | PasswordResetOTP | TeamInviteOTP;
+export type OTP =
+  | EmailVerificationOTP
+  | PasswordResetOTP
+  | StudioOwnerInviteOTP;
 
 const modelName = "OTPs";
 export const OTPs: Model<OTP> = mongoose.models[modelName] ||
@@ -261,19 +260,19 @@ const handleLinks = {
     console.log("TODO: sendEmail");
   },
 
-  "team-invite": async (
-    input: { idValue: string; url: URL; data: TeamInviteOTP["data"] },
+  "studio-owner-invite": async (
+    input: { idValue: string; url: URL; data: StudioOwnerInviteOTP["data"] },
   ) => {
     const { url, idValue, data } = input;
 
-    const otp = await OTP.create<TeamInviteOTP>({
+    const otp = await OTP.create<StudioOwnerInviteOTP>({
       identifier: `email:${idValue}`,
-      kind: "team-invite",
+      kind: "studio-owner-invite",
       data,
     });
 
     const href =
-      `${url.origin}/api/team/join?token=${otp.token}&team_id=${data.team_id}`;
+      `${url.origin}/api/studios/join?token=${otp.token}&studio_id=${data.studio_id}`;
     console.log(href);
     console.log("TODO: sendEmail");
   },

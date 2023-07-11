@@ -39,9 +39,9 @@
   $: if (email || password) err = suc = "";
 </script>
 
-{#if previous === "team-invite"}
+{#if previous === "studio-owner-invite"}
   <p class="my-3 text-success">
-    Team invite accepted, please sign in to continue.
+    Studio owner invite accepted, please sign in to continue.
   </p>
 {:else if previous === "reset-password"}
   <p class="my-3 text-success">
