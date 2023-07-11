@@ -7,10 +7,7 @@
   import YogaStyleBadge from "../listings/YogaStyleBadge.svelte";
 
   $: cities = removeDuplicates(
-    $studios
-      .filter((s) => !s.hidden)
-      .map((s) => s.location.city)
-      .filter(Boolean)
+    $studios.map((s) => s.location.city).filter(Boolean)
   ) as string[];
 
   $: console.log($studioFilters);

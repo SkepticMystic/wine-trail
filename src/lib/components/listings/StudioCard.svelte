@@ -15,7 +15,9 @@
   <div
     class="flex flex-col justify-between p-4 bg-opacity-10 bg-slate-400 absolute w-full h-full rounded-box hover:bg-opacity-90 hover:text-gray-50 text-gray-700"
   >
-    <div class="group-hover:hidden" />
+    <div class="group-hover:hidden">
+      {studio.hidden ? "🚫 Hidden" : ""}
+    </div>
     <h2 class="hidden group-hover:block text-xl text-center font-bold">
       {name}
     </h2>

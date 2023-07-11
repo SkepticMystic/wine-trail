@@ -15,9 +15,7 @@
 
   const { studio_slug } = $page.params;
 
-  const studio = $studios
-    .filter((s) => !s.hidden)
-    .find((studio) => studio.slug === studio_slug);
+  const studio = $studios.find((studio) => studio.slug === studio_slug);
 
   const deleteStudio = async () => {
     if (!studio) return;
