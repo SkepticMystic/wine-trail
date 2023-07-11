@@ -2,6 +2,7 @@
   import { YOGA_STYLES, YOGA_STYLE_EMOJI } from "$lib/const/styles";
   import type { ModifyStudio } from "$lib/models/Studio";
   import Label from "../label.svelte";
+  import StylesSelector from "../selectors/StylesSelector.svelte";
 
   export let studio: ModifyStudio;
 </script>
@@ -31,11 +32,7 @@
   </Label>
 
   <Label lbl="Styles">
-    <select class="select capitalize" multiple bind:value={studio.styles}>
-      {#each YOGA_STYLES as style}
-        <option value={style}> {YOGA_STYLE_EMOJI[style]} {style} </option>
-      {/each}
-    </select>
+    <StylesSelector bind:styles={studio.styles} />
   </Label>
 
   <Label lbl="Online Classes">
