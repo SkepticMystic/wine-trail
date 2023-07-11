@@ -9,6 +9,8 @@
   let { loadObj } = getProps();
 
   let studio: ModifyStudio = {
+    hidden: true,
+    
     name: "",
     description: "",
 

@@ -7,9 +7,19 @@
 </script>
 
 <div class="flex flex-col gap-7">
-  <Label lbl="Name">
-    <input type="text" class="input" bind:value={studio.name} />
-  </Label>
+  <div class="flex flex-wrap gap-3">
+    <Label lbl="Name">
+      <input type="text" class="input" bind:value={studio.name} />
+    </Label>
+
+    <Label lbl="Hidden">
+      <input
+        type="checkbox"
+        class="checkbox checkbox-lg"
+        bind:checked={studio.hidden}
+      />
+    </Label>
+  </div>
 
   <Label lbl="Description">
     <textarea

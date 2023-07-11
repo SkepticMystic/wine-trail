@@ -39,18 +39,18 @@
       authed: true,
       admin: true,
     },
-    // {
-    //   side: "right",
-    //   label: "Sign in",
-    //   href: "/signin",
-    //   authed: false,
-    // },
-    // {
-    //   side: "right",
-    //   label: "Sign up",
-    //   href: "/signup",
-    //   authed: false,
-    // },
+    {
+      side: "right",
+      label: "Sign in",
+      href: "/signin",
+      authed: false,
+    },
+    {
+      side: "right",
+      label: "Sign up",
+      href: "/signup",
+      authed: false,
+    },
   ];
 
   const showRoute = (

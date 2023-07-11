@@ -1,3 +1,4 @@
+import { canModifyStudio } from "$lib/auth/permissions";
 import { getUser } from "$lib/auth/server";
 import { Studios } from "$lib/models/Studio";
 import { error } from "@sveltejs/kit";
@@ -13,7 +14,7 @@ export const load = (async ({ locals, params }) => {
     throw error(404, "Studio not found");
   }
 
-  if (!user.admin && !user.studio_ids?.includes(studio._id.toString())) {
+  if (!canModifyStudio(user, studio._id.toString())) {
     throw error(403, "You do not own this studio");
   }
 

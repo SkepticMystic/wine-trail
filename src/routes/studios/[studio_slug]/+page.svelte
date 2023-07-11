@@ -1,24 +1,57 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
+  import { canModifyStudio } from "$lib/auth/permissions";
+  import Loading from "$lib/components/Loading.svelte";
   import StudioContact from "$lib/components/listings/StudioContact.svelte";
   import StudioLinks from "$lib/components/listings/StudioLinks.svelte";
   import StudioLocation from "$lib/components/listings/StudioLocation.svelte";
   import YogaStyleBadge from "$lib/components/listings/YogaStyleBadge.svelte";
   import Leaflet from "$lib/components/map/Leaflet.svelte";
   import { studios } from "$lib/stores/studios";
+  import { getProps } from "$lib/utils";
+
+  let { loadObj } = getProps();
 
   const { studio_slug } = $page.params;
 
-  const studio = $studios.find((studio) => studio.slug === studio_slug);
+  const studio = $studios
+    .filter((s) => !s.hidden)
+    .find((studio) => studio.slug === studio_slug);
+
+  const deleteStudio = async () => {
+    if (!studio) return;
+
+    loadObj["delete"] = true;
+
+    const result = await studios.delete(studio._id);
+
+    if (result.ok) {
+      await goto("/");
+    }
+
+    loadObj["delete"] = false;
+  };
+
+  $: anyLoading = Object.values(loadObj).some((v) => v);
 </script>
 
 {#if studio}
   <div class="flex flex-col items-center">
     <h1 class="text-3xl font-semibold text-center">
       {studio.name}
-      {#if $page.data.user?.admin || $page.data.user?.studio_ids?.includes(studio._id)}
-        <a href="{$page.url.pathname}/edit">✏️</a>
+      {#if canModifyStudio($page.data.user, studio._id)}
+        <a href="{$page.url.pathname}/edit">
+          <button title="Edit Studio">✏️</button>
+        </a>
+
+        <button
+          disabled={anyLoading}
+          title="Delete Studio"
+          on:click={deleteStudio}
+        >
+          <Loading loading={loadObj["delete"]}>🗑️</Loading>
+        </button>
       {/if}
     </h1>
 

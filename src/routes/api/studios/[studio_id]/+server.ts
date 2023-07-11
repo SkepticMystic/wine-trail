@@ -1,3 +1,5 @@
+import { Users } from "$lib/auth/lucia";
+import { canModifyStudio } from "$lib/auth/permissions";
 import { getUser } from "$lib/auth/server";
 import { PendingPatches } from "$lib/models/PendingPatches";
 import { modifyStudioSchema, Studios } from "$lib/models/Studio";
@@ -14,9 +16,9 @@ export const PATCH: RequestHandler = async ({ locals, params, request }) => {
 
   const { studio_id } = params;
 
-  // TODO: Admins can patch any studio
+  // Admins can patch any studio
   // Studio owners can patch their own, but have to be verified (Model PendingPatches for studios, teachers, etc.)
-  if (!user.admin && !user.studio_ids?.includes(studio_id)) {
+  if (!canModifyStudio(user, studio_id)) {
     return json(err("You do not own this studio"));
   }
 
@@ -47,4 +49,24 @@ export const PATCH: RequestHandler = async ({ locals, params, request }) => {
 
     return json(suc({}));
   }
+};
+
+export const DELETE: RequestHandler = async ({ locals, params }) => {
+  const user = await getUser(locals);
+
+  const { studio_id } = params;
+
+  if (!canModifyStudio(user, studio_id)) {
+    return json(err("You do not own this studio"));
+  }
+
+  const [studio] = await Promise.all([
+    Studios.deleteOne({ _id: studio_id }),
+    Users.updateMany(
+      { studio_ids: studio_id },
+      { $pull: { studio_ids: studio_id } },
+    ),
+  ]);
+
+  return json(suc({ studio }));
 };

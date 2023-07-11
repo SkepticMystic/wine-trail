@@ -32,7 +32,7 @@
       ? studio.styles?.some((style) => $studioFilters.styles.has(style))
       : true;
 
-    return searchTerm && city && style;
+    return !studio.hidden && searchTerm && city && style;
   });
 </script>
 
@@ -48,7 +48,8 @@
   />
 
   <p>
-    <code>{filtered.length}</code> of <code>{$studios.length}</code> studios
+    <code>{filtered.length}</code> of
+    <code>{$studios.filter((s) => !s.hidden).length}</code> studios
   </p>
 </div>
 
