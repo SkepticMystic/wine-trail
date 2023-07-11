@@ -21,6 +21,7 @@ export const actions: Actions = {
 
     await OTP.handleLinks["password-reset"]({
       url,
+      email,
       idValue: user._id.toString(),
     });
 

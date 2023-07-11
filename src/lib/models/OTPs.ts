@@ -1,6 +1,7 @@
 import { Users } from "$lib/auth/lucia";
 import { ONE_DAY_MS } from "$lib/const";
 import { err, suc } from "$lib/utils";
+import { sendEmail } from "$lib/utils/email";
 import mongoose, { Model } from "mongoose";
 
 const OTP_KINDS = [
@@ -230,8 +231,10 @@ const validateUserToken = async (input: Pick<OTP, "token" | "kind">) => {
 };
 
 const handleLinks = {
-  "email-verification": async (input: { idValue: string; url: URL }) => {
-    const { url, idValue } = input;
+  "email-verification": async (
+    input: { idValue: string; url: URL; email: string },
+  ) => {
+    const { url, idValue, email } = input;
 
     // We know there were no existing email-verification OTPs,
     //   since we just created the user
@@ -244,11 +247,22 @@ const handleLinks = {
     const href =
       `${url.origin}/api/verify-email?token=${otp.token}&_id=${idValue}`;
     console.log(href);
-    console.log("TODO: sendEmail");
+
+    await sendEmail({
+      to: [email],
+      subject: "Verify your YogaList email",
+      text: `Click here to verify your email: ${href}`,
+      attachment: [{
+        data: `<a href="${href}">Click here to verify your YogaList email</a>`,
+        alternative: true,
+      }],
+    });
   },
 
-  "password-reset": async (input: { idValue: string; url: URL }) => {
-    const { url, idValue } = input;
+  "password-reset": async (
+    input: { idValue: string; url: URL; email: string },
+  ) => {
+    const { url, idValue, email } = input;
 
     const otp = await OTP.getOrCreate({
       identifier: `_id:${idValue}`,
@@ -257,7 +271,17 @@ const handleLinks = {
 
     const href = `${url.origin}/reset-password?token=${otp.token}`;
     console.log(href);
-    console.log("TODO: sendEmail");
+
+    await sendEmail({
+      to: [email],
+      subject: "Reset your YogaList password",
+      text: `Click here to reset your YogaList password: ${href}`,
+      attachment: [{
+        data:
+          `<a href="${href}">Click here to reset your YogaList password</a>`,
+        alternative: true,
+      }],
+    });
   },
 
   "studio-owner-invite": async (
@@ -274,7 +298,16 @@ const handleLinks = {
     const href =
       `${url.origin}/api/studios/join?token=${otp.token}&studio_id=${data.studio_id}`;
     console.log(href);
-    console.log("TODO: sendEmail");
+
+    await sendEmail({
+      to: [idValue],
+      subject: "You've been invited to join a YogaList studio",
+      text: `Click here to join the studio: ${href}`,
+      attachment: [{
+        data: `<a href="${href}">Click here to join the studio</a>`,
+        alternative: true,
+      }],
+    });
   },
 } satisfies Record<
   OTPKind,

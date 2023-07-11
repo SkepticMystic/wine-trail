@@ -68,6 +68,7 @@ export const actions: Actions = {
         !attributes.emailVerified
           ? OTP.handleLinks["email-verification"]({
             url,
+            email,
             idValue: userId,
           })
           : undefined,
