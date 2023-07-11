@@ -25,6 +25,8 @@
 
 {#if studio}
   <div class="flex flex-col gap-3">
+    <h1 class="text-2xl font-semibold">Edit {studio.name}</h1>
+
     <StudioEditor bind:studio />
 
     <button

@@ -60,6 +60,8 @@
 
 {#if studio}
   <div class="flex flex-col gap-3">
+    <h1 class="text-2xl font-semibold">Create new Studio</h1>
+
     <StudioEditor bind:studio />
 
     <button
