@@ -3,6 +3,7 @@
   import { page } from "$app/stores";
   import { canModifyStudio } from "$lib/auth/permissions";
   import Loading from "$lib/components/Loading.svelte";
+  import Modal from "$lib/components/Modal.svelte";
   import StudioContact from "$lib/components/listings/StudioContact.svelte";
   import StudioLinks from "$lib/components/listings/StudioLinks.svelte";
   import StudioLocation from "$lib/components/listings/StudioLocation.svelte";
@@ -16,6 +17,17 @@
   const { studio_slug } = $page.params;
 
   const studio = $studios.find((studio) => studio.slug === studio_slug);
+
+  let inviteEmail: string;
+  const inviteOwner = async () => {
+    if (!studio) return;
+
+    loadObj["invite"] = true;
+
+    const result = await studios.inviteOwner(studio._id, inviteEmail);
+
+    loadObj["invite"] = false;
+  };
 
   const deleteStudio = async () => {
     if (!studio) return;
@@ -40,16 +52,44 @@
       {studio.name}
       {#if canModifyStudio($page.data.user, studio._id)}
         <a href="{$page.url.pathname}/edit">
-          <button title="Edit Studio">✏️</button>
+          <button class="btn btn-ghost btn-square" title="Edit Studio">
+            ✏️
+          </button>
         </a>
 
         <button
+          class="btn btn-ghost btn-square"
           disabled={anyLoading}
           title="Delete Studio"
           on:click={deleteStudio}
         >
           <Loading loading={loadObj["delete"]}>🗑️</Loading>
         </button>
+
+        <Modal
+          btnCls="btn-ghost btn-square"
+          btnText="📨"
+          btnTitle="Invite new Owner"
+        >
+          <div slot="content">
+            <input
+              type="email"
+              class="input"
+              placeholder="Email Address"
+              bind:value={inviteEmail}
+            />
+          </div>
+
+          <div slot="action">
+            <button
+              class="btn btn-primary"
+              disabled={anyLoading}
+              on:click={inviteOwner}
+            >
+              <Loading loading={loadObj["invite"]}>Invite</Loading>
+            </button>
+          </div>
+        </Modal>
       {/if}
     </h1>
 

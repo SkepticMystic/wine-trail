@@ -113,6 +113,51 @@ export const studios = {
     }
   },
 
+  inviteOwner: async (studio_id: string, email: string) => {
+    if (
+      !confirm(
+        `Are you sure you want to invite ${email} to be an owner of this studio?`,
+      )
+    ) {
+      return err("Owner invite cancelled");
+    }
+
+    try {
+      const { data } = await axios.post<Result<undefined, string>>(
+        `/api/studios/${studio_id}/invite`,
+        { email },
+      );
+
+      console.log(data);
+
+      if (data.ok) {
+        addToast({
+          type: "success",
+          message: "Owner invite sent",
+          duration_ms: 5_000,
+        });
+      } else {
+        console.warn(data.error);
+        addToast({
+          type: "warning",
+          message: data.error,
+          duration_ms: 5_000,
+        });
+      }
+
+      return data;
+    } catch (error) {
+      console.error(error);
+      addToast({
+        type: "error",
+        message: "Error inviting owner",
+        duration_ms: 5_000,
+      });
+
+      return err("Error inviting owner");
+    }
+  },
+
   delete: async (_id: string) => {
     if (!confirm("Are you sure you want to delete this studio?")) {
       return err("Studio not deleted");

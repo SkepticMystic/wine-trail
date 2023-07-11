@@ -289,7 +289,7 @@ const handleLinks = {
   ) => {
     const { url, idValue, data } = input;
 
-    const otp = await OTP.create<StudioOwnerInviteOTP>({
+    const otp = await OTP.getOrCreate({
       identifier: `email:${idValue}`,
       kind: "studio-owner-invite",
       data,

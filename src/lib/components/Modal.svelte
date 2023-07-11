@@ -1,6 +1,11 @@
 <script lang="ts">
-  export let openButtonText = "Open";
-  export let openButtonClass = "";
+  import Loading from "./Loading.svelte";
+
+  export let loading = false;
+  export let disabled = false;
+  export let btnCls: string | undefined = undefined;
+  export let btnText: string | undefined = undefined;
+  export let btnTitle: string | undefined = undefined;
 
   export let clickOutsideToClose = true;
 
@@ -8,8 +13,14 @@
 </script>
 
 <!-- Open the modal using ID.showModal() method -->
-<button class="btn {openButtonClass}" on:click={() => modal.showModal()}>
-  {openButtonText}
+<button
+  {disabled}
+  class="btn {btnCls ?? ''}"
+  title={btnTitle}
+  on:click={() => modal.showModal()}
+>
+  <Loading {loading} />
+  {btnText}
 </button>
 
 <!-- Modal goes bottom on mobile screen and goes middle on desktop -->
@@ -19,11 +30,15 @@
   bind:this={modal}
 >
   <form method="dialog" class="modal-box">
-    <slot />
+    <slot name="content" />
 
-    <div class="modal-action">
+    <div class="modal-action justify-between">
+      <div>
+        <slot name="action" />
+      </div>
+
       <!-- if there is a button in form, it will close the modal -->
-      <button class="btn">Close</button>
+      <button class="btn-warning btn">Close</button>
     </div>
   </form>
 
