@@ -43,6 +43,7 @@
     "npm": "^9.8.0",
     "svelte-select": "^5.6.1",
     "theme-change": "^2.5.0",
+    "upload-js-full": "^2.21.0",
     "zod": "^3.21.4"
   }
 }

@@ -6,10 +6,29 @@ import type { RequestHandler } from "./$types";
 export const GET: RequestHandler = async ({ locals }) => {
   const [session, studios] = await Promise.all([
     locals.auth.validate(),
-    Studios.find(
-      {},
-      { createdAt: 0, updatedAt: 0, __v: 0 },
-    ).lean(),
+    Studios.aggregate([
+      { $addFields: { _id: { $toString: "$_id" } } },
+      {
+        $lookup: {
+          from: "Images",
+          localField: "_id",
+          foreignField: "resource_id",
+          as: "images",
+          pipeline: [
+            { $match: { resource_kind: "studio" } },
+            {
+              $project: {
+                _id: 0,
+                host: 1,
+                image_kind: 1,
+                data: 1,
+              },
+            },
+          ],
+        },
+      },
+      { $project: { createdAt: 0, updatedAt: 0, __v: 0 } },
+    ]).exec(),
   ]);
 
   return json({

@@ -1,4 +1,5 @@
 import type { Result, SID } from "$lib/interfaces";
+import type { Image } from "$lib/models/Images";
 import type { ModifyStudio, Studio } from "$lib/models/Studio";
 import { err } from "$lib/utils";
 import { getHTTPErrorMsg } from "$lib/utils/errors";
@@ -6,7 +7,13 @@ import axios from "axios";
 import { get, writable } from "svelte/store";
 import { addToast } from "./toast";
 
-const store = writable<SID<Studio>[]>([]);
+const store = writable<
+  SID<
+    Studio & {
+      images: Pick<Image, "data" | "host" | "image_kind">[];
+    }
+  >[]
+>([]);
 
 export const studios = {
   ...store,
@@ -28,7 +35,9 @@ export const studios = {
       console.log(data);
 
       if (data.ok) {
-        store.update((studios) => [...studios, data.data.studio]);
+        store.update((
+          studios,
+        ) => [...studios, { ...data.data.studio, images: [] }]);
 
         addToast({
           type: "success",

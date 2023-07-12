@@ -50,11 +50,6 @@
     </Label>
   </div>
 
-  <h2 class="text-xl mt-5 font-semibold">Images</h2>
-  <Label lbl="Logo">
-    <input type="text" class="input" bind:value={studio.logo} />
-  </Label>
-
   <h2 class="text-xl mt-5 font-semibold">Links</h2>
   <div class="flex flex-wrap gap-3">
     <Label lbl="Website">
@@ -79,7 +74,6 @@
   </div>
 
   <h2 class="text-xl mt-5 font-semibold">Location</h2>
-
   <StudioLocation location={studio.location} />
 
   <AddressAutocompleteSelector bind:location={studio.location} />
