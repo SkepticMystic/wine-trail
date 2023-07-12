@@ -1,12 +1,17 @@
 import { addToast } from "$lib/stores/toast";
 
 export const readFileAsBinaryString = (
-  file: File,
-  cb: (file_data: string, file: File) => void | Promise<void>,
+  file: File | undefined,
+  cb: (file_data: string) => void | Promise<void>,
   opts?: {
     fileType?: string;
   },
 ): void => {
+  if (!file) {
+    // No file selected
+    return;
+  }
+
   if (
     opts?.fileType &&
     !file.type.startsWith(`${opts.fileType}/`)
@@ -32,7 +37,7 @@ export const readFileAsBinaryString = (
       return;
     }
 
-    await cb(result, file);
+    await cb(result);
   });
 
   reader.readAsBinaryString(file);

@@ -6,5 +6,8 @@ export const IMAGE_KIND_MAX_COUNTS: Record<ImageKind, number> = {
   other: 7,
 };
 
-export const IMAGE_HOSTS = ["imgdb", "uploadjs"] as const;
+export const IMAGE_HOSTS = [
+  // "imgdb",
+  "uploadjs",
+] as const;
 export type ImageHost = typeof IMAGE_HOSTS[number];

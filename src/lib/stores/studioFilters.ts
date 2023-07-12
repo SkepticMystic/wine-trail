@@ -4,7 +4,13 @@ import { writable } from "svelte/store";
 
 export const studioFilters = writable<{
   styles: Set<YogaStyle>;
-  location: Record<keyof Omit<Studio["location"], "coordinates">, Set<string>>;
+  location: Record<
+    keyof Omit<
+      Studio["location"],
+      "coordinates" | "houseNumber" | "postalCode" | "street"
+    >,
+    Set<string>
+  >;
 }>({
   styles: new Set(),
   location: {

@@ -9,8 +9,6 @@
   $: cities = removeDuplicates(
     $studios.map((s) => s.location.city).filter(Boolean)
   ) as string[];
-
-  $: console.log($studioFilters);
 </script>
 
 <div class="drawer">

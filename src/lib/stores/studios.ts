@@ -1,5 +1,4 @@
 import type { Result, SID } from "$lib/interfaces";
-import type { Image } from "$lib/models/Images";
 import type { ModifyStudio, Studio } from "$lib/models/Studio";
 import { err } from "$lib/utils";
 import { getHTTPErrorMsg } from "$lib/utils/errors";
@@ -7,13 +6,7 @@ import axios from "axios";
 import { get, writable } from "svelte/store";
 import { addToast } from "./toast";
 
-const store = writable<
-  SID<
-    Studio & {
-      images: Pick<Image, "data" | "host" | "image_kind">[];
-    }
-  >[]
->([]);
+const store = writable<SID<Studio>[]>([]);
 
 export const studios = {
   ...store,
@@ -37,7 +30,7 @@ export const studios = {
       if (data.ok) {
         store.update((
           studios,
-        ) => [...studios, { ...data.data.studio, images: [] }]);
+        ) => [...studios, { ...data.data.studio }]);
 
         addToast({
           type: "success",
@@ -56,14 +49,13 @@ export const studios = {
       return data;
     } catch (error) {
       console.error(error);
-
+      const message = getHTTPErrorMsg(error);
       addToast({
         type: "error",
-        message: getHTTPErrorMsg(error),
-        duration_ms: 5_000,
+        message,
       });
 
-      return err("Error creating studio");
+      return err(message);
     }
   },
 
@@ -97,7 +89,6 @@ export const studios = {
           addToast({
             type: "success",
             message: "Studio update pending approval",
-            duration_ms: 5_000,
           });
         }
       } else {
@@ -105,20 +96,20 @@ export const studios = {
         addToast({
           type: "warning",
           message: data.error,
-          duration_ms: 5_000,
         });
       }
 
       return data;
     } catch (error) {
       console.error(error);
+
+      const message = getHTTPErrorMsg(error);
       addToast({
         type: "error",
-        message: "Error updating studio",
-        duration_ms: 5_000,
+        message,
       });
 
-      return err("Error updating studio");
+      return err(message);
     }
   },
 
@@ -157,13 +148,14 @@ export const studios = {
       return data;
     } catch (error) {
       console.error(error);
+
+      const message = getHTTPErrorMsg(error);
       addToast({
         type: "error",
-        message: "Error inviting owner",
-        duration_ms: 5_000,
+        message,
       });
 
-      return err("Error inviting owner");
+      return err(message);
     }
   },
 
@@ -201,13 +193,14 @@ export const studios = {
       return data;
     } catch (error) {
       console.error(error);
+
+      const message = getHTTPErrorMsg(error);
       addToast({
         type: "error",
-        message: "Error deleting studio",
-        duration_ms: 5_000,
+        message,
       });
 
-      return err("Error deleting studio");
+      return err(message);
     }
   },
 };

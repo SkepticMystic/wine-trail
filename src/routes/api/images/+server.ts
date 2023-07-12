@@ -9,6 +9,7 @@ import {
 import { RESOURCE_KINDS } from "$lib/const/pendingPatches";
 import { Images } from "$lib/models/Images";
 import { Parsers } from "$lib/schema/parsers";
+import { suc } from "$lib/utils";
 import { error, json, type RequestHandler } from "@sveltejs/kit";
 import { z } from "zod";
 
@@ -83,17 +84,18 @@ export const POST: RequestHandler = async ({ locals, request }) => {
       });
 
       if (data.ok) {
-        await Images.create({
+        const image = await Images.create({
+          host,
+          image_kind,
           resource_id,
           resource_kind,
-          image_kind,
-
-          host,
           data: data.data,
         });
-      }
 
-      return json(data);
+        return json(suc(image));
+      } else {
+        throw error(500, "Image upload failed");
+      }
     }
 
     default: {
