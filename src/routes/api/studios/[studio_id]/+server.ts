@@ -1,10 +1,12 @@
 import { Users } from "$lib/auth/lucia";
 import { canModifyStudio } from "$lib/auth/permissions";
 import { getUser } from "$lib/auth/server";
+import { Images } from "$lib/models/Images";
 import { PendingPatches } from "$lib/models/PendingPatches";
 import { modifyStudioSchema, Studios } from "$lib/models/Studio";
 import { Parsers } from "$lib/schema/parsers";
 import { err, suc } from "$lib/utils";
+import { deleteImageOnHost } from "$lib/utils/images";
 import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 
@@ -60,12 +62,31 @@ export const DELETE: RequestHandler = async ({ locals, params }) => {
     return json(err("You do not own this studio"));
   }
 
-  const [studio] = await Promise.all([
+  const [studio, users, images] = await Promise.all([
     Studios.deleteOne({ _id: studio_id }),
     Users.updateMany(
       { studio_ids: studio_id },
       { $pull: { studio_ids: studio_id } },
     ),
+    Images.find(
+      {
+        resource_id: studio_id,
+        resource_kind: "studio",
+      },
+      { _id: 1, host: 1, data: 1 },
+    ).lean(),
+    PendingPatches.deleteMany({
+      resource_id: studio_id,
+      resource_kind: "studio",
+    }),
+  ]);
+
+  // Delete images from host and database
+  await Promise.all([
+    ...images.map((image) => deleteImageOnHost(image)),
+    Images.deleteMany({
+      _id: { $in: images.map((i) => i._id) },
+    }),
   ]);
 
   return json(suc({ studio }));

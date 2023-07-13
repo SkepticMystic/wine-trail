@@ -1,7 +1,7 @@
-import { UploadJS } from "$lib/APIs/uploadJS";
 import { getUser } from "$lib/auth/server";
 import { Images } from "$lib/models/Images";
 import { suc } from "$lib/utils";
+import { deleteImageOnHost } from "$lib/utils/images";
 import { error, json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 
@@ -44,20 +44,7 @@ export const DELETE: RequestHandler = async ({ locals, params }) => {
     promises.push(Images.deleteOne({ _id: image_id }).lean());
   }
 
-  // TODO: Delete on corresponding host, as well
-  switch (image.host) {
-    case "uploadjs": {
-      promises.push(
-        UploadJS.deleteFile({ path: { filePath: image.data.filePath } }),
-      );
-
-      break;
-    }
-
-    default: {
-      throw error(500, "Unknown host.");
-    }
-  }
+  promises.push(deleteImageOnHost(image));
 
   await Promise.all(promises);
 
