@@ -17,7 +17,6 @@
     styles: [],
     onlineClasses: false,
 
-    logo: "",
     moreImages: [],
 
     contact: {

@@ -14,14 +14,15 @@
   import { images } from "$lib/stores/images";
   import { studios } from "$lib/stores/studios";
   import { getProps } from "$lib/utils";
+  import { uploadJSParams } from "$lib/utils/UploadJS/optimisation";
 
   let { loadObj } = getProps();
 
   export let studio: Partial<SID<Studio>> | undefined;
 
-  const studioImages = $images.filter(
-    (i) => i.resource_kind === "studio" && i.resource_id === studio?._id
-  );
+  const studioImages = studio?._id
+    ? images.getResourceImages("studio", studio?._id)
+    : [];
 
   let inviteEmail: string;
   const inviteOwner = async () => {
@@ -52,6 +53,9 @@
 </script>
 
 {#if studio}
+  {@const logo = studioImages.find((i) => i.image_kind === "logo")?.data
+    .fileUrl}
+
   <div class="flex flex-col items-center">
     <h1 class="text-3xl font-semibold text-center flex items-center gap-2">
       <span>{studio.name}</span>
@@ -104,10 +108,9 @@
     <div class="flex flex-wrap gap-7 my-7 justify-center">
       <!-- TODO: Add UploadJSParams on image -->
       <img
-        src={studioImages.find((i) => i.image_kind === "logo")?.data.fileUrl ??
-          studio.logo}
-        width={384}
-        height={384}
+        src="{logo}?{uploadJSParams({ w: 400, h: 400 })}"
+        width={400}
+        height={400}
         class="self-start rounded-box aspect-square"
         alt="{studio.name} logo"
       />

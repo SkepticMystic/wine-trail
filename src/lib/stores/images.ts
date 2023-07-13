@@ -1,9 +1,10 @@
+import type { ResourceKind } from "$lib/const/pendingPatches";
 import type { Result, SID } from "$lib/interfaces";
 import type { Image } from "$lib/models/Images";
 import { err } from "$lib/utils";
 import { getHTTPErrorMsg } from "$lib/utils/errors";
 import axios from "axios";
-import { writable } from "svelte/store";
+import { get, writable } from "svelte/store";
 import { addToast } from "./toast";
 
 const store = writable<
@@ -19,6 +20,15 @@ const store = writable<
 
 export const images = {
   ...store,
+
+  getResourceImages: (resource_kind: ResourceKind, resource_id: string) => {
+    const images = get(store);
+    return images.filter(
+      (image) =>
+        image.resource_kind === resource_kind &&
+        image.resource_id === resource_id,
+    );
+  },
 
   create: async (
     image_data: string,

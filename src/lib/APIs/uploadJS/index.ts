@@ -1,7 +1,12 @@
 import { UPLOADJS_API_KEY } from "$env/static/private";
 import { err, suc } from "$lib/utils";
 import axios from "axios";
-import { Configuration, UploadManager } from "upload-js-full";
+import {
+  Configuration,
+  type FileDetails,
+  type FilePathDefinition,
+  UploadManager,
+} from "upload-js-full";
 
 const BASE_URL = "https://api.upload.io";
 const ACCOUNT_ID = "W142i4V";
@@ -22,20 +27,17 @@ const uploadManager = new UploadManager(
   }),
 );
 
-const managedUpload = async ({ image_data, image_type, path }: {
+const managedUpload = async ({ image_data, mime, path }: {
   image_data: string;
-  image_type: string;
-  path: {
-    folderPath: string;
-    fileName: string;
-  };
+  mime?: string;
+  path: FilePathDefinition;
 }) => {
   try {
     const upload = await uploadManager.upload({
+      mime,
+      path,
       accountId: ACCOUNT_ID,
       data: Buffer.from(image_data, "binary"),
-      mime: image_type,
-      path,
     });
 
     console.log("managedUpload", upload);
@@ -46,37 +48,61 @@ const managedUpload = async ({ image_data, image_type, path }: {
   }
 };
 
-// const basicUpload = async ({ image_data, image_type, path }: {
-//   image_data: string;
-//   image_type: string;
-//   path: {
-//     folderPath: string;
-//     fileName: string;
-//   };
-// }) => {
-//   const searchParams = new URLSearchParams(path);
+const basicUpload = async ({ image_data, image_type, path }: {
+  image_data: string;
+  image_type: string;
+  path: {
+    folderPath: string;
+    fileName: string;
+  };
+}) => {
+  const searchParams = new URLSearchParams(path);
 
-//   try {
-//     const { data } = await axios.post<FileDetails>(
-//       `${BASE_URL}/v2/accounts/${ACCOUNT_ID}/uploads/binary?${searchParams}`,
-//       Buffer.from(image_data, "binary"),
-//       {
-//         headers: {
-//           ...AUTH_HEADER,
-//           "Content-Type": image_type,
-//         },
-//       },
-//     );
+  try {
+    const { data } = await axios.post<FileDetails>(
+      `${BASE_URL}/v2/accounts/${ACCOUNT_ID}/uploads/binary?${searchParams}`,
+      Buffer.from(image_data, "binary"),
+      {
+        headers: {
+          ...AUTH_HEADER,
+          "Content-Type": image_type,
+        },
+      },
+    );
 
-//     console.log("basicUpload", data);
+    console.log("basicUpload", data);
 
-//     return suc(data);
-//   } catch (error) {
-//     const { data } = error?.response ?? {};
-//     console.error(data ?? error);
-//     return err(data);
-//   }
-// };
+    return suc(data);
+  } catch (error) {
+    const { data } = error?.response ?? {};
+    console.error(data ?? error);
+    return err(data);
+  }
+};
+
+const uploadFromUrl = async (body: {
+  url: string;
+  mime?: string;
+  path: FilePathDefinition;
+  tags?: string[];
+  originalFileName?: string;
+}) => {
+  try {
+    const { data } = await axios.post<FileDetails>(
+      `${BASE_URL}/v2/accounts/${ACCOUNT_ID}/uploads/url`,
+      body,
+      { headers: AUTH_HEADER },
+    );
+
+    console.log("uploadFromUrl", data);
+
+    return suc(data);
+  } catch (error) {
+    const { data } = error?.response ?? {};
+    console.error(data ?? error);
+    return err(data);
+  }
+};
 
 const deleteFile = async ({ path }: {
   path: {
@@ -104,5 +130,6 @@ const deleteFile = async ({ path }: {
 export const UploadJS = {
   managedUpload,
   //   basicUpload,
+  uploadFromUrl,
   deleteFile,
 };

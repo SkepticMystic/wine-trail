@@ -1,15 +1,23 @@
 <script lang="ts">
+  import type { SID } from "$lib/interfaces";
   import type { Studio } from "$lib/models/Studio";
+  import { images } from "$lib/stores/images";
+  import { uploadJSParams } from "$lib/utils/UploadJS/optimisation";
   import YogaStyleBadge from "./YogaStyleBadge.svelte";
 
-  export let studio: Studio;
+  export let studio: SID<Studio>;
 
-  const { name, description, logo, slug, styles } = studio;
+  const { name, description, slug, styles } = studio;
+  const studioImages = images.getResourceImages("studio", studio._id);
+
+  const logo = studioImages.find((i) => i.image_kind === "logo")?.data.fileUrl;
 </script>
 
 <a
   href="/studios/{slug}"
-  style="background-image: url({logo});"
+  style="background-image: url({logo
+    ? `${logo}?${uploadJSParams({ w: 300, h: 300 })}`
+    : ''});"
   class="rounded-box w-[300px] h-[300px] shadow-lg group relative bg-cover bg-center"
 >
   <div

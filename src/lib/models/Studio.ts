@@ -18,9 +18,9 @@ export const modifyStudioSchema = z.object({
     )
     .optional(),
 
-  logo: z
-    .string()
-    .url("Logo must be a valid URL"),
+  // logo: z
+  //   .string()
+  //   .url("Logo must be a valid URL"),
   moreImages: z
     .array(
       z.string().url("Image must be a valid URL"),
@@ -140,10 +140,10 @@ export const Studios = mongoose.model<Studio>(
       type: [String],
     },
 
-    logo: {
-      type: String,
-      required: true,
-    },
+    // logo: {
+    //   type: String,
+    //   required: true,
+    // },
     moreImages: {
       type: [String],
     },

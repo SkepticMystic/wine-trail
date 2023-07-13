@@ -7,10 +7,12 @@ import {
   IMAGE_KINDS,
 } from "$lib/const/images";
 import { RESOURCE_KINDS } from "$lib/const/pendingPatches";
+import type { Err, Suc } from "$lib/interfaces";
 import { Images } from "$lib/models/Images";
 import { Parsers } from "$lib/schema/parsers";
 import { suc } from "$lib/utils";
 import { error, json, type RequestHandler } from "@sveltejs/kit";
+import type { FileDetails, FilePathDefinition } from "upload-js-full";
 import { z } from "zod";
 
 export const POST: RequestHandler = async ({ locals, request }) => {
@@ -19,6 +21,7 @@ export const POST: RequestHandler = async ({ locals, request }) => {
     {
       host,
       image_data,
+      image_url,
       image_type,
       image_kind,
       resource_id,
@@ -31,9 +34,19 @@ export const POST: RequestHandler = async ({ locals, request }) => {
       z.object({
         host: z.enum(IMAGE_HOSTS),
 
-        image_data: z.string().min(1, "Image data is required"),
-        image_type: z.string().min(1, "Image type is required"),
         image_kind: z.enum(IMAGE_KINDS),
+        image_data: z
+          .string()
+          .min(1, "Image data is required")
+          .optional(),
+        image_url: z
+          .string()
+          .url("Image URL is required")
+          .optional(),
+        image_type: z
+          .string()
+          .min(1, "Image type is required")
+          .optional(),
 
         resource_kind: z.enum(RESOURCE_KINDS),
         resource_id: z
@@ -74,22 +87,36 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 
   switch (host) {
     case "uploadjs": {
-      const data = await UploadJS.managedUpload({
-        image_data,
-        image_type,
-        path: {
-          folderPath: `/images/${resource_kind}/${resource_id}/${image_kind}`,
-          fileName: `${existingImages}.${image_type.split("/")[1]}`,
-        },
-      });
+      const path: FilePathDefinition = {
+        folderPath: `/images/${resource_kind}/${resource_id}/${image_kind}`,
+        fileName: `${existingImages}{ORIGINAL_FILE_EXT}`,
+      };
 
-      if (data.ok) {
+      let uploadResult: Suc<FileDetails> | Err<unknown>;
+
+      if (image_data) {
+        uploadResult = await UploadJS.managedUpload({
+          path,
+          image_data,
+          mime: image_type,
+        });
+      } else if (image_url) {
+        uploadResult = await UploadJS.uploadFromUrl({
+          url: image_url,
+          mime: image_type,
+          path,
+        });
+      } else {
+        throw error(400, "Image data or URL is required");
+      }
+
+      if (uploadResult.ok) {
         const image = await Images.create({
           host,
           image_kind,
           resource_id,
           resource_kind,
-          data: data.data,
+          data: uploadResult.data,
         });
 
         return json(suc(image));
