@@ -28,13 +28,15 @@
   };
 </script>
 
-<input
-  type="file"
-  class="file-input file-input-bordered"
-  accept="image/*"
-  bind:files
-  on:change={() =>
-    readFileAsBinaryString(files[0], uploadImage, { fileType: "image" })}
-/>
+<div class="flex gap-3">
+  <input
+    type="file"
+    class="file-input file-input-bordered"
+    accept="image/*"
+    bind:files
+    on:change={() =>
+      readFileAsBinaryString(files[0], uploadImage, { fileType: "image" })}
+  />
 
-<Loading loading={loadObj["upload"]} />
+  <Loading loading={loadObj["upload"]} />
+</div>

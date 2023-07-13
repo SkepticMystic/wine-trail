@@ -1,3 +1,4 @@
+import { UploadJS } from "$lib/APIs/uploadJS";
 import { getUser } from "$lib/auth/server";
 import { Images } from "$lib/models/Images";
 import { suc } from "$lib/utils";
@@ -9,39 +10,56 @@ export const DELETE: RequestHandler = async ({ locals, params }) => {
 
   const { image_id } = params;
 
-  if (user.admin) {
-    await Images.deleteOne({ _id: image_id }).lean();
-
-    return json(suc());
-  }
+  const promises: Promise<any>[] = [];
 
   const image = await Images.findOne(
+    { _id: image_id },
     {
-      _id: image_id,
-      resource_id: { $in: user.studio_ids }, // Authorize
+      host: 1,
+      resource_id: 1,
+      resource_kind: 1,
+      "data.filePath": 1,
     },
-    { resource_id: 1, resource_kind: 1 },
   ).lean();
-
   if (!image) throw error(404, "Image not found.");
 
-  switch (image.resource_kind) {
-    case "studio": {
-      if (!user.studio_ids?.includes(image.resource_id)) {
-        throw error(403, "You do not have permission to delete this image.");
+  if (user.admin) {
+    // Admins can delete any image
+    promises.push(Images.deleteOne({ _id: image_id }).lean());
+  } else {
+    // Non-admins can only delete images they own 🔒
+    switch (image.resource_kind) {
+      case "studio": {
+        if (!user.studio_ids?.includes(image.resource_id)) {
+          throw error(403, "You do not have permission to delete this image.");
+        } else break;
       }
+
+      default: {
+        throw error(500, "Unknown resource kind.");
+      }
+    }
+
+    // Here we know that the user has permission to delete the image
+    promises.push(Images.deleteOne({ _id: image_id }).lean());
+  }
+
+  // TODO: Delete on corresponding host, as well
+  switch (image.host) {
+    case "uploadjs": {
+      promises.push(
+        UploadJS.deleteFile({ path: { filePath: image.data.filePath } }),
+      );
 
       break;
     }
 
     default: {
-      throw error(500, "Unknown resource kind.");
+      throw error(500, "Unknown host.");
     }
   }
 
-  // TODO: Delete on corresponding host, as well
-  await Images.deleteOne({ _id: image_id }).lean();
+  await Promise.all(promises);
 
-  // We know the image exists, at this point
   return json(suc());
 };
