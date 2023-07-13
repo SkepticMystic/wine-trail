@@ -2,6 +2,7 @@ import type { Result, SID } from "$lib/interfaces";
 import type { ModifyStudio, Studio } from "$lib/models/Studio";
 import { err } from "$lib/utils";
 import { getHTTPErrorMsg } from "$lib/utils/errors";
+import { fillInStudioBlanks } from "$lib/utils/resources/studios";
 import axios from "axios";
 import { get, writable } from "svelte/store";
 import { addToast } from "./toast";
@@ -34,7 +35,7 @@ export const studios = {
       if (data.ok) {
         store.update((
           studios,
-        ) => [...studios, { ...data.data.studio }]);
+        ) => [...studios, fillInStudioBlanks(data.data.studio)]);
 
         addToast({
           type: "success",
@@ -81,7 +82,9 @@ export const studios = {
         if (data.data.studio) {
           const newStudio = data.data.studio;
           store.update((studios) =>
-            studios.map((studio) => studio._id === _id ? newStudio : studio)
+            studios.map((studio) =>
+              studio._id === _id ? fillInStudioBlanks(newStudio) : studio
+            )
           );
 
           addToast({

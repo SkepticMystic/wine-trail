@@ -11,6 +11,7 @@
   import { addToast } from "$lib/stores/toast.js";
   import { getHTTPErrorMsg } from "$lib/utils/errors.js";
   import { getProps } from "$lib/utils/index";
+  import { fillInStudioBlanks } from "$lib/utils/resources/studios/index.js";
   import axios from "axios";
 
   export let data;
@@ -34,7 +35,9 @@
       if (response.data.ok) {
         const newStudio = response.data.data;
         $studios = $studios.map((studio) =>
-          studio._id === data.pendingPatch.resource_id ? newStudio : studio
+          studio._id === data.pendingPatch.resource_id
+            ? fillInStudioBlanks(newStudio)
+            : studio
         );
 
         addToast({

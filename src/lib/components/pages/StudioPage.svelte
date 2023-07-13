@@ -147,21 +147,19 @@
 
     <hr class="my-7" />
 
-    {#if studio.moreImages}
-      <div class="flex flex-wrap justify-center gap-3 my-5">
-        {#each studio.moreImages as img}
-          <div class="overflow-hidden rounded-box">
-            <!-- TODO: Add UploadJSParams on image -->
-            <img
-              width={384}
-              class="aspect-square object-cover hover:scale-110 transition-all"
-              src={img}
-              alt="{studio.name} image"
-            />
-          </div>
-        {/each}
-      </div>
-    {/if}
+    <div class="flex flex-wrap justify-center gap-3 my-5">
+      {#each studioImages.filter((i) => i.image_kind === "other") as img}
+        <div class="overflow-hidden rounded-box">
+          <!-- TODO: Add UploadJSParams on image -->
+          <img
+            width={384}
+            class="aspect-square object-cover hover:scale-110 transition-all"
+            src="{img.data.fileUrl}?{uploadJSParams({ w: 384, h: 384 })}"
+            alt="{studio.name} image"
+          />
+        </div>
+      {/each}
+    </div>
   </div>
 
   {#if studio.location?.coordinates}

@@ -2,6 +2,7 @@ import { canModifyStudio } from "$lib/auth/permissions";
 import { Images } from "$lib/models/Images";
 import { Studios } from "$lib/models/Studio";
 import { _idToString, shuffleArray } from "$lib/utils";
+import { fillInStudioBlanks } from "$lib/utils/resources/studios";
 import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 
@@ -35,17 +36,7 @@ export const GET: RequestHandler = async ({ locals }) => {
       return !s.hidden;
     })
     .map(_idToString)
-    .map((s) => {
-      if (!s.links) s.links = {};
-      if (!s.contact) s.contact = {};
-      if (!s.schedule) {
-        s.schedule = {
-          kind: "none",
-        };
-      }
-
-      return s;
-    });
+    .map(fillInStudioBlanks);
 
   const studio_ids = studios.map((s) => s._id.toString());
 
