@@ -20,7 +20,10 @@ export const POST: RequestHandler = async (
     ),
   ]);
 
-  const studio = await Studios.findOne({ _id: params.studio_id }).lean();
+  const studio = await Studios.findOne(
+    { _id: params.studio_id },
+    { name: 1 },
+  ).lean();
   if (!studio) {
     throw error(404, "Studio not found");
   }
@@ -28,6 +31,7 @@ export const POST: RequestHandler = async (
   await OTP.handleLinks["studio-owner-invite"]({
     url,
     idValue: invite.email,
+    studio_name: studio.name,
     data: { studio_id: params.studio_id },
   });
 

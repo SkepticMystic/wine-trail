@@ -6,6 +6,7 @@
   export let headers: string[] = [];
   export let preview: number = ROW_PREVIEW_LIMIT;
   export let indexCol: boolean = false;
+  export let onRowClick: ((row: Record<string, any>) => void) | null = null;
 
   $: headers = headers.length ? headers : Object.keys(rows[0] ?? {});
 </script>
@@ -29,7 +30,7 @@
       </thead>
       <tbody>
         {#each rows.slice(0, preview || rows.length) ?? [] as row, i}
-          <tr class="hover:bg-base-200">
+          <tr class="hover:bg-base-200" on:click={() => onRowClick?.(row)}>
             {#if indexCol} <td>{i + 1}</td> {/if}
             {#each headers as header}
               <td>{row[header]}</td>

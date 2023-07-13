@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { CONTACT_EMOJI } from "$lib/const/contact";
   import type { Studio } from "$lib/models/Studio";
 
   export let contact: Studio["contact"];
@@ -13,7 +14,7 @@
         target="_blank"
         rel="norefferer"
       >
-        📧 Email
+        {CONTACT_EMOJI["email"]} Email
       </a>
     {:else if type === "phone" && href}
       <a
@@ -22,7 +23,7 @@
         target="_blank"
         rel="norefferer"
       >
-        📞 Phone
+        {CONTACT_EMOJI["phone"]} Phone
       </a>
     {/if}
   {/each}

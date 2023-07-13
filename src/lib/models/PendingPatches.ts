@@ -1,18 +1,18 @@
 import {
   PENDING_PATCH_STATUSES,
-  type PendingPatchStatus,
   RESOURCE_KINDS,
+  type PendingPatchStatus,
 } from "$lib/const/pendingPatches";
 import mongoose from "mongoose";
 import type { ModifyStudio } from "./Studio";
 
 type PendingStudioPatch = {
   resource_kind: "studio";
-  patch: Partial<ModifyStudio>;
+  patch: ModifyStudio;
 };
 
 export type PendingPatch = {
-  /** The YogaList user that owns the resource */
+  /** The YogaList user that owns the resource and created the patch */
   user_id: string;
   status: PendingPatchStatus;
   resource_id: string;

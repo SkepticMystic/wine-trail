@@ -1,7 +1,8 @@
 import { SMTP_PASSWORD, SMTP_USERNAME } from "$env/static/private";
 import { Message, type MessageHeaders, SMTPClient } from "emailjs";
 
-const Source = "admin@pivotdev.co.za";
+// TODO: Change this to the actual email address
+const Source = "hello@yogalist.co.za";
 
 const client = new SMTPClient({
   user: SMTP_USERNAME,

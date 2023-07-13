@@ -31,7 +31,7 @@
 <div class="flex gap-3">
   <input
     type="file"
-    class="file-input file-input-bordered"
+    class="file-input file-input-bordered file-input-secondary"
     accept="image/*"
     bind:files
     on:change={() =>

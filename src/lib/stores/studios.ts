@@ -15,6 +15,10 @@ export const studios = {
     const studios = get(store);
     return studios.find((studio) => studio.slug === slug);
   },
+  getById: (studio_id: string) => {
+    const studios = get(store);
+    return studios.find((studio) => studio._id === studio_id);
+  },
 
   create: async (studio: ModifyStudio) => {
     try {

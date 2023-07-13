@@ -10,7 +10,7 @@
   import axios from "axios";
 
   const emailHint = $page.url.searchParams.get("email_hint");
-  const studioInviteToken = $page.url.searchParams.get("studio_invite_token");
+  const studioInviteToken = $page.url.searchParams.get("studio_owner_token");
 
   let email: string | undefined = emailHint ?? undefined;
   let password: string;
@@ -41,7 +41,7 @@
 </script>
 
 {#if studioInviteToken}
-  <p class="my-3">
+  <p class="my-3 text-success">
     You've been invited to join a studio, please sign up to continue.
   </p>
 {/if}

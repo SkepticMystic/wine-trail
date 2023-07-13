@@ -1,3 +1,4 @@
+import { LINK_KINDS } from "$lib/const/links";
 import { COUNTRIES } from "$lib/const/locations";
 import { YOGA_STYLES } from "$lib/const/styles";
 import mongoose from "mongoose";
@@ -29,20 +30,10 @@ export const modifyStudioSchema = z.object({
     .boolean()
     .optional(),
 
-  links: z.object({
-    website: z
-      .string()
-      .url("Website must be a valid URL")
-      .optional(),
-    facebook: z
-      .string()
-      .url("Facebook must be a valid URL")
-      .optional(),
-    instagram: z
-      .string()
-      .url("Instagram must be a valid URL")
-      .optional(),
-  }),
+  links: z.record(
+    z.enum(LINK_KINDS),
+    z.string().url("Link must be a valid URL").optional(),
+  ),
 
   contact: z.object({
     phone: z
@@ -109,7 +100,10 @@ export const modifyStudioSchema = z.object({
       z.object({
         kind: z.enum(["studio-site", "book-a-mat"]),
         data: z
-          .string()
+          .string({
+            required_error:
+              "Schedule URL is required. Either provide a URL, or choose 'None'.",
+          })
           .url("Schedule URL must be a valid URL"),
       }),
     ]),

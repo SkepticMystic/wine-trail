@@ -12,4 +12,12 @@
   <li>
     <a class="link link-primary" href="/studios/create">Create new Studio</a>
   </li>
+  <li>
+    <a
+      class="link link-primary"
+      href="/admin/pendingPatches?resource_kind=studio"
+    >
+      Pending Updates
+    </a>
+  </li>
 </ul>

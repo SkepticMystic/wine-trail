@@ -2,6 +2,7 @@
   import { IMAGE_KIND_MAX_COUNTS } from "$lib/const/images";
   import { images } from "$lib/stores/images";
   import { getProps } from "$lib/utils";
+  import { uploadJSParams } from "$lib/utils/UploadJS/optimisation";
   import Loading from "../Loading.svelte";
   import UploadImage from "../UploadImage.svelte";
   import XMark from "../icons/xMark.svelte";
@@ -36,24 +37,32 @@
         </Loading>
       </button>
 
-      <img src={image.data.fileUrl} alt="" width="100" height="100" />
+      <img
+        src="{image.data.fileUrl}?{uploadJSParams({ w: 100, h: 100 })}"
+        alt=""
+        width="100"
+        height="100"
+      />
     </div>
   {/each}
 </div>
 
-<Label lbl="Logo">
-  <UploadImage
-    host="uploadjs"
-    image_kind="logo"
-    resource_kind="studio"
-    resource_id={studio_id}
-  />
-</Label>
-<Label lbl="Other Images ({IMAGE_KIND_MAX_COUNTS['other']} max)">
-  <UploadImage
-    host="uploadjs"
-    image_kind="other"
-    resource_kind="studio"
-    resource_id={studio_id}
-  />
-</Label>
+<div class="flex flex-wrap gap-3">
+  <Label lbl="Logo">
+    <UploadImage
+      host="uploadjs"
+      image_kind="logo"
+      resource_kind="studio"
+      resource_id={studio_id}
+    />
+  </Label>
+
+  <Label lbl="Other Images ({IMAGE_KIND_MAX_COUNTS['other']} max)">
+    <UploadImage
+      host="uploadjs"
+      image_kind="other"
+      resource_kind="studio"
+      resource_id={studio_id}
+    />
+  </Label>
+</div>

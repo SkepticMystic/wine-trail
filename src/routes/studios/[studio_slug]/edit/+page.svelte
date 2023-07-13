@@ -25,12 +25,18 @@
 
 {#if studio}
   <div class="flex flex-col gap-3">
-    <h1 class="text-2xl font-semibold">Edit {studio.name}</h1>
+    <h1 class="text-3xl font-semibold">Edit {studio.name}</h1>
 
     <StudioEditor bind:studio />
 
-    <h2 class="text-xl mt-5 font-semibold">Images</h2>
-    <StudioImageEditor studio_id={studio._id} />
+    <div class='my-3'>
+      <h2 class="text-2xl mt-5 font-semibold">Images</h2>
+      <p class="text-gray-700 my-3">
+        Upload some images of your studio. You can add a logo, as well as some other
+        images showcasing your studio.
+      </p>
+      <StudioImageEditor studio_id={studio._id} />
+    </div>
 
     <button
       class="btn btn-primary"

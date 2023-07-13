@@ -3,7 +3,7 @@
 
   export let location: Studio["location"];
 
-  $: locationArray = [
+  $: locationStr = [
     location.houseNumber,
     location.street,
     location.town,
@@ -11,9 +11,18 @@
     location.postalCode,
     location.province,
     location.country,
-  ].filter(Boolean) as string[];
+  ]
+    .filter(Boolean)
+    .join(", ");
 </script>
 
-<div class="capitalize text-sm">
-  📍 {locationArray.join(", ")}
-</div>
+<a
+  href="https://www.google.com/maps/search/?api=1&query={encodeURIComponent(
+    locationStr
+  )}"
+  target="_blank"
+  rel="norefferer"
+  class="link capitalize text-sm"
+>
+  📍 {locationStr}
+</a>

@@ -1,13 +1,14 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
+  import Loading from "$lib/components/Loading.svelte";
   import ResultText from "$lib/components/resultText.svelte";
+  import type { Result } from "$lib/interfaces";
+  import { studios } from "$lib/stores/studios";
   import { getProps } from "$lib/utils";
   import { getHTTPErrorMsg } from "$lib/utils/errors";
   import axios from "axios";
   import ChangePassword from "./changePassword.svelte";
-  import type { Result } from "$lib/interfaces";
-  import Loading from "$lib/components/Loading.svelte";
 
   let { err, loading } = getProps();
 
@@ -28,12 +29,23 @@
   };
 </script>
 
-<h1 class="text-2xl">Profile</h1>
-<div class="my-3" />
+<h1 class="text-2xl my-3">Profile</h1>
+
+<h2 class="text-xl mb-3">My Studios</h2>
+<ul>
+  {#each $page.data.user?.studio_ids ?? [] as studio_id}
+    {@const studio = studios.getById(studio_id)}
+    {#if studio}
+      <li class="list-inside list-disc">
+        <a href="/studios/{studio.slug}" class="link link-primary">
+          {studio.name}
+        </a>
+      </li>
+    {/if}
+  {/each}
+</ul>
 
 {#if $page.data.user}
-  <p class="text-lg">Welcome {$page.data.user.email.split("@")[0]}</p>
-
   <div class="my-5">
     <ChangePassword />
   </div>

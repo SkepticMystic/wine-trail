@@ -1,5 +1,6 @@
 import { Users } from "$lib/auth/lucia";
 import { ONE_DAY_MS } from "$lib/const";
+import { EMAIL_COPIES } from "$lib/const/emailCopy";
 import { err, suc } from "$lib/utils";
 import { sendEmail } from "$lib/utils/email";
 import mongoose, { Model } from "mongoose";
@@ -285,9 +286,14 @@ const handleLinks = {
   },
 
   "studio-owner-invite": async (
-    input: { idValue: string; url: URL; data: StudioOwnerInviteOTP["data"] },
+    input: {
+      url: URL;
+      idValue: string;
+      studio_name: string;
+      data: StudioOwnerInviteOTP["data"];
+    },
   ) => {
-    const { url, idValue, data } = input;
+    const { url, idValue, data, studio_name } = input;
 
     const otp = await OTP.getOrCreate({
       identifier: `email:${idValue}`,
@@ -301,10 +307,13 @@ const handleLinks = {
 
     await sendEmail({
       to: [idValue],
-      subject: "You've been invited to join a YogaList studio",
+      subject: EMAIL_COPIES["studio-owner-invite"].subject,
       text: `Click here to join the studio: ${href}`,
       attachment: [{
-        data: `<a href="${href}">Click here to join the studio</a>`,
+        data: EMAIL_COPIES["studio-owner-invite"].body({
+          studio_name,
+          invite_link: href,
+        }),
         alternative: true,
       }],
     });
