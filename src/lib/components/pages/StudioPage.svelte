@@ -102,6 +102,7 @@
     </h1>
 
     <div class="flex flex-wrap gap-7 my-7 justify-center">
+      <!-- TODO: Add UploadJSParams on image -->
       <img
         src={studioImages.find((i) => i.image_kind === "logo")?.data.fileUrl ??
           studio.logo}
@@ -122,7 +123,7 @@
           {/each}
         </div>
 
-        <p class="max-w-xl text-gray-700 font-serif">
+        <p class="max-w-2xl text-gray-700 font-serif">
           {studio.description}
         </p>
 
@@ -147,6 +148,7 @@
       <div class="flex flex-wrap justify-center gap-3 my-5">
         {#each studio.moreImages as img}
           <div class="overflow-hidden rounded-box">
+            <!-- TODO: Add UploadJSParams on image -->
             <img
               width={384}
               class="aspect-square object-cover hover:scale-110 transition-all"

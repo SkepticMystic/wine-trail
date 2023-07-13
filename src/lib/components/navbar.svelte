@@ -68,7 +68,7 @@
 
 <nav class="navbar bg-base-100 px-5">
   <div class="navbar-start">
-    <a href="/" class="btn btn-ghost normal-case text-xl">Yoga List</a>
+    <a href="/" class="btn btn-ghost normal-case text-xl">☯️ Yoga List</a>
   </div>
 
   <div class="navbar-center hidden lg:flex">

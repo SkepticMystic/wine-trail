@@ -4,10 +4,10 @@
   import Loading from "$lib/components/Loading.svelte";
   import ResultText from "$lib/components/resultText.svelte";
   import type { Result } from "$lib/interfaces";
-  import { studios } from "$lib/stores/studios";
   import { getProps } from "$lib/utils";
   import { getHTTPErrorMsg } from "$lib/utils/errors";
   import axios from "axios";
+  import MyStudios from "./MyStudios.svelte";
   import ChangePassword from "./changePassword.svelte";
 
   let { err, loading } = getProps();
@@ -29,28 +29,19 @@
   };
 </script>
 
-<h1 class="text-2xl my-3">Profile</h1>
+<h1 class="text-2xl mb-5">Profile</h1>
 
-<h2 class="text-xl mb-3">My Studios</h2>
-<ul>
-  {#each $page.data.user?.studio_ids ?? [] as studio_id}
-    {@const studio = studios.getById(studio_id)}
-    {#if studio}
-      <li class="list-inside list-disc">
-        <a href="/studios/{studio.slug}" class="link link-primary">
-          {studio.name}
-        </a>
-      </li>
-    {/if}
-  {/each}
-</ul>
+<div class="my-7">
+  <h2 class="text-xl mb-3">My Studios</h2>
+  <MyStudios studio_ids={$page.data.user?.studio_ids} />
+</div>
 
 {#if $page.data.user}
-  <div class="my-5">
+  <div class="my-7">
     <ChangePassword />
   </div>
 
-  <div class="my-5">
+  <div class="my-7">
     <button class="btn btn-error" disabled={loading} on:click={deleteUser}>
       <Loading {loading} />
       Delete Account

@@ -38,7 +38,7 @@
     </Loading>
   </main>
 
-  <Footer />
+  <!-- <Footer /> -->
 </Drawer>
 
 <ToastList />
