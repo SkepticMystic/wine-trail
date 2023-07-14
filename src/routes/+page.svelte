@@ -6,7 +6,10 @@
   import StudioCard from "$lib/components/listings/StudioCard.svelte";
   import YogaStyleBadge from "$lib/components/listings/YogaStyleBadge.svelte";
   import type { YogaStyle } from "$lib/const/styles.js";
-  import { studioFilters } from "$lib/stores/studioFilters.js";
+  import {
+    DEFAULT_STUDIO_FILTERS,
+    studioFilters,
+  } from "$lib/stores/studioFilters.js";
   import { studios } from "$lib/stores/studios";
   import { addToast } from "$lib/stores/toast";
   import { setToggle } from "$lib/utils/sets.js";
@@ -35,12 +38,15 @@
     return searchTerm && city && style;
   });
 
-  addToast({
-    type: "info",
-    message: `Welcome to Yoga List ☯️ Thanks for your interest! <br />
+  addToast(
+    {
+      type: "info",
+      message: `Welcome to Yoga List ☯️ Thanks for your interest! <br />
       We're still building up our database of studios, at the moment.<br />
       But you can view and edit the studios you own, in the mean time.`,
-  });
+    },
+    { clearQueue: true }
+  );
 </script>
 
 <Hero />
@@ -54,10 +60,14 @@
     bind:value={search}
   />
 
-  <p>
-    <code>{filtered.length}</code> of
-    <code>{$studios.length}</code> studios
-  </p>
+  {#if filtered.length !== $studios.length}
+    <button
+      class="btn btn-warning"
+      on:click={() => ($studioFilters = { ...DEFAULT_STUDIO_FILTERS() })}
+    >
+      Clear {filtered.length} Studios
+    </button>
+  {/if}
 </div>
 
 {#if $studioFilters.location.city.size}
@@ -100,7 +110,13 @@
 {/if}
 
 <div class="my-5 flex flex-wrap gap-5 justify-center">
-  {#each filtered as studio, i (studio.slug)}
-    <StudioCard {studio} />
-  {/each}
+  {#if filtered.length}
+    {#each filtered as studio, i (studio.slug)}
+      <StudioCard {studio} />
+    {/each}
+  {:else}
+    <p class="text-center text-lg">
+      No studios found. Try removing some filters.
+    </p>
+  {/if}
 </div>

@@ -132,7 +132,7 @@ type OptimisationParams = {
 
 const DEFAULT_OPTIMISATION_PARAMS: OptimisationParams = {
   f: "webp",
-  crop: "smart",
+  crop: "center",
   fit: "crop",
 };
 

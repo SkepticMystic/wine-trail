@@ -23,7 +23,7 @@
       <li><a>Sidebar Item 2</a></li>
     </ul> -->
 
-    <ul class="menu bg-base-200 w-72 h-full">
+    <ul class="menu bg-base-200 w-80 h-full">
       <li>
         <details open>
           <summary class="text-base font-semibold">Styles</summary>

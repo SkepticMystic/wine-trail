@@ -10,7 +10,7 @@
   import YogaStyleBadge from "$lib/components/listings/YogaStyleBadge.svelte";
   import Leaflet from "$lib/components/map/Leaflet.svelte";
   import type { SID } from "$lib/interfaces";
-  import type { Studio } from "$lib/models/Studio";
+  import type { ModifyStudio } from "$lib/models/Studio";
   import { images } from "$lib/stores/images";
   import { studios } from "$lib/stores/studios";
   import { getProps } from "$lib/utils";
@@ -18,7 +18,8 @@
 
   let { loadObj } = getProps();
 
-  export let studio: SID<Studio> | undefined;
+  export let studio: SID<ModifyStudio> | undefined;
+  export let reviewMode = false;
 
   const studioImages = studio?._id
     ? images.getResourceImages("studio", studio?._id)
@@ -58,9 +59,21 @@
 
   <div class="flex flex-col items-center">
     <h1 class="text-3xl font-semibold text-center flex items-center gap-2">
+      {#if $page.data.user?.admin && studio._id}
+        <button
+          class="btn btn-ghost btn-square"
+          disabled={anyLoading}
+          title={studio._id}
+          on:click={() =>
+            studio?._id && navigator.clipboard.writeText(studio._id)}
+        >
+          ❔
+        </button>
+      {/if}
+
       <span>{studio.name}</span>
 
-      {#if studio?._id && canModifyStudio($page.data.user, studio._id)}
+      {#if !reviewMode && studio?._id && canModifyStudio($page.data.user, studio._id)}
         <a href="{$page.url.pathname}/edit">
           <button class="btn btn-ghost btn-square" title="Edit Studio">
             ✏️
@@ -78,30 +91,32 @@
           <Loading loading={loadObj["delete"]}>🗑️</Loading>
         </button>
 
-        <Modal
-          btnCls="btn-ghost btn-square"
-          btnText="📨"
-          btnTitle="Invite new Owner"
-        >
-          <div slot="content">
-            <input
-              type="email"
-              class="input w-72"
-              placeholder="Email Address"
-              bind:value={inviteEmail}
-            />
-          </div>
+        {#if !reviewMode}
+          <Modal
+            btnCls="btn-ghost btn-square"
+            btnText="📨"
+            btnTitle="Invite new Owner"
+          >
+            <div slot="content">
+              <input
+                type="email"
+                class="input w-72"
+                placeholder="Email Address"
+                bind:value={inviteEmail}
+              />
+            </div>
 
-          <div slot="action">
-            <button
-              class="btn btn-primary"
-              disabled={anyLoading}
-              on:click={inviteOwner}
-            >
-              <Loading loading={loadObj["invite"]}>Invite</Loading>
-            </button>
-          </div>
-        </Modal>
+            <div slot="action">
+              <button
+                class="btn btn-primary"
+                disabled={anyLoading}
+                on:click={inviteOwner}
+              >
+                <Loading loading={loadObj["invite"]}>Invite</Loading>
+              </button>
+            </div>
+          </Modal>
+        {/if}
       {/if}
     </h1>
 
@@ -152,7 +167,11 @@
           <img
             width={384}
             class="aspect-square object-cover hover:scale-110 transition-all"
-            src={optimiseUploadJSImg(img.data.fileUrl, { w: 384, h: 384 })}
+            src={optimiseUploadJSImg(img.data.fileUrl, {
+              w: 384,
+              h: 384,
+              crop: "smart",
+            })}
             alt="{studio.name} image"
           />
         </div>

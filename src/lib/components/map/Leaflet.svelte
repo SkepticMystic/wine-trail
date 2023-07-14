@@ -1,9 +1,9 @@
 <script lang="ts">
-  import type { Studio } from "$lib/models/Studio";
+  import type { ModifyStudio } from "$lib/models/Studio";
   import { buildLocationStr } from "$lib/utils/locations";
   import { onMount } from "svelte";
 
-  export let studio: Studio;
+  export let studio: ModifyStudio;
 
   const coordArray = [
     studio.location.coordinates.latitude,

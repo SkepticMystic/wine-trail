@@ -30,7 +30,11 @@
       </thead>
       <tbody>
         {#each rows.slice(0, preview || rows.length) ?? [] as row, i}
-          <tr class="hover:bg-base-200" on:click={() => onRowClick?.(row)}>
+          <tr
+            class="hover:bg-base-100"
+            class:cursor-pointer={!!onRowClick}
+            on:click={() => onRowClick?.(row)}
+          >
             {#if indexCol} <td>{i + 1}</td> {/if}
             {#each headers as header}
               <td>{row[header]}</td>

@@ -44,7 +44,10 @@ export const PATCH: RequestHandler = async ({ locals, params, request }) => {
       },
       {
         $set: {
-          patch: input,
+          patch: {
+            ...input,
+            _id: studio_id,
+          },
           user_id: user.userId,
         },
       },

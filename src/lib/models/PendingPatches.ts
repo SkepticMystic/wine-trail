@@ -3,12 +3,13 @@ import {
   type PendingPatchStatus,
   RESOURCE_KINDS,
 } from "$lib/const/pendingPatches";
+import type { SID } from "$lib/interfaces";
 import mongoose from "mongoose";
 import type { ModifyStudio } from "./Studio";
 
 type PendingStudioPatch = {
   resource_kind: "studio";
-  patch: ModifyStudio;
+  patch: SID<ModifyStudio>;
 };
 
 export type PendingPatch = {

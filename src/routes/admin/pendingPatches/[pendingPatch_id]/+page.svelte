@@ -68,7 +68,13 @@
   $: anyLoading = Object.values(loadObj).some((v) => v);
 </script>
 
-<StudioPage studio={data.pendingPatch.patch} />
+{#if data.pendingPatch.resource_kind === "studio"}
+  <StudioPage reviewMode studio={data.pendingPatch.patch}  />
+{:else}
+  <p class="text-error">
+    Unhandled resource kind: {data.pendingPatch.resource_kind}
+  </p>
+{/if}
 
 <div class="flex justify-between my-5">
   <button
