@@ -1,8 +1,9 @@
-<footer class="footer p-10 bg-base-200 text-base-content">
+<footer class="footer p-10 bg-base-100 text-base-content">
   <div>
-    <p class="text-3xl">☯️</p>
-    <p class="text-xl">Yoga List</p>
+    <a href="/" class="text-3xl">☯️</a>
+    <a href="/" class="link text-xl">Yoga List</a>
   </div>
+
   <div>
     <span class="footer-title">Services</span>
     <a class="link link-hover">Branding</a>

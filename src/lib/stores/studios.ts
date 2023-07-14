@@ -120,7 +120,10 @@ export const studios = {
     }
   },
 
-  inviteOwner: async (studio_id: string, email: string) => {
+  inviteOwner: async (studio_id: string, email: string | undefined) => {
+    if (!email) {
+      return err("No email provided");
+    }
     if (
       !confirm(
         `Are you sure you want to invite ${email} to be an owner of this studio?`,

@@ -1,7 +1,6 @@
 <script lang="ts">
   import { page } from "$app/stores";
   import Hero from "$lib/components/Hero.svelte";
-  import Loading from "$lib/components/Loading.svelte";
   import Badge from "$lib/components/daisyui/badge.svelte";
   import OpenDrawer from "$lib/components/drawer/OpenDrawer.svelte";
   import StudioCard from "$lib/components/listings/StudioCard.svelte";
@@ -9,6 +8,7 @@
   import type { YogaStyle } from "$lib/const/styles.js";
   import { studioFilters } from "$lib/stores/studioFilters.js";
   import { studios } from "$lib/stores/studios";
+  import { addToast } from "$lib/stores/toast";
   import { setToggle } from "$lib/utils/sets.js";
 
   let search: string = "";
@@ -33,6 +33,13 @@
       : true;
 
     return searchTerm && city && style;
+  });
+
+  addToast({
+    type: "info",
+    message: `Welcome to Yoga List ☯️ Thanks for your interest! <br />
+      We're still building up our database of studios, at the moment.<br />
+      But you can view and edit the studios you own, in the mean time.`,
   });
 </script>
 
@@ -92,10 +99,8 @@
   </div>
 {/if}
 
-<Loading loading={$studios.length === 0}>
-  <div class="my-5 flex flex-wrap gap-5 justify-center">
-    {#each filtered as studio, i (studio.slug)}
-      <StudioCard {studio} />
-    {/each}
-  </div>
-</Loading>
+<div class="my-5 flex flex-wrap gap-5 justify-center">
+  {#each filtered as studio, i (studio.slug)}
+    <StudioCard {studio} />
+  {/each}
+</div>

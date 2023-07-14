@@ -130,8 +130,12 @@ type OptimisationParams = {
     | "top-right";
 };
 
-export const uploadJSParams = (params: OptimisationParams) =>
-  Object.entries(params)
+export const optimiseUploadJSImg = (
+  fileUrl: string,
+  params: OptimisationParams,
+) =>
+  fileUrl.replace("/raw/", "/image/") +
+  "?" + Object.entries(params)
     .reduce((acc, [key, value]) => {
       if (value) {
         acc.push(`${key}=${value}`);

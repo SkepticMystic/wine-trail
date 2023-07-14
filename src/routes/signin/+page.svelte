@@ -39,18 +39,22 @@
   $: if (email || password) err = suc = "";
 </script>
 
-<div class="flex flex-col gap-3 items-center">
+<div
+  class="mx-auto flex flex-col gap-3 items-center px-8 py-6 bg-base-100 rounded-box border w-fit"
+>
+  <h1 class="text-3xl mb-3">☯️ Yoga List</h1>
+
   {#if previous === "studio-owner-invite"}
-    <p class="my-3 text-success">
+    <p class=" text-success">
       Studio owner invite accepted, please sign in to continue.
     </p>
   {:else if previous === "reset-password"}
-    <p class="my-3 text-success">
+    <p class="text-success">
       Password reset successful, please sign in to continue.
     </p>
+  {:else}
+    <p class="text-lg font-semibold">Sign in</p>
   {/if}
-
-  <h1 class="text-3xl mb-3">☯️ Yoga List</h1>
 
   <form on:submit|preventDefault={signin}>
     <Label lbl="Email">
@@ -89,10 +93,10 @@
   </form>
 
   <div class="text-center">
-    <p class="my-2">
+    <p class="mb-2">
       <a class="link" href="/forgot-password">Forgot Password?</a>
     </p>
-    <p class="my-2">
+    <p>
       <a class="link" href="/signup">Don't have an account? Sign up</a>
     </p>
   </div>

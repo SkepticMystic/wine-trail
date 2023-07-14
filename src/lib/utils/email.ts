@@ -1,8 +1,6 @@
 import { SMTP_PASSWORD, SMTP_USERNAME } from "$env/static/private";
-import { Message, type MessageHeaders, SMTPClient } from "emailjs";
-
-// TODO: Change this to the actual email address
-const Source = "hello@yogalist.co.za";
+import { APP_CONTACT_INFO } from "$lib/const/contact";
+import { Message, SMTPClient, type MessageHeaders } from "emailjs";
 
 const client = new SMTPClient({
   user: SMTP_USERNAME,
@@ -17,10 +15,10 @@ export function sendEmail(
 ) {
   const msg = new Message({
     to,
-    from: Source,
     text,
     subject,
     attachment,
+    from: APP_CONTACT_INFO.email,
   });
 
   const { isValid, validationError } = msg.checkValidity();

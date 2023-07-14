@@ -38,8 +38,9 @@
       .marker(coordArray)
       .addTo(map);
 
-    marker.bindPopup(
-      `
+    marker
+      .bindPopup(
+        `
       <div class="flex flex-col gap-1">
         <h2 class="text-lg">${studio.name}</h2>
         <div class="capitalize">
@@ -54,7 +55,8 @@
         </div>
       </div>
       `
-    );
+      )
+      .openPopup();
   });
 </script>
 

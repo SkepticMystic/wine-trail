@@ -14,7 +14,7 @@
   import { images } from "$lib/stores/images";
   import { studios } from "$lib/stores/studios";
   import { getProps } from "$lib/utils";
-  import { uploadJSParams } from "$lib/utils/UploadJS/optimisation";
+  import { optimiseUploadJSImg } from "$lib/utils/UploadJS/optimisation";
 
   let { loadObj } = getProps();
 
@@ -24,7 +24,7 @@
     ? images.getResourceImages("studio", studio?._id)
     : [];
 
-  let inviteEmail: string;
+  let inviteEmail = studio?.contact?.email;
   const inviteOwner = async () => {
     if (!studio?._id) return;
 
@@ -86,7 +86,7 @@
           <div slot="content">
             <input
               type="email"
-              class="input"
+              class="input w-72"
               placeholder="Email Address"
               bind:value={inviteEmail}
             />
@@ -106,9 +106,8 @@
     </h1>
 
     <div class="flex flex-wrap gap-7 my-7 justify-center">
-      <!-- TODO: Add UploadJSParams on image -->
       <img
-        src="{logo}?{uploadJSParams({ w: 400, h: 400 })}"
+        src={logo ? optimiseUploadJSImg(logo, { w: 400, h: 400 }) : ""}
         width={400}
         height={400}
         class="self-start rounded-box aspect-square"
@@ -150,11 +149,10 @@
     <div class="flex flex-wrap justify-center gap-3 my-5">
       {#each studioImages.filter((i) => i.image_kind === "other") as img}
         <div class="overflow-hidden rounded-box">
-          <!-- TODO: Add UploadJSParams on image -->
           <img
             width={384}
             class="aspect-square object-cover hover:scale-110 transition-all"
-            src="{img.data.fileUrl}?{uploadJSParams({ w: 384, h: 384 })}"
+            src={optimiseUploadJSImg(img.data.fileUrl, { w: 384, h: 384 })}
             alt="{studio.name} image"
           />
         </div>
@@ -162,7 +160,7 @@
     </div>
   </div>
 
-  {#if studio.location}
+  {#if studio.location.coordinates}
     <div class="block">
       <Leaflet {studio} />
     </div>

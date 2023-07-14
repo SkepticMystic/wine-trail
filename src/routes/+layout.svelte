@@ -1,5 +1,4 @@
 <script lang="ts">
-  import Footer from "$lib/components/Footer.svelte";
   import Loading from "$lib/components/Loading.svelte";
   import Drawer from "$lib/components/drawer/Drawer.svelte";
   import Navbar from "$lib/components/navbar.svelte";
@@ -12,6 +11,7 @@
   import axios from "axios";
   import { onMount } from "svelte";
   import "../app.css";
+  import Footer from "$lib/components/Footer.svelte";
 
   let loading = true;
   onMount(async () => {
@@ -38,7 +38,7 @@
     </Loading>
   </main>
 
-  <!-- <Footer /> -->
+  <Footer />
 </Drawer>
 
 <ToastList />

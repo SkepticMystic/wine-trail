@@ -54,32 +54,26 @@ export const modifyStudioSchema = z.object({
 
       province: z
         .string()
-        .toLowerCase()
         .optional(),
 
       city: z
         .string()
-        .toLowerCase()
         .optional(),
 
       town: z
         .string()
-        .toLowerCase()
         .optional(),
 
       postalCode: z
         .string()
-        .toLowerCase()
         .optional(),
 
       street: z
         .string()
-        .toLowerCase()
         .optional(),
 
       houseNumber: z
         .string()
-        .toLowerCase()
         .optional(),
 
       coordinates: z.object({

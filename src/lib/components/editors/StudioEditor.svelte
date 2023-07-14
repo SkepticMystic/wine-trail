@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { CONTACT_EMOJI } from "$lib/const/contact";
+  import { APP_CONTACT_INFO, CONTACT_EMOJI } from "$lib/const/contact";
   import { LINK_EMOJI, LINK_KINDS } from "$lib/const/links";
   import type { SID } from "$lib/interfaces";
   import type { ModifyStudio } from "$lib/models/Studio";
@@ -49,7 +49,11 @@
   <div class="p-4 bg-base-100 rounded-box border">
     <h2 class="text-2xl">Styles</h2>
     <p class="text-gray-500 mt-1 mb-2">
-      What styles of yoga do you offer? Pick as many as you like.
+      What styles of yoga do you offer? Pick as many as you like. If you'd like
+      us to add a style, please <a
+        href="mailto:{APP_CONTACT_INFO.email}"
+        class="link link-secondary">email us</a
+      >.
     </p>
     <StylesSelector bind:styles={studio.styles} />
   </div>
@@ -70,7 +74,7 @@
           class="checkbox checkbox-lg"
           bind:checked={studio.onlineClasses}
         />
-        <span class="font-semibold">Online Classes</span>
+        <span class="font-semibold">Online Classes 🎦</span>
       </label>
     </div>
   </div>

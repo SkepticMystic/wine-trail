@@ -2,7 +2,7 @@
   import { IMAGE_KIND_MAX_COUNTS } from "$lib/const/images";
   import { images } from "$lib/stores/images";
   import { getProps } from "$lib/utils";
-  import { uploadJSParams } from "$lib/utils/UploadJS/optimisation";
+  import { optimiseUploadJSImg } from "$lib/utils/UploadJS/optimisation";
   import Loading from "../Loading.svelte";
   import UploadImage from "../UploadImage.svelte";
   import XMark from "../icons/xMark.svelte";
@@ -46,7 +46,7 @@
       </div>
 
       <img
-        src="{image.data.fileUrl}?{uploadJSParams({ w: 100, h: 100 })}"
+        src={optimiseUploadJSImg(image.data.fileUrl, { w: 100, h: 100 })}
         class="rounded-box"
         alt=""
         width="100"

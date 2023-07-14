@@ -5,3 +5,7 @@ export const CONTACT_EMOJI: Record<ContactKind, string> = {
   phone: "📞",
   email: "📧",
 };
+
+export const APP_CONTACT_INFO = {
+  email: "hello@yogalist.co.za",
+};

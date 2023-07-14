@@ -2,7 +2,7 @@
   import type { SID } from "$lib/interfaces";
   import type { Studio } from "$lib/models/Studio";
   import { images } from "$lib/stores/images";
-  import { uploadJSParams } from "$lib/utils/UploadJS/optimisation";
+  import { optimiseUploadJSImg } from "$lib/utils/UploadJS/optimisation";
   import YogaStyleBadge from "./YogaStyleBadge.svelte";
 
   export let studio: SID<Studio>;
@@ -16,7 +16,7 @@
 <a
   href="/studios/{slug}"
   style="background-image: url({logo
-    ? `${logo}?${uploadJSParams({ w: 300, h: 300 })}`
+    ? optimiseUploadJSImg(logo, { w: 300, h: 300 })
     : ''});"
   class="rounded-box w-[300px] h-[300px] shadow-lg group relative bg-cover bg-center"
 >

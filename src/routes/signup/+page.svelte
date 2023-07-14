@@ -40,14 +40,18 @@
   $: if (email || password) err = "";
 </script>
 
-<div class="flex flex-col gap-3 items-center">
+<div
+  class="mx-auto flex flex-col gap-3 items-center px-8 py-6 bg-base-100 rounded-box border w-fit"
+>
+  <h1 class="text-3xl mb-3">☯️ Yoga List</h1>
+
   {#if studioInviteToken}
-    <p class="my-3 text-success">
+    <p class="text-success">
       You've been invited to join a studio, please sign up to continue.
     </p>
+  {:else}
+    <p class="text-lg font-semibold">Sign up</p>
   {/if}
-
-  <h1 class="text-3xl mb-3">☯️ Yoga List</h1>
 
   <form on:submit|preventDefault={signup}>
     <Label lbl="Email">
@@ -82,7 +86,5 @@
     </div>
   </form>
 
-  <p class="my-3">
-    <a class="link" href="/signin">Sign in instead</a>
-  </p>
+  <a class="link" href="/signin">Sign in here</a>
 </div>
