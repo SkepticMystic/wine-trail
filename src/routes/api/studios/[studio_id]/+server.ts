@@ -33,18 +33,20 @@ export const PATCH: RequestHandler = async ({ locals, params, request }) => {
 
     return json(suc({ studio }));
   } else {
-    // Each owner can have one pending patch per resource
-    // If there is already a pending patch, update it
-    // If there is already an approved or rejected patch, overwrite it
+    // Each resource can have one _pending_ patch
+    // - If there is already a _pending_ patch, update it
+    // - If there is already an _approved_ or _rejected_ patch, create a new pending patch
     await PendingPatches.updateOne(
       {
-        user_id: user.userId,
+        status: "pending",
         resource_id: studio_id,
         resource_kind: "studio",
       },
       {
-        status: "pending",
-        patch: input,
+        $set: {
+          patch: input,
+          user_id: user.userId,
+        },
       },
       { upsert: true },
     );

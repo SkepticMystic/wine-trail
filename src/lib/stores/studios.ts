@@ -95,7 +95,8 @@ export const studios = {
         } else {
           addToast({
             type: "success",
-            message: "Studio update pending approval",
+            message:
+              "Studio updated! Our team will review your changes shortly.",
           }, { clearQueue: true });
         }
       } else {
@@ -103,6 +104,51 @@ export const studios = {
         addToast({
           type: "warning",
           message: data.error,
+        });
+      }
+
+      return data;
+    } catch (error) {
+      console.error(error);
+
+      const message = getHTTPErrorMsg(error);
+      addToast({
+        type: "error",
+        message,
+      });
+
+      return err(message);
+    }
+  },
+
+  delete: async (_id: string) => {
+    if (!confirm("Are you sure you want to delete this studio?")) {
+      return err("Studio not deleted");
+    }
+
+    try {
+      const { data } = await axios.delete<Result<undefined, string>>(
+        `/api/studios/${_id}`,
+      );
+
+      console.log(data);
+
+      if (data.ok) {
+        store.update((studios) =>
+          studios.filter((studio) => studio._id !== _id)
+        );
+
+        addToast({
+          type: "success",
+          message: "Studio deleted",
+          duration_ms: 5_000,
+        }, { clearQueue: true });
+      } else {
+        console.warn(data.error);
+        addToast({
+          type: "warning",
+          message: data.error,
+          duration_ms: 5_000,
         });
       }
 
@@ -144,51 +190,6 @@ export const studios = {
         addToast({
           type: "success",
           message: "Owner invite sent",
-          duration_ms: 5_000,
-        }, { clearQueue: true });
-      } else {
-        console.warn(data.error);
-        addToast({
-          type: "warning",
-          message: data.error,
-          duration_ms: 5_000,
-        });
-      }
-
-      return data;
-    } catch (error) {
-      console.error(error);
-
-      const message = getHTTPErrorMsg(error);
-      addToast({
-        type: "error",
-        message,
-      });
-
-      return err(message);
-    }
-  },
-
-  delete: async (_id: string) => {
-    if (!confirm("Are you sure you want to delete this studio?")) {
-      return err("Studio not deleted");
-    }
-
-    try {
-      const { data } = await axios.delete<Result<undefined, string>>(
-        `/api/studios/${_id}`,
-      );
-
-      console.log(data);
-
-      if (data.ok) {
-        store.update((studios) =>
-          studios.filter((studio) => studio._id !== _id)
-        );
-
-        addToast({
-          type: "success",
-          message: "Studio deleted",
           duration_ms: 5_000,
         }, { clearQueue: true });
       } else {

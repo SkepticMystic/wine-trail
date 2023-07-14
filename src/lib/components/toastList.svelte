@@ -10,13 +10,20 @@
     info: "alert-info",
     warning: "alert-warning",
   };
+
+  const alertContentTypes: Record<Toast["type"], string> = {
+    error: "text-error-content",
+    success: "text-success-content",
+    info: "text-info-content",
+    warning: "text-warning-content",
+  };
 </script>
 
 <div class="toast">
   {#each $toast as { id, message, type, duration_ms, showOnRoutes }, i (id)}
     {#if !showOnRoutes?.length || showOnRoutes.some( (r) => $page.url.pathname.startsWith(r) )}
       <div class="alert {alertTypes[type]} flex justify-between grow">
-        <span>{@html message}</span>
+        <span class={alertContentTypes[type]}>{@html message}</span>
 
         {#if duration_ms}
           <!-- Only set the timeout when the toast is rendered. This allows it to work with showOnRoutes -->

@@ -14,8 +14,22 @@ const anyoneAllowed = [
 ];
 
 export const load: LayoutServerLoad = async ({ url, locals, fetch }) => {
+  // NOTE: Delete all images (on db and host)
+  // const images = await Images.find().lean();
+
+  // let i = 0;
+  // for (const image of images) {
+  //   const resp = await fetch(`/api/images/${image._id}`, {
+  //     method: "DELETE",
+  //   });
+
+  //   console.log(i++, resp.status, await resp.json());
+  // }
+
+  // NOTE: Upload all studio logos to host
   // const studios = await Studios.find({ logo: { $exists: 1 } }).lean();
 
+  // let i = 0;
   // for (const studio of studios) {
   //   try {
   //     const resp = await fetch(`/api/images`, {
@@ -23,13 +37,13 @@ export const load: LayoutServerLoad = async ({ url, locals, fetch }) => {
   //       body: JSON.stringify({
   //         host: "uploadjs",
 
-  //         image_url: studio.logo,
+  //         image_url: studio.logo.split("?")[0],
   //         image_kind: "logo",
   //         resource_kind: "studio",
   //         resource_id: studio._id.toString(),
   //       }),
   //     });
-  //     console.log(resp.status, await resp.json());
+  //     console.log(i++, resp.status, await resp.json());
   //   } catch (error) {
   //     console.error(error);
   //   }

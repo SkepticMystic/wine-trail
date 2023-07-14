@@ -24,7 +24,7 @@
 </script>
 
 {#if studio}
-  <div class="flex flex-col gap-5">
+  <div class="flex flex-col gap-3">
     <h1 class="text-3xl flex gap-5 items-center">
       <GoBack />
       <span>Edit {studio.name}</span>
@@ -32,13 +32,17 @@
 
     <StudioEditor bind:studio />
 
-    <button
-      class="btn btn-primary"
-      disabled={anyLoading}
-      on:click={patchStudio}
-    >
-      <Loading loading={loadObj["patch"]} />
-      Save Changes
-    </button>
+    <div class="flex gap-3 mt-3">
+      <GoBack colour="btn-neutral" />
+
+      <button
+        class="btn btn-primary grow"
+        disabled={anyLoading}
+        on:click={patchStudio}
+      >
+        <Loading loading={loadObj["patch"]} />
+        Save Changes
+      </button>
+    </div>
   </div>
 {/if}

@@ -130,17 +130,21 @@ type OptimisationParams = {
     | "top-right";
 };
 
+const DEFAULT_OPTIMISATION_PARAMS: OptimisationParams = {
+  f: "webp",
+  crop: "smart",
+  fit: "crop",
+};
+
 export const optimiseUploadJSImg = (
   fileUrl: string,
   params: OptimisationParams,
 ) =>
   fileUrl.replace("/raw/", "/image/") +
-  "?" + Object.entries(
-    {
-      f: "webp",
-      ...params,
-    } satisfies OptimisationParams,
-  )
+  "?" + Object.entries({
+    ...DEFAULT_OPTIMISATION_PARAMS,
+    ...params,
+  })
     .reduce((acc, [key, value]) => {
       if (value) {
         acc.push(`${key}=${value}`);
