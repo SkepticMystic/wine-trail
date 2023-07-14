@@ -66,7 +66,7 @@
   };
 </script>
 
-<nav class="navbar bg-base-100 px-5">
+<nav class="navbar bg-base-100 px-5 shadow">
   <div class="navbar-start">
     <a href="/" class="btn btn-ghost normal-case text-xl">☯️ Yoga List</a>
   </div>

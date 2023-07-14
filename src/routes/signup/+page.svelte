@@ -40,45 +40,49 @@
   $: if (email || password) err = "";
 </script>
 
-{#if studioInviteToken}
-  <p class="my-3 text-success">
-    You've been invited to join a studio, please sign up to continue.
+<div class="flex flex-col gap-3 items-center">
+  {#if studioInviteToken}
+    <p class="my-3 text-success">
+      You've been invited to join a studio, please sign up to continue.
+    </p>
+  {/if}
+
+  <h1 class="text-3xl mb-3">☯️ Yoga List</h1>
+
+  <form on:submit|preventDefault={signup}>
+    <Label lbl="Email">
+      <input
+        class="input w-72"
+        type="email"
+        autocomplete="email"
+        disabled={!!emailHint}
+        bind:value={email}
+      />
+    </Label>
+    <Label lbl="Password">
+      <input
+        class="input w-72"
+        type="password"
+        autocomplete="new-password"
+        bind:value={password}
+      />
+    </Label>
+
+    <div class="flex justify-between items-center">
+      <button
+        class="my-4 btn btn-primary"
+        type="submit"
+        disabled={!email || !password || loading}
+      >
+        <Loading {loading} />
+        Signup
+      </button>
+
+      <ResultText {err} />
+    </div>
+  </form>
+
+  <p class="my-3">
+    <a class="link" href="/signin">Sign in instead</a>
   </p>
-{/if}
-
-<form on:submit|preventDefault={signup}>
-  <Label lbl="Email">
-    <input
-      class="input"
-      type="email"
-      autocomplete="email"
-      disabled={!!emailHint}
-      bind:value={email}
-    />
-  </Label>
-  <Label lbl="Password">
-    <input
-      class="input"
-      type="password"
-      autocomplete="new-password"
-      bind:value={password}
-    />
-  </Label>
-
-  <div class="flex flex-wrap gap-3 items-center">
-    <button
-      class="my-4 btn btn-primary"
-      type="submit"
-      disabled={!email || !password || loading}
-    >
-      <Loading {loading} />
-      Signup
-    </button>
-
-    <ResultText {err} />
-  </div>
-</form>
-
-<p class="my-3">
-  <a class="link" href="/signin">Sign in instead</a>
-</p>
+</div>

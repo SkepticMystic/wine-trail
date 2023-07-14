@@ -41,7 +41,7 @@ export const studios = {
           type: "success",
           message: "Studio created",
           duration_ms: 5_000,
-        });
+        }, { clearQueue: true });
       } else {
         console.warn(data.error);
         addToast({
@@ -91,12 +91,12 @@ export const studios = {
             type: "success",
             message: "Studio updated",
             duration_ms: 5_000,
-          });
+          }, { clearQueue: true });
         } else {
           addToast({
             type: "success",
             message: "Studio update pending approval",
-          });
+          }, { clearQueue: true });
         }
       } else {
         console.warn(data.error);
@@ -142,7 +142,7 @@ export const studios = {
           type: "success",
           message: "Owner invite sent",
           duration_ms: 5_000,
-        });
+        }, { clearQueue: true });
       } else {
         console.warn(data.error);
         addToast({
@@ -187,7 +187,7 @@ export const studios = {
           type: "success",
           message: "Studio deleted",
           duration_ms: 5_000,
-        });
+        }, { clearQueue: true });
       } else {
         console.warn(data.error);
         addToast({

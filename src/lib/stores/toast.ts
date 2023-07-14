@@ -17,10 +17,22 @@ export type Toast = {
 export const toast = writable<Toast[]>([]);
 
 /** Push a toast onto the store, generating and returning a nanoid */
-export const addToast = (t: Omit<Toast, "id">) => {
+export const addToast = (
+  t: Omit<Toast, "id">,
+  {
+    clearQueue = false,
+  }: {
+    clearQueue?: boolean;
+  } = {},
+) => {
   const id = nanoid(6);
 
-  toast.update((old) => [...old, { ...t, id }]);
+  toast.update((old) => {
+    const newToast = { ...t, id };
+
+    if (clearQueue) return [newToast];
+    else return [...old, newToast];
+  });
 
   return { id };
 };

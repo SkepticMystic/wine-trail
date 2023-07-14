@@ -47,7 +47,7 @@ export const images = {
 
       console.log(data);
       if (data.ok) {
-        images.update((current) => [
+        store.update((current) => [
           ...current,
           data.data,
         ]);
@@ -56,7 +56,7 @@ export const images = {
           type: "success",
           message: "Image uploaded successfully.",
           duration_ms: 5_000,
-        });
+        }, { clearQueue: true });
       } else {
         addToast({
           type: "error",
@@ -90,7 +90,7 @@ export const images = {
 
       console.log(data);
       if (data.ok) {
-        images.update((current) =>
+        store.update((current) =>
           current.filter((image) => image._id !== image_id)
         );
 
@@ -98,7 +98,7 @@ export const images = {
           type: "success",
           message: "Image deleted successfully.",
           duration_ms: 5_000,
-        });
+        }, { clearQueue: true });
       } else {
         addToast({
           type: "error",

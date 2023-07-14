@@ -18,7 +18,7 @@
 
   let { loadObj } = getProps();
 
-  export let studio: Partial<SID<Studio>> | undefined;
+  export let studio: SID<Studio> | undefined;
 
   const studioImages = studio?._id
     ? images.getResourceImages("studio", studio?._id)
@@ -162,9 +162,9 @@
     </div>
   </div>
 
-  {#if studio.location?.coordinates}
+  {#if studio.location}
     <div class="block">
-      <Leaflet coordinates={studio.location.coordinates} />
+      <Leaflet {studio} />
     </div>
   {/if}
 {:else}

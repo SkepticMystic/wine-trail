@@ -39,55 +39,61 @@
   $: if (email || password) err = suc = "";
 </script>
 
-{#if previous === "studio-owner-invite"}
-  <p class="my-3 text-success">
-    Studio owner invite accepted, please sign in to continue.
-  </p>
-{:else if previous === "reset-password"}
-  <p class="my-3 text-success">
-    Password reset successful, please sign in to continue.
-  </p>
-{/if}
+<div class="flex flex-col gap-3 items-center">
+  {#if previous === "studio-owner-invite"}
+    <p class="my-3 text-success">
+      Studio owner invite accepted, please sign in to continue.
+    </p>
+  {:else if previous === "reset-password"}
+    <p class="my-3 text-success">
+      Password reset successful, please sign in to continue.
+    </p>
+  {/if}
 
-<form on:submit|preventDefault={signin}>
-  <Label lbl="Email">
-    <input
-      class="input"
-      class:input-error={err}
-      class:input-success={suc}
-      type="email"
-      autocomplete="email"
-      bind:value={email}
-    />
-  </Label>
-  <Label lbl="Password">
-    <input
-      class="input"
-      class:input-error={err}
-      class:input-success={suc}
-      type="password"
-      autocomplete="current-password"
-      bind:value={password}
-    />
-  </Label>
+  <h1 class="text-3xl mb-3">☯️ Yoga List</h1>
 
-  <div class="flex flex-wrap gap-3 items-center">
-    <button
-      class="my-4 btn btn-primary"
-      type="submit"
-      disabled={!email || !password || loading}
-    >
-      <Loading {loading} />
-      Sign in
-    </button>
+  <form on:submit|preventDefault={signin}>
+    <Label lbl="Email">
+      <input
+        class="input w-72"
+        class:input-error={err}
+        class:input-success={suc}
+        type="email"
+        autocomplete="email"
+        bind:value={email}
+      />
+    </Label>
+    <Label lbl="Password">
+      <input
+        class="input w-72"
+        class:input-error={err}
+        class:input-success={suc}
+        type="password"
+        autocomplete="current-password"
+        bind:value={password}
+      />
+    </Label>
 
-    <ResultText {err} />
+    <div class="flex justify-between items-center">
+      <button
+        class="my-4 btn btn-primary"
+        type="submit"
+        disabled={!email || !password || loading}
+      >
+        <Loading {loading} />
+        Sign in
+      </button>
+
+      <ResultText {err} />
+    </div>
+  </form>
+
+  <div class="text-center">
+    <p class="my-2">
+      <a class="link" href="/forgot-password">Forgot Password?</a>
+    </p>
+    <p class="my-2">
+      <a class="link" href="/signup">Don't have an account? Sign up</a>
+    </p>
   </div>
-</form>
-
-<p class="my-3">
-  <a class="link" href="/forgot-password">Forgot Password?</a>
-</p>
-<p class="my-3">
-  <a class="link" href="/signup">Don't have an account? Sign up</a>
-</p>
+</div>
