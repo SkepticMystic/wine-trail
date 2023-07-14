@@ -89,7 +89,8 @@ export const POST: RequestHandler = async ({ locals, request }) => {
     case "uploadjs": {
       const path: FilePathDefinition = {
         folderPath: `/images/${resource_kind}/${resource_id}/${image_kind}`,
-        fileName: `${existingImages}{ORIGINAL_FILE_EXT}`,
+        // NOTE: Don't use existingImages as the name, because it's not guaranteed to be unique
+        fileName: `{UNIQUE_DIGITS_10}{ORIGINAL_FILE_EXT}`,
       };
 
       let uploadResult: Suc<FileDetails> | Err<unknown>;
