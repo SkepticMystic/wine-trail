@@ -135,7 +135,12 @@ export const optimiseUploadJSImg = (
   params: OptimisationParams,
 ) =>
   fileUrl.replace("/raw/", "/image/") +
-  "?" + Object.entries(params)
+  "?" + Object.entries(
+    {
+      f: "webp",
+      ...params,
+    } satisfies OptimisationParams,
+  )
     .reduce((acc, [key, value]) => {
       if (value) {
         acc.push(`${key}=${value}`);
