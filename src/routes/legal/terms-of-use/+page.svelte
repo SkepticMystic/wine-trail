@@ -9,17 +9,16 @@
 
   <p>
     Yoga List is an online platform that offers a comprehensive directory for
-    yoga teachers, studios, services, and products in South Africa.
-    Additionally, it serves as an advertising platform for yoga events,
-    workshops, retreats, and teacher trainings. By using our platform, users are
-    required to agree to the following terms and conditions. Applicants seeking
-    to join our directory must provide accurate information, and any misuse of
-    the platform or submission of misleading information may result in
-    suspension or termination of their profile, without any refunds. All
-    information submitted is screened and accepted before publication, and any
-    misleading or incorrect content may be omitted. Yoga List does not endorse
-    or make representations about the quality of the listed teachers, studios,
-    products, services, or events.
+    yoga teachers, studios and events in South Africa. Additionally, it serves
+    as an advertising platform for yoga events, workshops, retreats, and teacher
+    trainings. By using our platform, users are required to agree to the
+    following terms and conditions. Applicants seeking to join our directory
+    must provide accurate information, and any misuse of the platform or
+    submission of misleading information may result in suspension or termination
+    of their profile, without any refunds. All information submitted is screened
+    and accepted before publication, and any misleading or incorrect content may
+    be omitted. Yoga List does not endorse or make representations about the
+    quality of the listed teachers, events, or studios.
   </p>
 
   <p>
