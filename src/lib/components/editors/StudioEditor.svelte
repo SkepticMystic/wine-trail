@@ -50,9 +50,8 @@
     <h2 class="text-2xl">Styles</h2>
     <p class="text-gray-500 mt-1 mb-2">
       What styles of yoga do you offer? Pick as many as you like. If you'd like
-      us to add a style, please <a
-        href="mailto:{APP_CONTACT_INFO.email}"
-        class="link link-secondary">email us</a
+      us to add a style, please <a href="/contact" class="link link-secondary"
+        >email us</a
       >.
     </p>
     <StylesSelector bind:styles={studio.styles} />

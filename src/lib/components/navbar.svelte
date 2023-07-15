@@ -22,7 +22,7 @@
     {
       side: "center",
       label: "Studios",
-      href: "/",
+      href: "/studios",
       authed: false,
     },
 

@@ -44,7 +44,7 @@
     const result = await studios.delete(studio._id);
 
     if (result.ok) {
-      await goto("/");
+      await goto("/studios");
     }
 
     loadObj["delete"] = false;
