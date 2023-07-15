@@ -28,17 +28,19 @@
 </script>
 
 <Drawer>
-  <header>
-    <Navbar />
-  </header>
+  <div class="flex flex-col min-h-screen">
+    <header>
+      <Navbar />
+    </header>
 
-  <main class="my-8 max-w-screen-xl mx-auto px-4 md:px-8">
-    <Loading {loading}>
-      <slot />
-    </Loading>
-  </main>
+    <main class="my-8 max-w-screen-xl mx-auto px-4 md:px-8 flex-1">
+      <Loading {loading}>
+        <slot />
+      </Loading>
+    </main>
 
-  <Footer />
+    <Footer />
+  </div>
 </Drawer>
 
 <ToastList />
