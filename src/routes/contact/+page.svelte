@@ -51,14 +51,19 @@
 </script>
 
 <div
-  class="mx-auto flex flex-col gap-3 p-4 border rounded-box bg-base-100 w-fit"
+  class="mx-auto flex flex-col gap-3 p-6 border rounded-box bg-base-100 w-fit"
 >
-  <h1 class="text-2xl text-center">Get in Touch</h1>
+  <h1 class="text-3xl text-center">Get in Touch</h1>
+
+  <p class='max-w-xs text-center'>
+    If you have any questions or would like to get in touch, please fill out the
+    form below.
+  </p>
 
   <Label lbl="Name">
     <input
       type="text"
-      class="input w-72"
+      class="input w-80"
       placeholder="Name"
       bind:value={request.name}
     />
@@ -67,7 +72,7 @@
   <Label lbl="Email">
     <input
       type="text"
-      class="input w-72"
+      class="input w-80"
       placeholder="Email"
       bind:value={request.email}
     />
@@ -77,7 +82,7 @@
     <textarea
       class="textarea"
       rows="6"
-      cols="36"
+      cols="42"
       placeholder="Message"
       bind:value={request.message}
     />
