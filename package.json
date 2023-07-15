@@ -33,6 +33,7 @@
     "@lucia-auth/adapter-mongoose": "^3.0.0-beta.2",
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/typography": "^0.5.9",
+    "@vercel/analytics": "^1.0.1",
     "axios": "^1.4.0",
     "emailjs": "^4.0.2",
     "i": "^0.3.7",
