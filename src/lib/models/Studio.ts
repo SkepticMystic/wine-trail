@@ -67,10 +67,14 @@ export const modifyStudioSchema = z.object({
       }),
     }),
 
+  // NOTE: ScheduleKind is not linked to the type
   schedule: z
     .discriminatedUnion("kind", [
       z.object({
         kind: z.literal("none"),
+      }),
+      z.object({
+        kind: z.literal("image"),
       }),
       z.object({
         kind: z.enum(["studio-site", "book-a-mat"]),

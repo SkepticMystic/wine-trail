@@ -2,6 +2,7 @@
   import InfoTooltip from "./infoTooltip.svelte";
 
   export let lbl: string;
+  export let capitalize = false;
   export let alt: string | null = null;
   /** Pass in any classes to the label */
   export let cls = "";
@@ -10,7 +11,7 @@
 <!-- svelte-ignore a11y-label-has-associated-control -->
 <div class="flex flex-col">
   <label class="{cls} label font-semibold">
-    <span class="label-text text-base">{lbl}</span>
+    <span class="label-text text-base" class:capitalize>{lbl}</span>
     {#if alt !== null}
       <span class="label-text-alt">
         <InfoTooltip tip={alt} />

@@ -1,5 +1,9 @@
 <script lang="ts">
-  import { IMAGE_KIND_MAX_COUNTS } from "$lib/const/images";
+  import {
+    IMAGE_KIND_MAX_COUNTS,
+    RESOURCE_IMAGE_KINDS,
+    type ImageKind,
+  } from "$lib/const/images";
   import type { ResourceKind } from "$lib/const/resources";
   import { images } from "$lib/stores/images";
   import { getProps } from "$lib/utils";
@@ -11,6 +15,9 @@
 
   export let resource_kind: ResourceKind;
   export let resource_id: string;
+  export let image_kinds: ImageKind[] | undefined = undefined;
+
+  const resolvedImageKinds = image_kinds ?? RESOURCE_IMAGE_KINDS[resource_kind];
 
   let { loadObj } = getProps();
 
@@ -23,7 +30,7 @@
   };
 
   $: resourceImages = $images
-    ? images.getResourceImages(resource_kind, resource_id)
+    ? images.getResourceImages(resource_kind, resource_id, resolvedImageKinds)
     : [];
 
   $: anyLoading = Object.values(loadObj).some((v) => v);
@@ -59,21 +66,12 @@
 </div>
 
 <div class="flex flex-wrap gap-3 mt-3">
-  <Label lbl="Logo">
-    <UploadImage
-      host="uploadjs"
-      image_kind="logo"
-      {resource_kind}
-      {resource_id}
-    />
-  </Label>
-
-  <Label lbl="Other Images ({IMAGE_KIND_MAX_COUNTS['other']} max)">
-    <UploadImage
-      host="uploadjs"
-      image_kind="other"
-      {resource_kind}
-      {resource_id}
-    />
-  </Label>
+  {#each resolvedImageKinds as image_kind}
+    <Label
+      capitalize
+      lbl="{image_kind} ({IMAGE_KIND_MAX_COUNTS[image_kind]} max)"
+    >
+      <UploadImage host="uploadjs" {image_kind} {resource_kind} {resource_id} />
+    </Label>
+  {/each}
 </div>

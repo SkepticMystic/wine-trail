@@ -27,6 +27,7 @@
   const studioImages = studio?._id
     ? images.getResourceImages("studio", studio?._id)
     : [];
+  const otherImages = studioImages.filter((i) => i.image_kind === "other");
 
   const studioTeachers = studio?._id
     ? $teachers.filter((teacher) => teacher.studio_ids?.includes(studio?._id!))
@@ -186,23 +187,45 @@
       </div>
     </div>
 
-    <div class="flex flex-wrap justify-center gap-3 my-5">
-      {#each studioImages.filter((i) => i.image_kind === "other") as img}
-        <div class="overflow-hidden rounded-box">
-          <img
-            width={384}
-            class="aspect-square object-cover hover:scale-110 transition-all"
-            src={optimiseUploadJSImg(img.data.fileUrl, {
-              w: 384,
-              h: 384,
-              crop: "smart",
-            })}
-            alt="{studio.name} image"
-          />
-        </div>
-      {/each}
-    </div>
+    {#if otherImages.length}
+      <div class="flex flex-wrap justify-center gap-3 my-5">
+        {#each otherImages as img}
+          <div class="overflow-hidden rounded-box">
+            <img
+              width={384}
+              class="aspect-square object-cover hover:scale-110 transition-all"
+              src={optimiseUploadJSImg(img.data.fileUrl, {
+                w: 384,
+                h: 384,
+                crop: "smart",
+              })}
+              alt="{studio.name} image"
+            />
+          </div>
+        {/each}
+      </div>
+    {/if}
   </div>
+
+  {#if studio.schedule.kind === "image"}
+    {@const scheduleImage = studioImages.find(
+      (i) => i.image_kind === "schedule"
+    )?.data.fileUrl}
+    {#if scheduleImage}
+      <div class="flex flex-col gap-3 items-center my-5">
+        <h2 class="text-2xl">Schedule</h2>
+        <img
+          class="md:w-[700px] sm:w-[500px] w-[300px] rounded-box"
+          src={optimiseUploadJSImg(scheduleImage, {
+            w: 700,
+            crop: undefined,
+            fit: "max",
+          })}
+          alt={studio.name + " schedule"}
+        />
+      </div>
+    {/if}
+  {/if}
 
   {#if studio.location.coordinates}
     <div class="block">

@@ -26,14 +26,13 @@
   <div class="basic-card">
     <h2 class="text-2xl">Schedule</h2>
 
-    <p class="text-base-content opacity-80 mt-1">
+    <p class="text-base-content opacity-80 my-1">
       Do you have a schedule online? You can either link to a schedule on your
-      own site, or on Book A Mat.
+      own site, or on Book A Mat. Or you can upload an image of your schedule.
     </p>
 
-    <div class="flex items-end flex-wrap gap-3">
-      <StudioScheduleEditor bind:schedule={studio.schedule} />
-      <label class="label gap-2">
+    <div class="flex flex-col gap-3">
+      <label class="label justify-normal gap-2">
         <input
           type="checkbox"
           class="checkbox checkbox-lg checkbox-primary"
@@ -41,6 +40,11 @@
         />
         <span class="font-semibold">Online Classes 🎦</span>
       </label>
+
+      <StudioScheduleEditor
+        studio_id={studio._id}
+        bind:schedule={studio.schedule}
+      />
     </div>
   </div>
 
@@ -71,7 +75,11 @@
         other images showcasing your studio.
       </p>
 
-      <ResourceImagesEditor resource_id={studio._id} resource_kind="studio" />
+      <ResourceImagesEditor
+        resource_id={studio._id}
+        resource_kind="studio"
+        image_kinds={["logo", "other"]}
+      />
     </div>
   {/if}
 </div>

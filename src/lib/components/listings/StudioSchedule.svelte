@@ -4,8 +4,8 @@
   export let schedule: Studio["schedule"];
 </script>
 
-<div class="flex flex-wrap gap-3 items-center">
-  {#if schedule?.kind === "studio-site" || schedule?.kind === "book-a-mat"}
+{#if schedule?.kind === "studio-site" || schedule?.kind === "book-a-mat"}
+  <div class="flex flex-wrap gap-3 items-center">
     <a
       href={schedule.data}
       class="link link-secondary"
@@ -14,5 +14,5 @@
     >
       📅 Schedule
     </a>
-  {/if}
-</div>
+  </div>
+{/if}

@@ -1,3 +1,4 @@
+import type { ImageKind } from "$lib/const/images";
 import type { ResourceKind } from "$lib/const/resources";
 import type { Result, SID } from "$lib/interfaces";
 import type { Image } from "$lib/models/Images";
@@ -21,12 +22,17 @@ const store = writable<
 export const images = {
   ...store,
 
-  getResourceImages: (resource_kind: ResourceKind, resource_id: string) => {
+  getResourceImages: (
+    resource_kind: ResourceKind,
+    resource_id: string,
+    image_kinds?: ImageKind[],
+  ) => {
     const images = get(store);
     return images.filter(
       (image) =>
         image.resource_kind === resource_kind &&
-        image.resource_id === resource_id,
+        image.resource_id === resource_id &&
+        (image_kinds ? image_kinds.includes(image.image_kind) : true),
     );
   },
 
