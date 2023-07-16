@@ -16,6 +16,10 @@
   .btn {
   }
 
+  .basic-card {
+    @apply bg-base-100 p-4 border rounded-box;
+  }
+
   .link {
     @apply no-underline link-hover;
   }

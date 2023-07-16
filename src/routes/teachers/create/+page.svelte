@@ -1,22 +1,22 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import Loading from "$lib/components/Loading.svelte";
-  import StudioEditor from "$lib/components/editors/StudioEditor.svelte";
+  import TeacherEditor from "$lib/components/editors/TeacherEditor.svelte";
   import GoBack from "$lib/components/navigation/GoBack.svelte";
-  import type { ModifyStudio } from "$lib/models/Studio";
-  import { studios } from "$lib/stores/studios";
+  import type { ModifyTeacher } from "$lib/models/Teachers";
+  import { teachers } from "$lib/stores/teachers";
   import { getProps } from "$lib/utils";
 
   let { loadObj } = getProps();
 
-  let studio: ModifyStudio = {
+  let teacher: ModifyTeacher = {
     hidden: true,
 
     name: "",
     description: "",
 
     styles: [],
-    onlineClasses: false,
+    studio_ids: [],
 
     contact: {
       email: undefined,
@@ -27,30 +27,17 @@
       instagram: undefined,
       website: undefined,
     },
-    location: {
-      country: "ZA",
-      city: undefined,
-      coordinates: {
-        latitude: undefined,
-        longitude: undefined,
-      },
-      province: undefined,
-      town: undefined,
-    },
-    schedule: {
-      kind: "none",
-    },
   };
 
-  const createStudio = async () => {
-    if (!studio) return;
+  const createTeacher = async () => {
+    if (!teacher) return;
 
     loadObj["create"] = true;
 
-    const result = await studios.create(studio);
+    const result = await teachers.create(teacher);
 
     if (result.ok) {
-      await goto(`/studios/${result.data.studio.slug}/edit`);
+      await goto(`/teachers/${result.data.teacher.slug}/edit`);
     }
 
     loadObj["create"] = false;
@@ -59,22 +46,22 @@
   $: anyLoading = Object.values(loadObj).some((v) => v);
 </script>
 
-{#if studio}
+{#if teacher}
   <div class="flex flex-col gap-3">
     <h1 class="font-semibold text-3xl">
       <GoBack />
-      <span>Create new Studio</span>
+      <span>Create new Teacher</span>
     </h1>
 
-    <StudioEditor bind:studio />
+    <TeacherEditor bind:teacher />
 
     <button
       class="btn btn-primary"
       disabled={anyLoading}
-      on:click={createStudio}
+      on:click={createTeacher}
     >
       <Loading loading={loadObj["create"]} />
-      Create new studio
+      Create new teacher
     </button>
   </div>
 {/if}

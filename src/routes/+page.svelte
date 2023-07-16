@@ -12,6 +12,11 @@
       href: "/studios",
     },
     {
+      title: "Teachers",
+      description: "View all teachers",
+      href: "/teachers",
+    },
+    {
       title: "Contact",
       description: "Get in touch with us",
       href: "/contact",

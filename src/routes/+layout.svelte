@@ -7,8 +7,10 @@
   import type { SID } from "$lib/interfaces";
   import type { Image } from "$lib/models/Images";
   import type { Studio } from "$lib/models/Studio";
+  import type { Teacher } from "$lib/models/Teachers";
   import { images } from "$lib/stores/images";
   import { studios } from "$lib/stores/studios";
+  import { teachers } from "$lib/stores/teachers";
   import { inject } from "@vercel/analytics";
   import axios from "axios";
   import { onMount } from "svelte";
@@ -20,10 +22,12 @@
   onMount(async () => {
     const { data } = await axios.get<{
       studios: SID<Studio>[];
+      teachers: SID<Teacher>[];
       images: SID<Image>[];
     }>("/api/loadData");
 
     $studios = data.studios;
+    $teachers = data.teachers;
     $images = data.images;
 
     loading = false;

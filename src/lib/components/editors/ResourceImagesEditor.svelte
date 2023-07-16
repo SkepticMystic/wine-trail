@@ -1,5 +1,6 @@
 <script lang="ts">
   import { IMAGE_KIND_MAX_COUNTS } from "$lib/const/images";
+  import type { ResourceKind } from "$lib/const/pendingPatches";
   import { images } from "$lib/stores/images";
   import { getProps } from "$lib/utils";
   import { optimiseUploadJSImg } from "$lib/utils/UploadJS/optimisation";
@@ -8,7 +9,8 @@
   import XMark from "../icons/xMark.svelte";
   import Label from "../label.svelte";
 
-  export let studio_id: string;
+  export let resource_kind: ResourceKind;
+  export let resource_id: string;
 
   let { loadObj } = getProps();
 
@@ -20,15 +22,15 @@
     loadObj["delete" + image_id] = false;
   };
 
-  $: studioImages = $images
-    ? images.getResourceImages("studio", studio_id)
+  $: resourceImages = $images
+    ? images.getResourceImages(resource_kind, resource_id)
     : [];
 
   $: anyLoading = Object.values(loadObj).some((v) => v);
 </script>
 
 <div class="flex flex-wrap gap-7">
-  {#each studioImages as image}
+  {#each resourceImages as image}
     <div class="flex flex-col gap-2">
       <div class="flex justify-between gap-2">
         <span class="capitalize">{image.image_kind}</span>
@@ -61,8 +63,8 @@
     <UploadImage
       host="uploadjs"
       image_kind="logo"
-      resource_kind="studio"
-      resource_id={studio_id}
+      {resource_kind}
+      {resource_id}
     />
   </Label>
 
@@ -70,8 +72,8 @@
     <UploadImage
       host="uploadjs"
       image_kind="other"
-      resource_kind="studio"
-      resource_id={studio_id}
+      {resource_kind}
+      {resource_id}
     />
   </Label>
 </div>

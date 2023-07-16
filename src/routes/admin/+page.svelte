@@ -26,3 +26,24 @@
     </a>
   </li>
 </ul>
+
+<h2 class="text-xl mt-5 mb-3 font-semibold">Teachers</h2>
+<ul class="list-inside list-disc my-3">
+  <li>
+    <a class="link link-primary" href="/admin/invites?resource_kind=teacher">
+      View invites
+    </a>
+  </li>
+  <li>
+    <a class="link link-primary" href="/teachers/create">Create new Teacher</a>
+  </li>
+  <!-- TODO: This one doesn't work rn -->
+  <li>
+    <a
+      class="link link-primary"
+      href="/admin/pendingPatches?resource_kind=teacher"
+    >
+      Pending Updates
+    </a>
+  </li>
+</ul>

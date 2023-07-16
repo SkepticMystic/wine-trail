@@ -1,51 +1,48 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
-  import { canModifyStudio } from "$lib/auth/permissions";
+  import { canModifyResource } from "$lib/auth/permissions";
   import Loading from "$lib/components/Loading.svelte";
   import Modal from "$lib/components/Modal.svelte";
-  import StudioContact from "$lib/components/listings/ResourceContact.svelte";
-  import StudioLinks from "$lib/components/listings/ResourceLinks.svelte";
-  import StudioLocation from "$lib/components/listings/StudioLocation.svelte";
+  import ResourceContact from "$lib/components/listings/ResourceContact.svelte";
+  import ResourceLinks from "$lib/components/listings/ResourceLinks.svelte";
   import YogaStyleBadge from "$lib/components/listings/YogaStyleBadge.svelte";
-  import Leaflet from "$lib/components/map/Leaflet.svelte";
   import type { SID } from "$lib/interfaces";
-  import type { ModifyStudio } from "$lib/models/Studio";
+  import type { ModifyTeacher } from "$lib/models/Teachers";
   import { images } from "$lib/stores/images";
-  import { studios } from "$lib/stores/studios";
+  import { teachers } from "$lib/stores/teachers";
   import { getProps } from "$lib/utils";
   import { optimiseUploadJSImg } from "$lib/utils/UploadJS/optimisation";
-  import StudioSchedule from "../listings/StudioSchedule.svelte";
 
   let { loadObj } = getProps();
 
-  export let studio: SID<ModifyStudio> | undefined;
+  export let teacher: SID<ModifyTeacher> | undefined;
   export let reviewMode = false;
 
-  const studioImages = studio?._id
-    ? images.getResourceImages("studio", studio?._id)
+  const teacherImages = teacher?._id
+    ? images.getResourceImages("teacher", teacher?._id)
     : [];
 
-  let inviteEmail = studio?.contact?.email;
-  const inviteOwner = async () => {
-    if (!studio?._id) return;
+  let inviteEmail = teacher?.contact?.email;
+  const invite = async () => {
+    if (!teacher?._id) return;
 
     loadObj["invite"] = true;
 
-    const result = await studios.inviteOwner(studio._id, inviteEmail);
+    const result = await teachers.invite(teacher._id, inviteEmail);
 
     loadObj["invite"] = false;
   };
 
-  const deleteStudio = async () => {
-    if (!studio?._id) return;
+  const deleteTeacher = async () => {
+    if (!teacher?._id) return;
 
     loadObj["delete"] = true;
 
-    const result = await studios.delete(studio._id);
+    const result = await teachers.delete(teacher._id);
 
     if (result.ok) {
-      await goto("/studios");
+      await goto("/teachers");
     }
 
     loadObj["delete"] = false;
@@ -54,31 +51,31 @@
   $: anyLoading = Object.values(loadObj).some((v) => v);
 </script>
 
-{#if studio}
-  {@const logo = studioImages.find((i) => i.image_kind === "logo")?.data
+{#if teacher}
+  {@const logo = teacherImages.find((i) => i.image_kind === "logo")?.data
     .fileUrl}
 
   <div class="flex flex-col items-center">
     <h1
       class="text-3xl font-semibold text-center flex flex-wrap justify-center items-center gap-2"
     >
-      {#if $page.data.user?.admin && studio._id}
+      {#if $page.data.user?.admin && teacher._id}
         <button
           class="btn btn-ghost btn-square"
           disabled={anyLoading}
-          title={studio._id}
+          title={teacher._id}
           on:click={() =>
-            studio?._id && navigator.clipboard.writeText(studio._id)}
+            teacher?._id && navigator.clipboard.writeText(teacher._id)}
         >
           ❔
         </button>
       {/if}
 
-      <span>{studio.name}</span>
+      <span>{teacher.name}</span>
 
-      {#if !reviewMode && studio?._id && canModifyStudio($page.data.user, studio._id)}
+      {#if !reviewMode && teacher?._id && canModifyResource($page.data.user, "teacher", teacher._id)}
         <a href="{$page.url.pathname}/edit">
-          <button class="btn btn-ghost btn-square" title="Edit Studio">
+          <button class="btn btn-ghost btn-square" title="Edit Teacher">
             ✏️
           </button>
         </a>
@@ -88,8 +85,8 @@
         <button
           class="btn btn-ghost btn-square"
           disabled={anyLoading}
-          title="Delete Studio"
-          on:click={deleteStudio}
+          title="Delete Teacher"
+          on:click={deleteTeacher}
         >
           <Loading loading={loadObj["delete"]}>🗑️</Loading>
         </button>
@@ -98,7 +95,7 @@
           <Modal
             btnCls="btn-ghost btn-square"
             btnText="📨"
-            btnTitle="Invite new Owner"
+            btnTitle="Invite Teacher"
           >
             <div slot="content">
               <input
@@ -113,7 +110,7 @@
               <button
                 class="btn btn-primary"
                 disabled={anyLoading}
-                on:click={inviteOwner}
+                on:click={invite}
               >
                 <Loading loading={loadObj["invite"]}>Invite</Loading>
               </button>
@@ -129,44 +126,37 @@
         width={400}
         height={400}
         class="self-start rounded-box w-[250px] h-[250px] sm:w-[400px] sm:h-[400px]"
-        alt="{studio.name} logo"
+        alt="{teacher.name} logo"
       />
 
       <div class="flex flex-col gap-3">
         <div class="flex flex-wrap gap-2">
-          {#each studio.styles ?? [] as style}
+          {#each teacher.styles ?? [] as style}
             <YogaStyleBadge
               {style}
-              title="View studios that offer {style} yoga"
-              on:click={() => goto(`/studios?style=${style}`)}
+              title="View teachers that offer {style} yoga"
+              on:click={() => goto(`/teachers?style=${style}`)}
             />
           {/each}
         </div>
 
         <p class="max-w-2xl text-base-content font-serif">
-          {studio.description}
+          {teacher.description}
         </p>
 
         <div class="flex flex-wrap gap-3">
-          {#if studio.links}
-            <StudioLinks links={studio.links} />
+          {#if teacher.links}
+            <ResourceLinks links={teacher.links} />
           {/if}
-          {#if studio.schedule}
-            <StudioSchedule schedule={studio.schedule} />
-          {/if}
-          {#if studio.contact}
-            <StudioContact contact={studio.contact} />
+          {#if teacher.contact}
+            <ResourceContact contact={teacher.contact} />
           {/if}
         </div>
-
-        {#if studio.location}
-          <StudioLocation location={studio.location} />
-        {/if}
       </div>
     </div>
 
     <div class="flex flex-wrap justify-center gap-3 my-5">
-      {#each studioImages.filter((i) => i.image_kind === "other") as img}
+      {#each teacherImages.filter((i) => i.image_kind === "other") as img}
         <div class="overflow-hidden rounded-box">
           <img
             width={384}
@@ -176,18 +166,12 @@
               h: 384,
               crop: "smart",
             })}
-            alt="{studio.name} image"
+            alt="{teacher.name} image"
           />
         </div>
       {/each}
     </div>
   </div>
-
-  {#if studio.location.coordinates}
-    <div class="block">
-      <Leaflet {studio} />
-    </div>
-  {/if}
 {:else}
-  <p>Studio not found</p>
+  <p>Teacher not found</p>
 {/if}

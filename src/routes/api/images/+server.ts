@@ -1,5 +1,5 @@
 import { UploadJS } from "$lib/APIs/uploadJS";
-import { canModifyStudio } from "$lib/auth/permissions";
+import { canModifyResource } from "$lib/auth/permissions";
 import { getUser } from "$lib/auth/server";
 import {
   IMAGE_HOSTS,
@@ -56,16 +56,8 @@ export const POST: RequestHandler = async ({ locals, request }) => {
     ),
   ]);
 
-  switch (resource_kind) {
-    case "studio": {
-      if (!canModifyStudio(user, resource_id)) {
-        throw error(403, "You don't have access to this studio");
-      } else break;
-    }
-
-    default: {
-      throw error(400, "Invalid resource kind");
-    }
+  if (!canModifyResource(user, resource_kind, resource_id)) {
+    throw error(403, `You don't have access to this ${resource_kind}.`);
   }
 
   const existingImages = await Images.countDocuments({
