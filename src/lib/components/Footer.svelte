@@ -6,7 +6,7 @@
 
   <div>
     <span class="footer-title">Company</span>
-    <a href="/" class="link link-hover">About us</a>
+    <a href="/about" class="link link-hover">About us</a>
     <a href="/contact" class="link link-hover">Contact</a>
   </div>
   <div>

@@ -1,6 +1,5 @@
 <script lang="ts">
   import { page } from "$app/stores";
-  import Hero from "$lib/components/Hero.svelte";
   import Badge from "$lib/components/daisyui/badge.svelte";
   import OpenDrawer from "$lib/components/drawer/OpenDrawer.svelte";
   import StudioCard from "$lib/components/listings/StudioCard.svelte";
@@ -63,7 +62,10 @@
   {#if filtered.length !== $studios.length}
     <button
       class="btn btn-warning"
-      on:click={() => ($studioFilters = { ...DEFAULT_STUDIO_FILTERS() })}
+      on:click={() => {
+        search = "";
+        $studioFilters = { ...DEFAULT_STUDIO_FILTERS() };
+      }}
     >
       Clear {filtered.length} Studios
     </button>
@@ -109,7 +111,9 @@
   </div>
 {/if}
 
-<div class="my-5 flex flex-wrap gap-5 justify-center">
+<div
+  class="my-5 flex flex-wrap gap-7 justify-center p-6 bg-base-100 border rounded-box w-fit"
+>
   {#if filtered.length}
     {#each filtered as studio, i (studio.slug)}
       <StudioCard {studio} />

@@ -13,36 +13,41 @@
   const logo = studioImages.find((i) => i.image_kind === "logo")?.data.fileUrl;
 </script>
 
-<a
-  href="/studios/{slug}"
-  style="background-image: url({logo
-    ? optimiseUploadJSImg(logo, { w: 300, h: 300 })
-    : ''});"
-  class="rounded-box w-[300px] h-[300px] shadow-lg group relative bg-cover bg-center"
->
-  <div
-    class="flex flex-col justify-between p-4 bg-opacity-10 bg-slate-400 absolute w-full h-full rounded-box hover:bg-opacity-90 hover:text-gray-50 text-gray-700"
+<div class="flex flex-col gap-2">
+  <h3 class="text-lg text-center font-semibold">{name}</h3>
+  <a
+    href="/studios/{slug}"
+    style="background-image: url({logo
+      ? optimiseUploadJSImg(logo, { w: 300, h: 300 })
+      : ''});"
+    class="rounded-box w-[300px] h-[300px] shadow-lg group relative bg-cover bg-center"
   >
-    <div class="group-hover:hidden">
-      {studio.hidden ? "🚫 Hidden" : ""}
-    </div>
-    <h2 class="hidden group-hover:block text-xl text-center font-bold">
-      {name}
-    </h2>
+    <div
+      class="flex flex-col justify-between p-4 bg-opacity-10 bg-slate-400 absolute w-full h-full rounded-box hover:bg-opacity-90 hover:text-gray-50 text-gray-700"
+    >
+      <div class="group-hover:hidden">
+        {studio.hidden ? "🚫 Hidden" : ""}
+      </div>
+      <!-- <h2 class="hidden group-hover:block text-xl text-center font-bold">
+        {name}
+      </h2> -->
 
-    <p class="hidden group-hover:block font-serif text-sm">
-      {description.slice(0, 275)}{description.length > 275 ? "..." : ""}
-    </p>
+      <p
+        class="hidden group-hover:block font-serif text-center overflow-hidden overflow-ellipsis mb-1"
+      >
+        {description}
+      </p>
 
-    <div class="flex flex-wrap gap-1 justify-center">
-      {#each (styles ?? []).slice(0, 5) as style}
-        <YogaStyleBadge
-          {style}
-          size="md"
-          cls="shadow-lg"
-          title="Show studios that offer {style} yoga"
-        />
-      {/each}
+      <div class="flex flex-wrap gap-1 justify-center">
+        {#each (styles ?? []).slice(0, 5) as style}
+          <YogaStyleBadge
+            {style}
+            size="md"
+            cls="shadow-lg"
+            title="Show studios that offer {style} yoga"
+          />
+        {/each}
+      </div>
     </div>
-  </div>
-</a>
+  </a>
+</div>
