@@ -1,5 +1,6 @@
 import { auth } from "$lib/auth/lucia";
 import { OTP, type StudioOwnerInviteOTP } from "$lib/models/OTPs";
+import { Studios } from "$lib/models/Studio";
 import { Parsers } from "$lib/schema/parsers";
 import { error, redirect } from "@sveltejs/kit";
 import { z } from "zod";
@@ -29,8 +30,13 @@ export const GET: RequestHandler = async ({ url, locals }) => {
     // Check if they've already accepted this invite
     if (session?.user?.studio_ids?.includes(studio_id)) {
       console.log("User already a member of this studio");
-      // They are already a member of this org
-      throw redirect(302, `/studios/${studio_id}`);
+      const studio = await Studios.findById(studio_id, { slug: 1 }).lean();
+      if (!studio) {
+        throw error(500, "Studio not found");
+      } else {
+        // They are already a member of this org
+        throw redirect(302, `/studios/${studio.slug}`);
+      }
     }
   }
 
