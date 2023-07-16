@@ -24,7 +24,7 @@
       <label class="label gap-2">
         <input
           type="checkbox"
-          class="checkbox checkbox-lg"
+          class="checkbox checkbox-lg checkbox-warning"
           bind:checked={studio.hidden}
         />
         <span class="font-semibold">Hide Studio</span>
@@ -68,7 +68,7 @@
       <label class="label gap-2">
         <input
           type="checkbox"
-          class="checkbox checkbox-lg"
+          class="checkbox checkbox-lg checkbox-primary"
           bind:checked={studio.onlineClasses}
         />
         <span class="font-semibold">Online Classes 🎦</span>

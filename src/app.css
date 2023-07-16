@@ -4,13 +4,13 @@
 
 @layer components {
   .input {
-    @apply input-bordered;
+    @apply border-base-300;
   }
   .textarea {
-    @apply textarea-bordered;
+    @apply border-base-300;
   }
   .select {
-    @apply select-bordered;
+    @apply border-base-300;
   }
 
   .btn {

@@ -20,7 +20,7 @@
     {/if}
 
     <table class="table">
-      <thead>
+      <thead class="divide-y divide-cyan-950">
         <tr>
           {#if indexCol} <th>Index</th> {/if}
           {#each headers as header}
@@ -28,7 +28,7 @@
           {/each}
         </tr>
       </thead>
-      <tbody>
+      <tbody class="divide-y divide-cyan-950">
         {#each rows.slice(0, preview || rows.length) ?? [] as row, i}
           <tr
             class="hover:bg-base-100"

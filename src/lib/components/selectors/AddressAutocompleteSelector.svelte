@@ -31,20 +31,25 @@
       }) => {
         console.log("properties", properties);
 
-        location = {
+        const newLocation: Studio["location"] = {
           country: properties.country_code.toUpperCase() as Country,
-          province: properties.state,
-          city: properties.city,
-          town: properties.county,
-          postalCode: properties.postcode,
-          street: properties.street,
-          houseNumber: properties.housenumber,
 
           coordinates: {
             latitude: properties.lat,
             longitude: properties.lon,
           },
         };
+
+        if (properties.state) newLocation["province"] = properties.state;
+        if (properties.city) newLocation["city"] = properties.city;
+        if (properties.county) newLocation["town"] = properties.county;
+        if (properties.postcode)
+          newLocation["postalCode"] = properties.postcode;
+        if (properties.street) newLocation["street"] = properties.street;
+        if (properties.housenumber)
+          newLocation["houseNumber"] = properties.housenumber;
+
+        location = newLocation;
       }
     );
   });

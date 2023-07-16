@@ -18,26 +18,22 @@ export const modifyStudioSchema = z.object({
     )
     .optional(),
 
-  // logo: z
-  //   .string()
-  //   .url("Logo must be a valid URL"),
-  moreImages: z
-    .array(
-      z.string().url("Image must be a valid URL"),
-    ).optional(),
-
   onlineClasses: z
     .boolean()
     .optional(),
 
   links: z.record(
     z.enum(LINK_KINDS),
-    z.string().url("Link must be a valid URL").optional(),
+    z
+      .string()
+      .transform((v) => v || undefined)
+      .optional(),
   ),
 
   contact: z.object({
     phone: z
       .string()
+      .transform((v) => v || undefined)
       .optional(),
     email: z
       .string()
