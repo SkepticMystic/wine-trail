@@ -2,8 +2,11 @@
   import { page } from "$app/stores";
   import { signout } from "$lib/auth/client";
   import { onMount } from "svelte";
-  import Bars3 from "./icons/bars3.svelte";
   import { themeChange } from "theme-change";
+  import Bars3 from "./icons/bars3.svelte";
+
+  let themeFlag = false;
+  $: themeOrder = themeFlag ? "🌑/☀️" : "☀️/🌑";
 
   onMount(() => themeChange(false));
 
@@ -116,11 +119,13 @@
         {/if}
 
         <li>
+          <!-- NOTE: This must be changed in two places -->
           <button
             data-toggle-theme="winter,forest"
             data-act-class="ACTIVECLASS"
+            on:click={() => (themeFlag = !themeFlag)}
           >
-            🌑/☀️
+            {themeOrder}
           </button>
         </li>
       </ul>
@@ -138,8 +143,13 @@
         {/each}
       </select> -->
 
-      <button data-toggle-theme="winter,forest" data-act-class="ACTIVECLASS">
-        🌑/☀️
+      <!-- NOTE: This must be changed in two places -->
+      <button
+        data-toggle-theme="winter,forest"
+        data-act-class="ACTIVECLASS"
+        on:click={() => (themeFlag = !themeFlag)}
+      >
+        {themeOrder}
       </button>
 
       {#each routes as r}
