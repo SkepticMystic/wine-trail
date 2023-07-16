@@ -7,11 +7,11 @@ import { _idToString } from "$lib/utils";
 import { z } from "zod";
 import type { PageServerLoad } from "./$types";
 
-export const load = (async ({ locals, url }) => {
-  const { resource_kind } = Parsers.params(
-    url,
+export const load = (async ({ locals, url, params }) => {
+  const { resource_kind } = Parsers.raw(
+    params,
     z.object({
-      resource_kind: z.enum(RESOURCE_KINDS).optional(),
+      resource_kind: z.enum(RESOURCE_KINDS),
     }),
   );
 
@@ -35,7 +35,8 @@ export const load = (async ({ locals, url }) => {
   ]);
 
   return {
-    pendingInvites: pendingInvites.map(_idToString),
+    resource_kind,
     users: users.map(_idToString),
+    pendingInvites: pendingInvites.map(_idToString),
   };
 }) satisfies PageServerLoad;
