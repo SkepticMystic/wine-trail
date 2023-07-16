@@ -1,5 +1,5 @@
 import { getUser } from "$lib/auth/server";
-import { OTP } from "$lib/models/OTPs";
+import { OTP, OTPs } from "$lib/models/OTPs";
 import { Studios } from "$lib/models/Studio";
 import { Parsers } from "$lib/schema/parsers";
 import { suc } from "$lib/utils";
@@ -20,12 +20,25 @@ export const POST: RequestHandler = async (
     ),
   ]);
 
-  const studio = await Studios.findOne(
-    { _id: params.studio_id },
-    { name: 1 },
-  ).lean();
+  const [studio, existingInvite] = await Promise.all([
+    Studios.findOne(
+      { _id: params.studio_id },
+      { name: 1 },
+    ).lean(),
+    OTPs.exists({
+      kind: "studio-owner-invite",
+      "data.studio_id": params.studio_id,
+      "identifier": `email:${invite.email}`,
+    }).lean(),
+  ]);
   if (!studio) {
     throw error(404, "Studio not found");
+  }
+  if (existingInvite) {
+    throw error(
+      400,
+      "Invite already sent. Studio owner has not yet signed up.",
+    );
   }
 
   await OTP.handleLinks["studio-owner-invite"]({
