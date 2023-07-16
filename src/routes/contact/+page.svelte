@@ -55,7 +55,7 @@
 >
   <h1 class="text-3xl text-center">Get in Touch</h1>
 
-  <p class='max-w-xs text-center'>
+  <p class="max-w-xs text-center">
     If you have any questions or would like to get in touch, please fill out the
     form below.
   </p>
@@ -63,7 +63,8 @@
   <Label lbl="Name">
     <input
       type="text"
-      class="input w-80"
+      class="input sm:w-80 w-full"
+      autocomplete="name"
       placeholder="Name"
       bind:value={request.name}
     />
@@ -72,7 +73,8 @@
   <Label lbl="Email">
     <input
       type="text"
-      class="input w-80"
+      class="input sm:w-80 w-full"
+      autocomplete="email"
       placeholder="Email"
       bind:value={request.email}
     />
@@ -80,9 +82,7 @@
 
   <Label lbl="Message">
     <textarea
-      class="textarea"
-      rows="6"
-      cols="42"
+      class="textarea sm:w-80 h-80 w-full"
       placeholder="Message"
       bind:value={request.message}
     />

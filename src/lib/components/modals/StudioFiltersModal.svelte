@@ -3,6 +3,7 @@
   import { studioFilters } from "$lib/stores/studioFilters";
   import { studios } from "$lib/stores/studios";
   import { removeDuplicates, setToggle } from "$lib/utils/sets";
+  import Modal from "../Modal.svelte";
   import Badge from "../daisyui/badge.svelte";
   import YogaStyleBadge from "../listings/YogaStyleBadge.svelte";
 
@@ -11,19 +12,9 @@
   ) as string[];
 </script>
 
-<div class="drawer">
-  <input id="my-drawer" type="checkbox" class="drawer-toggle" />
-  <div class="drawer-content">
-    <slot />
-  </div>
-  <div class="drawer-side">
-    <label for="my-drawer" class="drawer-overlay" />
-    <!-- <ul class="menu p-4 w-80 h-full bg-base-200 text-base-content">
-      <li><a>Sidebar Item 1</a></li>
-      <li><a>Sidebar Item 2</a></li>
-    </ul> -->
-
-    <ul class="menu bg-base-200 w-80 h-full">
+<Modal btnText="Filters" btnCls="btn-primary">
+  <div slot="content">
+    <ul class="menu bg-base-200">
       <li>
         <details open>
           <summary class="text-base font-semibold">Styles</summary>
@@ -76,4 +67,4 @@
       </li>
     </ul>
   </div>
-</div>
+</Modal>

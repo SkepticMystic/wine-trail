@@ -1,9 +1,9 @@
 <script lang="ts">
   import { page } from "$app/stores";
   import Badge from "$lib/components/daisyui/badge.svelte";
-  import OpenDrawer from "$lib/components/drawer/OpenDrawer.svelte";
   import StudioCard from "$lib/components/listings/StudioCard.svelte";
   import YogaStyleBadge from "$lib/components/listings/YogaStyleBadge.svelte";
+  import StudioFiltersModal from "$lib/components/modals/StudioFiltersModal.svelte";
   import type { YogaStyle } from "$lib/const/styles.js";
   import {
     DEFAULT_STUDIO_FILTERS,
@@ -40,9 +40,8 @@
   addToast(
     {
       type: "info",
-      message: `Welcome to Yoga List ☯️ Thanks for your interest! <br />
-      We're still building up our database of studios, at the moment.<br />
-      But you can view and edit the studios you own, in the mean time.`,
+      message: `Welcome to Yoga List, and thanks for your interest! We're still building up our database at the moment.<br />
+But you can view and edit the studios you own, in the mean time.`,
     },
     { clearQueue: true }
   );
@@ -50,8 +49,9 @@
 
 <h1 class="text-center font-semibold text-3xl mb-5">Yoga List Studios</h1>
 
-<div class="flex gap-5 justify-center items-center">
-  <OpenDrawer />
+<div class="flex flex-wrap gap-5 justify-center items-center">
+  <StudioFiltersModal />
+
   <input
     type="text"
     class="input"

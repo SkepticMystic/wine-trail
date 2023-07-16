@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { APP_CONTACT_INFO, CONTACT_EMOJI } from "$lib/const/contact";
+  import { CONTACT_EMOJI } from "$lib/const/contact";
   import { LINK_EMOJI, LINK_KINDS } from "$lib/const/links";
   import type { SID } from "$lib/interfaces";
   import type { ModifyStudio } from "$lib/models/Studio";
@@ -19,7 +19,7 @@
 
     <div class="flex items-end flex-wrap gap-3">
       <Label lbl="Name">
-        <input type="text" class="input w-96" bind:value={studio.name} />
+        <input type="text" class="input w-full" bind:value={studio.name} />
       </Label>
       <label class="label gap-2">
         <input
@@ -37,9 +37,7 @@
           Tell us about your studio. What makes it special? ✨
         </p>
         <textarea
-          class="textarea"
-          rows="8"
-          cols="60"
+          class="textarea w-full h-48 sm:w-96 md:h-72"
           bind:value={studio.description}
         />
       </Label>
@@ -88,7 +86,7 @@
         <Label cls="capitalize" lbl="{LINK_EMOJI[linkKind]} {linkKind}">
           <input
             type="text"
-            class="input w-[400px]"
+            class="input sm:w-[400px]"
             bind:value={studio.links[linkKind]}
           />
         </Label>
@@ -111,7 +109,7 @@
       <Label lbl="{CONTACT_EMOJI['email']} Email">
         <input
           type="text"
-          class="input w-64"
+          class="input sm:w-64"
           bind:value={studio.contact.email}
         />
       </Label>

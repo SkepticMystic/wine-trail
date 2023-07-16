@@ -25,14 +25,14 @@
 
 {#if studio}
   <div class="flex flex-col gap-3">
-    <h1 class="text-3xl flex gap-5 items-center">
+    <h1 class="text-3xl flex flex-wrap gap-5 items-center">
       <GoBack />
       <span>Edit {studio.name}</span>
     </h1>
 
     <StudioEditor bind:studio />
 
-    <div class="flex gap-3 mt-3">
+    <div class="flex flex-wrap gap-3 mt-3">
       <GoBack colour="btn-neutral" />
 
       <button

@@ -58,7 +58,9 @@
     .fileUrl}
 
   <div class="flex flex-col items-center">
-    <h1 class="text-3xl font-semibold text-center flex items-center gap-2">
+    <h1
+      class="text-3xl font-semibold text-center flex flex-wrap justify-center items-center gap-2"
+    >
       {#if $page.data.user?.admin && studio._id}
         <button
           class="btn btn-ghost btn-square"
@@ -125,7 +127,7 @@
         src={logo ? optimiseUploadJSImg(logo, { w: 400, h: 400 }) : ""}
         width={400}
         height={400}
-        class="self-start rounded-box aspect-square"
+        class="self-start rounded-box w-[250px] h-[250px] sm:w-[400px] sm:h-[400px]"
         alt="{studio.name} logo"
       />
 
@@ -158,8 +160,6 @@
         {/if}
       </div>
     </div>
-
-    <hr class="my-7" />
 
     <div class="flex flex-wrap justify-center gap-3 my-5">
       {#each studioImages.filter((i) => i.image_kind === "other") as img}
