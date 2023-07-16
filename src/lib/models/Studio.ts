@@ -1,6 +1,7 @@
-import { LINK_KINDS } from "$lib/const/links";
 import { COUNTRIES } from "$lib/const/locations";
 import { YOGA_STYLES } from "$lib/const/styles";
+import { contactSchema } from "$lib/schema/contact";
+import { linksSchema } from "$lib/schema/links";
 import mongoose from "mongoose";
 import { z } from "zod";
 
@@ -22,24 +23,8 @@ export const modifyStudioSchema = z.object({
     .boolean()
     .optional(),
 
-  links: z.record(
-    z.enum(LINK_KINDS),
-    z
-      .string()
-      .transform((v) => v || undefined)
-      .optional(),
-  ),
-
-  contact: z.object({
-    phone: z
-      .string()
-      .transform((v) => v || undefined)
-      .optional(),
-    email: z
-      .string()
-      .email("Email must be a valid email address")
-      .optional(),
-  }),
+  links: linksSchema,
+  contact: contactSchema,
 
   location: z
     .object({
@@ -130,14 +115,6 @@ export const Studios = mongoose.model<Studio>(
       type: [String],
     },
 
-    // logo: {
-    //   type: String,
-    //   required: true,
-    // },
-    moreImages: {
-      type: [String],
-    },
-
     onlineClasses: {
       type: Boolean,
     },
@@ -164,7 +141,6 @@ export const Studios = mongoose.model<Studio>(
       },
     },
 
-    // TODO: Implement
     hidden: {
       type: Boolean,
     },

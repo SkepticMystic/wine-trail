@@ -11,6 +11,7 @@
 
   const emailHint = $page.url.searchParams.get("email_hint");
   const studioInviteToken = $page.url.searchParams.get("studio_owner_token");
+  const teacherInviteToken = $page.url.searchParams.get("teacher_token");
 
   let email: string | undefined = emailHint ?? undefined;
   let password: string;
@@ -48,6 +49,10 @@
   {#if studioInviteToken}
     <p class="text-success">
       You've been invited to join a studio, please sign up to continue.
+    </p>
+  {:else if teacherInviteToken}
+    <p class="text-success">
+      You've been invited to signup as a teacher, please sign up to continue.
     </p>
   {:else}
     <p class="text-lg font-semibold">Sign up</p>

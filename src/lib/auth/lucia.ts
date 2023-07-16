@@ -27,6 +27,10 @@ export const Users =
           type: [String],
           ref: "Studios",
         },
+        teacher_ids: {
+          type: [String],
+          ref: "Teachers",
+        },
 
         admin: {
           type: Boolean,
@@ -92,7 +96,7 @@ export const auth = lucia({
   }),
 
   getUserAttributes: (
-    { email, emailVerified, admin, studio_ids },
+    { email, emailVerified, admin, studio_ids, teacher_ids },
   ) => ({
     // Included by default:
     // userId: id,
@@ -100,6 +104,7 @@ export const auth = lucia({
     email,
     emailVerified,
     studio_ids,
+    teacher_ids,
   }),
 });
 

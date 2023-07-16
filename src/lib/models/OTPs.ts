@@ -9,6 +9,7 @@ const OTP_KINDS = [
   "email-verification",
   "password-reset",
   "studio-owner-invite",
+  "teacher-invite",
 ] as const;
 type OTPKind = typeof OTP_KINDS[number];
 
@@ -50,10 +51,19 @@ export type StudioOwnerInviteOTP = OTPBase & {
   };
 };
 
+export type TeacherInviteOTP = OTPBase & {
+  identifier: `email:${string}`;
+  kind: "teacher-invite";
+  data: {
+    teacher_id: string;
+  };
+};
+
 export type OTP =
   | EmailVerificationOTP
   | PasswordResetOTP
-  | StudioOwnerInviteOTP;
+  | StudioOwnerInviteOTP
+  | TeacherInviteOTP;
 
 const modelName = "OTPs";
 export const OTPs: Model<OTP> = mongoose.models[modelName] ||
@@ -288,6 +298,7 @@ const handleLinks = {
   "studio-owner-invite": async (
     input: {
       url: URL;
+      /** email */
       idValue: string;
       studio_name: string;
       data: StudioOwnerInviteOTP["data"];
@@ -312,6 +323,41 @@ const handleLinks = {
       attachment: [{
         data: EMAIL_COPIES["studio-owner-invite"].body({
           studio_name,
+          invite_link: href,
+        }),
+        alternative: true,
+      }],
+    });
+  },
+
+  "teacher-invite": async (
+    input: {
+      url: URL;
+      /** email */
+      idValue: string;
+      teacher_name: string;
+      data: TeacherInviteOTP["data"];
+    },
+  ) => {
+    const { url, idValue, data, teacher_name } = input;
+
+    const otp = await OTP.getOrCreate({
+      identifier: `email:${idValue}`,
+      kind: "teacher-invite",
+      data,
+    });
+
+    const href =
+      `${url.origin}/api/teachers/join?token=${otp.token}&teacher_id=${data.teacher_id}`;
+    console.log(href);
+
+    await sendEmail({
+      to: [idValue],
+      subject: EMAIL_COPIES["teacher-invite"].subject,
+      text: `Click here to join Yoga List: ${href}`,
+      attachment: [{
+        data: EMAIL_COPIES["teacher-invite"].body({
+          teacher_name,
           invite_link: href,
         }),
         alternative: true,

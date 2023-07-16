@@ -18,7 +18,13 @@ export const load = (async ({ locals, url }) => {
   const [admin, pendingInvites, users] = await Promise.all([
     getUser(locals, { admin: true }),
     OTPs.find(
-      { kind: resource_kind === "studio" ? "studio-owner-invite" : undefined },
+      {
+        kind: resource_kind === "studio"
+          ? "studio-owner-invite"
+          : resource_kind === "teacher"
+          ? "teacher-invite"
+          : undefined,
+      },
       { kind: 1, identifier: 1, data: 1 },
     ).lean(),
     Users.find(

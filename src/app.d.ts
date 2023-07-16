@@ -20,6 +20,8 @@ declare global {
       email: string;
       emailVerified: boolean;
       studio_ids?: string[];
+      /** One user can be many teachers */
+      teacher_ids?: string[];
 
       admin?: boolean;
     };

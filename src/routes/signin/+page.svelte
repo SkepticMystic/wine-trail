@@ -48,6 +48,10 @@
     <p class=" text-success">
       Studio owner invite accepted, please sign in to continue.
     </p>
+  {:else if previous === "teacher-invite"}
+    <p class="text-success">
+      Teacher invite accepted, please sign in to continue.
+    </p>
   {:else if previous === "reset-password"}
     <p class="text-success">
       Password reset successful, please sign in to continue.
