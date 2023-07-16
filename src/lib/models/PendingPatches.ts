@@ -1,8 +1,8 @@
 import {
   PENDING_PATCH_STATUSES,
   type PendingPatchStatus,
-  RESOURCE_KINDS,
 } from "$lib/const/pendingPatches";
+import { RESOURCE_KINDS } from "$lib/const/resources";
 import type { SID } from "$lib/interfaces";
 import mongoose from "mongoose";
 import type { ModifyStudio } from "./Studio";
