@@ -38,9 +38,9 @@ export const PATCH: RequestHandler = async ({ locals, params, request }) => {
     // - If there is already an _approved_ or _rejected_ patch, create a new pending patch
     await PendingPatches.updateOne(
       {
-        status: "pending",
         resource_id: studio_id,
         resource_kind: "studio",
+        status: "pending",
       },
       {
         $set: {

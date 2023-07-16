@@ -42,7 +42,8 @@
 
         if (properties.state) newLocation["province"] = properties.state;
         if (properties.city) newLocation["city"] = properties.city;
-        if (properties.county) newLocation["town"] = properties.county;
+        // Usually too messy
+        // if (properties.county) newLocation["town"] = properties.county;
         if (properties.postcode)
           newLocation["postalCode"] = properties.postcode;
         if (properties.street) newLocation["street"] = properties.street;
