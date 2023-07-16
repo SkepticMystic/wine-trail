@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { ResourceKind } from "$lib/const/pendingPatches";
+  import type { ResourceKind } from "$lib/const/resources";
   import type { YogaStyle } from "$lib/const/styles";
   import { optimiseUploadJSImg } from "$lib/utils/UploadJS/optimisation";
   import YogaStyleBadge from "./YogaStyleBadge.svelte";

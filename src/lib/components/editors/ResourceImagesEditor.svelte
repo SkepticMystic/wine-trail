@@ -1,6 +1,6 @@
 <script lang="ts">
   import { IMAGE_KIND_MAX_COUNTS } from "$lib/const/images";
-  import type { ResourceKind } from "$lib/const/pendingPatches";
+  import type { ResourceKind } from "$lib/const/resources";
   import { images } from "$lib/stores/images";
   import { getProps } from "$lib/utils";
   import { optimiseUploadJSImg } from "$lib/utils/UploadJS/optimisation";

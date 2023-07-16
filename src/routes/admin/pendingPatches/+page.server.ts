@@ -1,5 +1,5 @@
 import { getUser } from "$lib/auth/server";
-import { RESOURCE_KINDS } from "$lib/const/pendingPatches";
+import { RESOURCE_KINDS } from "$lib/const/resources";
 import { PendingPatches } from "$lib/models/PendingPatches";
 import { Parsers } from "$lib/schema/parsers";
 import { _idToString } from "$lib/utils";

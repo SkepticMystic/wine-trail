@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { ResourceKind } from "$lib/const/pendingPatches";
+  import type { ResourceKind } from "$lib/const/resources";
   import Label from "../label.svelte";
 
   export let resource_kind: ResourceKind;

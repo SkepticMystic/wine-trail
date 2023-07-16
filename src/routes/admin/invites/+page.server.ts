@@ -1,6 +1,6 @@
 import { Users } from "$lib/auth/lucia";
 import { getUser } from "$lib/auth/server";
-import { RESOURCE_KINDS } from "$lib/const/pendingPatches";
+import { RESOURCE_KINDS } from "$lib/const/resources";
 import { OTPs } from "$lib/models/OTPs";
 import { Parsers } from "$lib/schema/parsers";
 import { _idToString } from "$lib/utils";

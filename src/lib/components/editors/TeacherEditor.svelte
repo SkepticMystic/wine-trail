@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { SID } from "$lib/interfaces";
   import type { ModifyTeacher } from "$lib/models/Teachers";
+  import StudioSelector from "../selectors/StudioSelector.svelte";
   import ResourceBasicEditor from "./ResourceBasicEditor.svelte";
   import ResourceContactEditor from "./ResourceContactEditor.svelte";
   import ResourceImagesEditor from "./ResourceImagesEditor.svelte";
@@ -19,6 +20,18 @@
   />
 
   <ResourceStylesEditor resource_kind="teacher" bind:styles={teacher.styles} />
+
+  <div class="basic-card">
+    <h2 class="text-2xl">Studios</h2>
+
+    <p class="text-base-content opacity-80 mt-1 my-3">
+      Select the studios you teach at. If you are not the studio owner, we will
+      first verify with them that you teach there. If you don't see your studio,
+      please <a class="link link-secondary" href="/contact">reach out to us</a>.
+    </p>
+
+    <StudioSelector bind:studio_ids={teacher.studio_ids} />
+  </div>
 
   <ResourceLinksEditor resource_kind="teacher" bind:links={teacher.links} />
 

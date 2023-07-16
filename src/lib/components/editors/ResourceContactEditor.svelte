@@ -1,6 +1,6 @@
 <script lang="ts">
   import { CONTACT_EMOJI } from "$lib/const/contact";
-  import type { ResourceKind } from "$lib/const/pendingPatches";
+  import type { ResourceKind } from "$lib/const/resources";
   import type { Studio } from "$lib/models/Studio";
   import Label from "../label.svelte";
 

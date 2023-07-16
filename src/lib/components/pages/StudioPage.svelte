@@ -9,10 +9,12 @@
   import StudioLocation from "$lib/components/listings/StudioLocation.svelte";
   import YogaStyleBadge from "$lib/components/listings/YogaStyleBadge.svelte";
   import Leaflet from "$lib/components/map/Leaflet.svelte";
+  import { RESOURCE_EMOJI } from "$lib/const/resources";
   import type { SID } from "$lib/interfaces";
   import type { ModifyStudio } from "$lib/models/Studio";
   import { images } from "$lib/stores/images";
   import { studios } from "$lib/stores/studios";
+  import { teachers } from "$lib/stores/teachers";
   import { getProps } from "$lib/utils";
   import { optimiseUploadJSImg } from "$lib/utils/UploadJS/optimisation";
   import StudioSchedule from "../listings/StudioSchedule.svelte";
@@ -24,6 +26,10 @@
 
   const studioImages = studio?._id
     ? images.getResourceImages("studio", studio?._id)
+    : [];
+
+  const studioTeachers = studio?._id
+    ? $teachers.filter((teacher) => teacher.studio_ids?.includes(studio?._id!))
     : [];
 
   let inviteEmail = studio?.contact?.email;
@@ -151,13 +157,28 @@
           {#if studio.links}
             <StudioLinks links={studio.links} />
           {/if}
+
           {#if studio.schedule}
             <StudioSchedule schedule={studio.schedule} />
           {/if}
+
           {#if studio.contact}
             <StudioContact contact={studio.contact} />
           {/if}
         </div>
+
+        {#if studioTeachers.length}
+          <div class="flex gap-2 flex-wrap items-center">
+            <span class="text-lg" title="Teachers">
+              {RESOURCE_EMOJI["teacher"]}
+            </span>
+            {#each studioTeachers as teacher, i}
+              <a href="/teachers/{teacher.slug}" class="link link-secondary">
+                {teacher.name}
+              </a>{i === studioTeachers.length - 1 ? "" : ", "}
+            {/each}
+          </div>
+        {/if}
 
         {#if studio.location}
           <StudioLocation location={studio.location} />

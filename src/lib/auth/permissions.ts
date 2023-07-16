@@ -1,4 +1,4 @@
-import type { ResourceKind } from "$lib/const/pendingPatches";
+import type { ResourceKind } from "$lib/const/resources";
 import type { User } from "lucia";
 
 export const canModifyResource = (

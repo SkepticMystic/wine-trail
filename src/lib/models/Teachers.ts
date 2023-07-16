@@ -62,6 +62,11 @@ export const Teachers = mongoose.model<Teacher>(
       type: [String],
     },
 
+    studio_ids: {
+      type: [String],
+      ref: "Studios",
+    },
+
     links: {
       type: Object,
       default: {},

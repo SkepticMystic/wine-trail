@@ -1,5 +1,5 @@
 import type { ImageHost, ImageKind } from "$lib/const/images";
-import type { ResourceKind } from "$lib/const/pendingPatches";
+import type { ResourceKind } from "$lib/const/resources";
 import mongoose from "mongoose";
 import type { FileDetails } from "upload-js-full";
 

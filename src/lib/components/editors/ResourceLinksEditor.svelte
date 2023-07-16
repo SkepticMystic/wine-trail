@@ -1,6 +1,6 @@
 <script lang="ts">
   import { LINK_EMOJI, LINK_KINDS } from "$lib/const/links";
-  import type { ResourceKind } from "$lib/const/pendingPatches";
+  import type { ResourceKind } from "$lib/const/resources";
   import type { Studio } from "$lib/models/Studio";
   import Label from "../label.svelte";
 

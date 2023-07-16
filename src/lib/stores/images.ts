@@ -1,4 +1,4 @@
-import type { ResourceKind } from "$lib/const/pendingPatches";
+import type { ResourceKind } from "$lib/const/resources";
 import type { Result, SID } from "$lib/interfaces";
 import type { Image } from "$lib/models/Images";
 import { err } from "$lib/utils";

@@ -7,9 +7,12 @@
   import ResourceContact from "$lib/components/listings/ResourceContact.svelte";
   import ResourceLinks from "$lib/components/listings/ResourceLinks.svelte";
   import YogaStyleBadge from "$lib/components/listings/YogaStyleBadge.svelte";
+  import { RESOURCE_EMOJI } from "$lib/const/resources";
   import type { SID } from "$lib/interfaces";
+  import type { Studio } from "$lib/models/Studio";
   import type { ModifyTeacher } from "$lib/models/Teachers";
   import { images } from "$lib/stores/images";
+  import { studios } from "$lib/stores/studios";
   import { teachers } from "$lib/stores/teachers";
   import { getProps } from "$lib/utils";
   import { optimiseUploadJSImg } from "$lib/utils/UploadJS/optimisation";
@@ -22,6 +25,11 @@
   const teacherImages = teacher?._id
     ? images.getResourceImages("teacher", teacher?._id)
     : [];
+
+  const teacherStudios =
+    (teacher?.studio_ids
+      ?.map(studios.getById)
+      .filter((s) => s) as SID<Studio>[]) ?? [];
 
   let inviteEmail = teacher?.contact?.email;
   const invite = async () => {
@@ -56,6 +64,7 @@
     .fileUrl}
 
   <div class="flex flex-col items-center">
+    <!-- TODO: This header row can be a resource-wide component -->
     <h1
       class="text-3xl font-semibold text-center flex flex-wrap justify-center items-center gap-2"
     >
@@ -152,6 +161,19 @@
             <ResourceContact contact={teacher.contact} />
           {/if}
         </div>
+
+        {#if teacherStudios.length}
+          <div class="flex gap-2 flex-wrap items-center">
+            <span class="text-lg" title="Teachers">
+              {RESOURCE_EMOJI["studio"]}
+            </span>
+            {#each teacherStudios as studio, i}
+              <a href="/studios/{studio.slug}" class="link link-secondary">
+                {studio.name}
+              </a>{i === teacherStudios.length - 1 ? "" : ", "}
+            {/each}
+          </div>
+        {/if}
       </div>
     </div>
 

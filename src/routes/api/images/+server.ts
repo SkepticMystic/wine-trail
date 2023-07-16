@@ -6,7 +6,7 @@ import {
   IMAGE_KIND_MAX_COUNTS,
   IMAGE_KINDS,
 } from "$lib/const/images";
-import { RESOURCE_KINDS } from "$lib/const/pendingPatches";
+import { RESOURCE_KINDS } from "$lib/const/resources";
 import type { Err, Suc } from "$lib/interfaces";
 import { Images } from "$lib/models/Images";
 import { Parsers } from "$lib/schema/parsers";
