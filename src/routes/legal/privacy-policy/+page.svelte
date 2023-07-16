@@ -5,7 +5,9 @@
 <div class="flex flex-col gap-3 max-w-2xl mx-auto">
   <h1 class="text-2xl">Privacy Policy</h1>
 
-  <span class="text-gray-600 text-sm">Last updated: 2023-07-15</span>
+  <span class="text-base-content opacity-80 text-sm"
+    >Last updated: 2023-07-15</span
+  >
 
   <p>
     This Privacy Policy explains how Yoga List ("we," "our," or "us") collects,

@@ -12,6 +12,6 @@ module.exports = {
 
   daisyui: {
     // TODO: List specific themes here for prod
-    themes: true,
+    themes: ["corporate", "forest"],
   },
 };

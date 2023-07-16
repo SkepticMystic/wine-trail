@@ -112,20 +112,33 @@
             <button class="link" on:click={signout}> Sign out </button>
           </li>
         {/if}
+
+        <li>
+          <button
+            data-toggle-theme="winter,forest"
+            data-act-class="ACTIVECLASS"
+          >
+            🌑/☀️
+          </button>
+        </li>
       </ul>
     </div>
   </div>
 
   <div class="navbar-end hidden lg:flex">
     <ul class="flex gap-5 items-center">
-      <select
+      <!-- <select
         class="select select-bordered select-sm text-xs"
         data-choose-theme
       >
         {#each ["acid", "autumn", "black", "bumblebee", "business", "cmyk", "coffee", "corporate", "cupcake", "cyberpunk", "dracula", "emerald", "fantasy", "forest", "garden", "halloween", "lemonade", "light", "lofi", "luxury", "night", "pastel", "retro", "valentine", "winter"] as theme}
           <option value={theme}>{theme}</option>
         {/each}
-      </select>
+      </select> -->
+
+      <button data-toggle-theme="winter,forest" data-act-class="ACTIVECLASS">
+        🌑/☀️
+      </button>
 
       {#each routes as r}
         {#if showRoute(user, r, "right")}

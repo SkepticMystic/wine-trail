@@ -23,7 +23,7 @@
     class="rounded-box w-[300px] h-[300px] shadow-lg group relative bg-cover bg-center border"
   >
     <div
-      class="flex flex-col justify-between p-4 bg-opacity-10 bg-slate-400 absolute w-full h-full rounded-box hover:bg-opacity-90 hover:text-gray-50 text-gray-700"
+      class="flex flex-col justify-between p-4 bg-opacity-10 bg-slate-400 absolute w-full h-full rounded-box hover:bg-opacity-90 hover:text-gray-50 text-base-content"
     >
       <div class="group-hover:hidden">
         {studio.hidden ? "🚫 Hidden" : ""}

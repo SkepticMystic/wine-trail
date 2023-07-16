@@ -33,7 +33,7 @@
 
     <div class="mt-2">
       <Label lbl="Description">
-        <p class="text-gray-500 mb-2">
+        <p class="text-base-content opacity-80 mb-2">
           Tell us about your studio. What makes it special? ✨
         </p>
         <textarea
@@ -48,7 +48,7 @@
 
   <div class="p-4 bg-base-100 rounded-box border">
     <h2 class="text-2xl">Styles</h2>
-    <p class="text-gray-500 mt-1 mb-2">
+    <p class="text-base-content opacity-80 mt-1 mb-2">
       What styles of yoga do you offer? Pick as many as you like. If you'd like
       us to add a style, please <a href="/contact" class="link link-secondary"
         >email us</a
@@ -60,7 +60,7 @@
   <div class="p-4 bg-base-100 rounded-box border">
     <h2 class="text-2xl">Schedule</h2>
 
-    <p class="text-gray-500 mt-1">
+    <p class="text-base-content opacity-80 mt-1">
       Do you have a schedule online? You can either link to a schedule on your
       own site, or on Book A Mat.
     </p>
@@ -80,7 +80,7 @@
 
   <div class="p-4 bg-base-100 rounded-box border">
     <h2 class="text-2xl">Links</h2>
-    <p class="text-gray-500 mt-1">
+    <p class="text-base-content opacity-80 mt-1">
       Do you have a website, Facebook page, or Instagram account? Add them here.
     </p>
     <div class="flex flex-wrap gap-3">
@@ -99,7 +99,7 @@
   <div class="p-4 bg-base-100 rounded-box border">
     <h2 class="text-2xl">Contact Info</h2>
 
-    <p class="text-gray-500 mt-1 mb-2">
+    <p class="text-base-content opacity-80 mt-1 mb-2">
       How can people get in touch with you? You can add a phone number, email
       address, or both.
     </p>
@@ -121,7 +121,7 @@
   <div class="p-4 bg-base-100 rounded-box border">
     <h2 class="text-2xl">Location</h2>
 
-    <p class="text-gray-500 mt-1 mb-2">
+    <p class="text-base-content opacity-80 mt-1 mb-2">
       Where is your studio located? You can add a street address, or just a city
       or town.
     </p>
@@ -136,7 +136,7 @@
     <div class="p-4 bg-base-100 rounded-box border">
       <h2 class="text-2xl">Images</h2>
 
-      <p class="text-gray-500 mt-1 my-3">
+      <p class="text-base-content opacity-80 mt-1 my-3">
         Upload some images of your studio. You can add a logo, as well as some
         other images showcasing your studio.
       </p>

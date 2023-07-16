@@ -5,7 +5,9 @@
 <dic class="flex flex-col gap-3 max-w-2xl mx-auto">
   <h1 class="text-2xl">Yoga List Cookie Policy</h1>
 
-  <span class="text-gray-600 text-sm">Last updated: 2023-07-15</span>
+  <span class="text-base-content opacity-80 text-sm"
+    >Last updated: 2023-07-15</span
+  >
 
   <h2 class="text-xl">Introduction</h2>
 

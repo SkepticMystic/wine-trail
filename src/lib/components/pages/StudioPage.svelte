@@ -140,7 +140,7 @@
           {/each}
         </div>
 
-        <p class="max-w-2xl text-gray-700 font-serif">
+        <p class="max-w-2xl text-base-content font-serif">
           {studio.description}
         </p>
 

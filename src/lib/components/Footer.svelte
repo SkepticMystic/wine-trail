@@ -1,4 +1,4 @@
-<footer class="footer p-10 bg-base-100 text-base-content">
+<footer class="footer p-10 bg-base-100 text-base-content border shadow">
   <div>
     <a href="/" class="text-3xl">☯️</a>
     <a href="/" class="link text-xl">Yoga List</a>
