@@ -3,6 +3,7 @@ import { ONE_DAY_MS } from "$lib/const";
 import { EMAIL_COPIES } from "$lib/const/emailCopy";
 import { err, suc } from "$lib/utils";
 import { sendEmail } from "$lib/utils/email";
+import type { Message } from "emailjs";
 import mongoose, { Model } from "mongoose";
 
 const OTP_KINDS = [
@@ -265,7 +266,7 @@ const handleLinks = {
       `${url.origin}/api/verify-email?token=${otp.token}&_id=${idValue}`;
     console.log(href);
 
-    await sendEmail({
+    return await sendEmail({
       to: [email],
       subject: "Verify your YogaList email",
       text: `Click here to verify your email: ${href}`,
@@ -289,7 +290,7 @@ const handleLinks = {
     const href = `${url.origin}/reset-password?token=${otp.token}`;
     console.log(href);
 
-    await sendEmail({
+    return await sendEmail({
       to: [email],
       subject: "Reset your YogaList password",
       text: `Click here to reset your YogaList password: ${href}`,
@@ -323,7 +324,7 @@ const handleLinks = {
       `${url.origin}/api/studios/join?token=${otp.token}&studio_id=${data.studio_id}`;
     console.log(href);
 
-    await sendEmail({
+    return await sendEmail({
       to: [idValue],
       subject: EMAIL_COPIES["studio-owner-invite"].subject,
       text: `Click here to join the studio: ${href}`,
@@ -358,7 +359,7 @@ const handleLinks = {
       `${url.origin}/api/teachers/join?token=${otp.token}&teacher_id=${data.teacher_id}`;
     console.log(href);
 
-    await sendEmail({
+    return await sendEmail({
       to: [idValue],
       subject: EMAIL_COPIES["teacher-invite"].subject,
       text: `Click here to join Yoga List: ${href}`,
@@ -373,7 +374,7 @@ const handleLinks = {
   },
 } satisfies Record<
   OTPKind,
-  (input: any) => Promise<void>
+  (input: any) => Promise<Message>
 >;
 
 export const OTP = {

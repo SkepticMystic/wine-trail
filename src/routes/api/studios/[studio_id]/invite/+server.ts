@@ -47,7 +47,7 @@ export const POST: RequestHandler = async (
     throw error(400, "User already owns this studio");
   }
 
-  await OTP.handleLinks["studio-owner-invite"]({
+  const emailSend = await OTP.handleLinks["studio-owner-invite"]({
     url,
     idValue: invite.email,
     studio_name: studio.name,
@@ -56,6 +56,8 @@ export const POST: RequestHandler = async (
       createdBy: admin.userId,
     },
   });
+
+  console.log(emailSend);
 
   return json(suc());
 };
