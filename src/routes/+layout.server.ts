@@ -1,7 +1,8 @@
+import { RESOURCE_KINDS } from "$lib/const/resources";
 import { redirect } from "@sveltejs/kit";
 import type { LayoutServerLoad } from "./$types";
 
-const anyoneAllowed = [
+const anyoneAllowed: string[] = [
   "/",
   "/signup",
   "/signin",
@@ -9,8 +10,12 @@ const anyoneAllowed = [
   "/reset-password",
   "/verify-email",
   "/unverified-email",
-  "/studios",
-  "/api/studios/join",
+
+  // All users can see the resource page, and accept an invite from it
+  ...RESOURCE_KINDS.flatMap((kind) => [
+    `/${kind}s`,
+    `/api/${kind}s/join`,
+  ]),
 ];
 
 export const load: LayoutServerLoad = async ({ url, locals, fetch }) => {
