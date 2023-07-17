@@ -17,5 +17,5 @@ export type ImageHost = typeof IMAGE_HOSTS[number];
 
 export const RESOURCE_IMAGE_KINDS: Record<ResourceKind, ImageKind[]> = {
   studio: ["logo", "schedule", "other"],
-  teacher: ["other"],
+  teacher: ["logo", "other"],
 };
