@@ -2,7 +2,7 @@ import { APP_URL } from ".";
 
 export const EMAIL_COPIES = {
   "studio-owner-invite": {
-    subject: "Join your studio on YogaList",
+    subject: "Join your studio on Yoga List",
     body: (
       { studio_name, invite_link }: {
         studio_name: string;
@@ -45,13 +45,44 @@ export const EMAIL_COPIES = {
     
     <p>
       Warm regards,<br />
-      YogaList
+      Yoga List ☯️
     </p>
     `,
+    fallbackText: (
+      { studio_name, invite_link }: {
+        studio_name: string;
+        invite_link: string;
+      },
+    ) =>
+      `Hello there,
+      
+I hope this email finds you well. I'm Ross from Yoga List, a platform connecting yogis with the best studios in South Africa.
+
+We're offering you a free listing for a limited time, where you can showcase ${studio_name} and attract more yogis. 
+To include your studio, please click here to complete our form:
+
+${invite_link}
+
+We'll need:
+
+- Studio description
+- Logo and other photos
+- Schedule and online class availability
+- Styles of yoga
+- Location
+- Social links & contact info
+
+It's quick, and will help boost visibility of your studio and attract more yogis, contributing to the growing yoga community in South Africa.
+
+If you have any questions or need assistance, please reach out. We value your participation and look forward to collaborating. Thank you for your time and consideration.
+
+Warm regards,
+Yoga List ☯️
+      `,
   },
 
   "teacher-invite": {
-    subject: "Get listed on YogaList",
+    subject: "Join Yoga List",
     body: (
       { teacher_name, invite_link }: {
         teacher_name: string;
@@ -92,9 +123,10 @@ export const EMAIL_COPIES = {
     
     <p>
       Warm regards,<br />
-      YogaList
+      Yoga List ☯️
     </p>
     `,
+    // TODO: fallbackText
   },
 
   pendingPatch: {
@@ -107,8 +139,8 @@ export const EMAIL_COPIES = {
             studio_slug: string;
             reason: string | undefined;
           },
-        ) =>
-          `<p>Hello there,</p>
+        ) => `
+        <p>Hello there,</p>
 
         <p>
             We're happy to let you know that your changes to ${studio_name} have been approved!
@@ -124,7 +156,7 @@ export const EMAIL_COPIES = {
 
         <p>
             Warm regards,<br />
-            YogaList
+            Yoga List ☯️
         </p>
                 `,
       },
@@ -137,23 +169,23 @@ export const EMAIL_COPIES = {
             studio_slug: string;
             reason: string | undefined;
           },
-        ) =>
-          `<p>Hello there,</p>
+        ) => `
+        <p>Hello there,</p>
 
         <p>
-            We're sorry to let you know that your changes to ${studio_name} have been rejected. For the following reason(s):
+          We're sorry to let you know that your changes to ${studio_name} have been rejected. For the following reason(s):
         </p>
 
         <blockquote>${reason}</blockquote>
 
         <p>
-            You can submit a new edit <a href="${APP_URL}/studios/${studio_slug}/edit">here</a>.
+          You can submit a new edit <a href="${APP_URL}/studios/${studio_slug}/edit">here</a>.
             Please feel free to reach out if you have any questions or need assistance.
         </p>
 
         <p>
-            Warm regards,<br />
-            YogaList
+          Warm regards,<br />
+          Yoga List ☯️
         </p>
         `,
       },

@@ -268,10 +268,10 @@ const handleLinks = {
 
     return await sendEmail({
       to: [email],
-      subject: "Verify your YogaList email",
+      subject: "Verify your Yoga List email",
       text: `Click here to verify your email: ${href}`,
       attachment: [{
-        data: `<a href="${href}">Click here to verify your YogaList email</a>`,
+        data: `<a href="${href}">Click here to verify your Yoga List email</a>`,
         alternative: true,
       }],
     });
@@ -292,11 +292,11 @@ const handleLinks = {
 
     return await sendEmail({
       to: [email],
-      subject: "Reset your YogaList password",
-      text: `Click here to reset your YogaList password: ${href}`,
+      subject: "Reset your Yoga List password",
+      text: `Click here to reset your Yoga List password: ${href}`,
       attachment: [{
         data:
-          `<a href="${href}">Click here to reset your YogaList password</a>`,
+          `<a href="${href}">Click here to reset your Yoga List password</a>`,
         alternative: true,
       }],
     });
@@ -327,7 +327,10 @@ const handleLinks = {
     return await sendEmail({
       to: [idValue],
       subject: EMAIL_COPIES["studio-owner-invite"].subject,
-      text: `Click here to join the studio: ${href}`,
+      text: EMAIL_COPIES["studio-owner-invite"].fallbackText({
+        studio_name,
+        invite_link: href,
+      }),
       attachment: [{
         data: EMAIL_COPIES["studio-owner-invite"].body({
           studio_name,
