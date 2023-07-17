@@ -51,7 +51,10 @@ export const POST: RequestHandler = async (
     url,
     idValue: invite.email,
     teacher_name: teacher.name,
-    data: { teacher_id: params.teacher_id },
+    data: {
+      teacher_id: params.teacher_id,
+      createdBy: admin.userId,
+    },
   });
 
   return json(suc());

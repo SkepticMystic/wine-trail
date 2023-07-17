@@ -22,11 +22,12 @@ export interface OTPBase {
   token: string;
   /** Milliseconds since createdAt when the OTP expires */
   expiresInMs?: number;
-  createdAt: Date;
   /** The kind of OTP this is */
   kind: OTPKind;
   /** The identifier of the user that this OTP is for */
   identifier: `${IdentifierField}:${string}`;
+
+  createdAt: Date;
 }
 
 // OTPs can be of different kinds
@@ -47,6 +48,8 @@ export type StudioOwnerInviteOTP = OTPBase & {
   identifier: `email:${string}`;
   kind: "studio-owner-invite";
   data: {
+    /** The logged in user who created the OTP */
+    createdBy: string;
     studio_id: string;
   };
 };
@@ -55,6 +58,8 @@ export type TeacherInviteOTP = OTPBase & {
   identifier: `email:${string}`;
   kind: "teacher-invite";
   data: {
+    /** The logged in user who created the OTP */
+    createdBy: string;
     teacher_id: string;
   };
 };
@@ -89,6 +94,7 @@ export const OTPs: Model<OTP> = mongoose.models[modelName] ||
           required: true,
           enum: OTP_KINDS,
         },
+
         data: {
           type: mongoose.Schema.Types.Mixed,
         },
@@ -309,6 +315,7 @@ const handleLinks = {
     const otp = await OTP.getOrCreate({
       identifier: `email:${idValue}`,
       kind: "studio-owner-invite",
+
       data,
     });
 

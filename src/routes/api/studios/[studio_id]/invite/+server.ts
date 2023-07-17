@@ -11,7 +11,7 @@ import type { RequestHandler } from "./$types";
 export const POST: RequestHandler = async (
   { locals, request, url, params },
 ) => {
-  const [user, invite] = await Promise.all([
+  const [admin, invite] = await Promise.all([
     getUser(locals, { admin: true }),
     Parsers.request(
       request,
@@ -51,7 +51,10 @@ export const POST: RequestHandler = async (
     url,
     idValue: invite.email,
     studio_name: studio.name,
-    data: { studio_id: params.studio_id },
+    data: {
+      studio_id: params.studio_id,
+      createdBy: admin.userId,
+    },
   });
 
   return json(suc());
