@@ -32,8 +32,6 @@
 
     loading = false;
   });
-
-  // TODO: Add indices where needed
 </script>
 
 <div class="flex flex-col min-h-screen">

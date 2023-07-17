@@ -1,3 +1,4 @@
+import { Users } from "$lib/auth/lucia";
 import { getUser } from "$lib/auth/server";
 import { OTP, OTPs } from "$lib/models/OTPs";
 import { Studios } from "$lib/models/Studio";
@@ -20,7 +21,7 @@ export const POST: RequestHandler = async (
     ),
   ]);
 
-  const [studio, existingInvite] = await Promise.all([
+  const [studio, existingInvite, existingOwner] = await Promise.all([
     Studios.findOne(
       { _id: params.studio_id },
       { name: 1 },
@@ -30,15 +31,20 @@ export const POST: RequestHandler = async (
       "data.studio_id": params.studio_id,
       "identifier": `email:${invite.email}`,
     }).lean(),
+    Users.exists({
+      email: invite.email,
+      studio_ids: params.studio_id,
+    }).lean(),
   ]);
   if (!studio) {
     throw error(404, "Studio not found");
-  }
-  if (existingInvite) {
+  } else if (existingInvite) {
     throw error(
       400,
       "Invite already sent. Studio owner has not yet signed up.",
     );
+  } else if (existingOwner) {
+    throw error(400, "User already owns this studio");
   }
 
   await OTP.handleLinks["studio-owner-invite"]({

@@ -1,3 +1,4 @@
+import { Users } from "$lib/auth/lucia";
 import { getUser } from "$lib/auth/server";
 import { OTP, OTPs } from "$lib/models/OTPs";
 import { Teachers } from "$lib/models/Teachers";
@@ -20,7 +21,7 @@ export const POST: RequestHandler = async (
     ),
   ]);
 
-  const [teacher, existingInvite] = await Promise.all([
+  const [teacher, existingInvite, existingTeacher] = await Promise.all([
     Teachers.findOne(
       { _id: params.teacher_id },
       { name: 1 },
@@ -30,15 +31,20 @@ export const POST: RequestHandler = async (
       "data.teacher_id": params.teacher_id,
       "identifier": `email:${invite.email}`,
     }).lean(),
+    Users.exists({
+      email: invite.email,
+      teacher_ids: params.teacher_id,
+    }).lean(),
   ]);
   if (!teacher) {
     throw error(404, "Teacher not found");
-  }
-  if (existingInvite) {
+  } else if (existingInvite) {
     throw error(
       400,
       "Invite already sent. Teacher has not yet signed up.",
     );
+  } else if (existingTeacher) {
+    throw error(400, "User already owns this teacher");
   }
 
   await OTP.handleLinks["teacher-invite"]({
