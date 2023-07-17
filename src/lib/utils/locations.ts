@@ -4,7 +4,7 @@ export const buildLocationArray = (location: Studio["location"]) =>
   [
     { preview: true, str: location.houseNumber },
     { preview: true, str: location.street },
-    { preview: false, str: location.town },
+    { preview: true, str: location.town },
     { preview: true, str: location.city },
     { preview: false, str: location.postalCode },
     { preview: true, str: location.province },
