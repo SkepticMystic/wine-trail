@@ -1,14 +1,22 @@
 import type { Studio } from "$lib/models/Studio";
 
-export const buildLocationStr = (location: Studio["location"]) =>
+export const buildLocationArray = (location: Studio["location"]) =>
   [
-    location.houseNumber,
-    location.street,
-    location.town,
-    location.city,
-    location.postalCode,
-    location.province,
-    location.country,
+    { preview: true, str: location.houseNumber },
+    { preview: true, str: location.street },
+    { preview: false, str: location.town },
+    { preview: true, str: location.city },
+    { preview: false, str: location.postalCode },
+    { preview: true, str: location.province },
+    { preview: true, str: location.country },
   ]
-    .filter(Boolean)
+    .filter((l) => l.str) as { preview: boolean; str: string }[];
+
+export const buildLocationStr = (
+  locationArray: ReturnType<typeof buildLocationArray>,
+  preview?: boolean,
+) =>
+  locationArray
+    .filter((l) => !preview || l.preview)
+    .map((l) => l.str)
     .join(", ");

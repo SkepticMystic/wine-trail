@@ -32,18 +32,18 @@
         console.log("properties", properties);
 
         const newLocation: Studio["location"] = {
-          country: properties.country_code.toUpperCase() as Country,
-
           coordinates: {
             latitude: properties.lat,
             longitude: properties.lon,
           },
         };
 
+        if (properties.country_code)
+          newLocation["country"] =
+            properties.country_code.toUpperCase() as Country;
         if (properties.state) newLocation["province"] = properties.state;
         if (properties.city) newLocation["city"] = properties.city;
-        // Usually too messy
-        // if (properties.county) newLocation["town"] = properties.county;
+        if (properties.county) newLocation["town"] = properties.county;
         if (properties.postcode)
           newLocation["postalCode"] = properties.postcode;
         if (properties.street) newLocation["street"] = properties.street;

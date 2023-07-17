@@ -1,21 +1,23 @@
 <script lang="ts">
   import type { Studio } from "$lib/models/Studio";
-  import { buildLocationStr } from "$lib/utils/locations";
+  import { buildLocationArray, buildLocationStr } from "$lib/utils/locations";
 
   export let location: Studio["location"];
 
-  $: locationStr = buildLocationStr(location);
+  $: locationArray = buildLocationArray(location);
+  $: locationStrFull = buildLocationStr(locationArray, false);
+  $: locationStrPreview = buildLocationStr(locationArray, true);
 </script>
 
-{#if locationStr}
+{#if locationArray.length}
   <a
     href="https://www.google.com/maps/search/?api=1&query={encodeURIComponent(
-      locationStr
+      locationStrFull
     )}"
     target="_blank"
     rel="norefferer"
     class="link capitalize text-sm"
   >
-    📍 {locationStr}
+    📍 {locationStrPreview}
   </a>
 {/if}

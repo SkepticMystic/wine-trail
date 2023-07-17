@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { ModifyStudio } from "$lib/models/Studio";
-  import { buildLocationStr } from "$lib/utils/locations";
+  import { buildLocationArray, buildLocationStr } from "$lib/utils/locations";
   import { onMount } from "svelte";
 
   export let studio: ModifyStudio;
@@ -10,7 +10,9 @@
     studio.location.coordinates.longitude,
   ];
 
-  const locationStr = buildLocationStr(studio.location);
+  const locationArray = buildLocationArray(studio.location);
+  const locationStrFull = buildLocationStr(locationArray, false);
+  const locationStrPreview = buildLocationStr(locationArray, true);
 
   onMount(() => {
     //@ts-expect-error
@@ -41,11 +43,11 @@
       <div class="flex flex-col gap-1">
         <h2 class="text-lg">${studio.name}</h2>
         <div class="capitalize">
-          ${locationStr}
+          ${locationStrPreview}
         </div>
         <div>
           <a class="link" target="_blank" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-            locationStr
+            locationStrFull
           )}">
             📍 View on Google Maps
           </a>
