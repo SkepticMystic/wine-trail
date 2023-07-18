@@ -72,7 +72,8 @@
 
       <p class="text-base-content opacity-80 mt-1 my-3">
         Upload some images of your studio. You can add a logo, as well as some
-        other images showcasing your studio.
+        other images showcasing your studio. Make sure they're high quality, and
+        square, if possible.
       </p>
 
       <ResourceImagesEditor

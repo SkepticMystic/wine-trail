@@ -46,7 +46,8 @@
 
       <p class="text-base-content opacity-80 mt-1 my-3">
         Upload some images of yourself. You can add a main image, as well as
-        some other images showcasing your teaching.
+        some other images showcasing your teaching. Make sure they're high
+        quality, and square, if possible.
       </p>
 
       <ResourceImagesEditor resource_id={teacher._id} resource_kind="teacher" />

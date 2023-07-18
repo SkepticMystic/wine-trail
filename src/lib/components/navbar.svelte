@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from "$app/stores";
   import { signout } from "$lib/auth/client";
+  import { RESOURCE_KINDS } from "$lib/const/resources";
   import { onMount } from "svelte";
   import { themeChange } from "theme-change";
   import Bars3 from "./icons/bars3.svelte";
@@ -22,12 +23,12 @@
   }
 
   const routes: Route[] = [
-    {
-      side: "center",
-      label: "Studios",
-      href: "/studios",
+    ...RESOURCE_KINDS.map((kind) => ({
+      side: <const>"center",
+      label: kind + "s",
+      href: `/${kind}s`,
       authed: false,
-    },
+    })),
 
     {
       side: "right",
@@ -82,7 +83,9 @@
         {#if showRoute(user, r, "center")}
           {@const { href, label } = r}
           <li>
-            <a class="link" {href}>{label}</a>
+            <a class="capitalize link" {href}>
+              {label}
+            </a>
           </li>
         {/if}
       {/each}
@@ -107,7 +110,9 @@
           {#if showRoute(user, r)}
             {@const { href, label } = r}
             <li>
-              <a class="link" {href}>{label}</a>
+              <a class="capitalize link" {href}>
+                {label}
+              </a>
             </li>
           {/if}
         {/each}
@@ -156,7 +161,9 @@
         {#if showRoute(user, r, "right")}
           {@const { href, label } = r}
           <li>
-            <a class="link" {href}>{label}</a>
+            <a class="capitalize link" {href}>
+              {label}
+            </a>
           </li>
         {/if}
       {/each}

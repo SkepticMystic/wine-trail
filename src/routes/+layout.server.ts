@@ -6,6 +6,12 @@ const anyoneAllowed: string[] = [
   "/",
   "/signup",
   "/signin",
+
+  "/contact",
+  "/about",
+
+  "/legal",
+
   "/forgot-password",
   "/reset-password",
   "/verify-email",

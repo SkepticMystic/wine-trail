@@ -2,6 +2,7 @@ import type { Result, SID } from "$lib/interfaces";
 import type { ModifyTeacher, Teacher } from "$lib/models/Teachers";
 import { err } from "$lib/utils";
 import { getHTTPErrorMsg } from "$lib/utils/errors";
+import { fillInTeacherBlanks } from "$lib/utils/resources/studios";
 import axios from "axios";
 import { get, writable } from "svelte/store";
 import { addToast } from "./toast";
@@ -38,7 +39,7 @@ export const teachers = {
       if (data.ok) {
         store.update((
           teachers,
-        ) => [...teachers, data.data.teacher]);
+        ) => [...teachers, fillInTeacherBlanks(data.data.teacher)]);
 
         addToast({
           type: "success",
@@ -86,7 +87,9 @@ export const teachers = {
           const newTeacher = data.data.teacher;
           store.update((teachers) =>
             teachers.map((teacher) =>
-              teacher._id === teacher_id ? newTeacher : teacher
+              teacher._id === teacher_id
+                ? fillInTeacherBlanks(newTeacher)
+                : teacher
             )
           );
 

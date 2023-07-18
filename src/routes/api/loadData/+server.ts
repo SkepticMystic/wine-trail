@@ -3,7 +3,10 @@ import { Images } from "$lib/models/Images";
 import { Studios } from "$lib/models/Studio";
 import { Teachers } from "$lib/models/Teachers";
 import { _idToString, shuffleArray } from "$lib/utils";
-import { fillInStudioBlanks } from "$lib/utils/resources/studios";
+import {
+  fillInStudioBlanks,
+  fillInTeacherBlanks,
+} from "$lib/utils/resources/studios";
 import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 
@@ -53,7 +56,8 @@ export const GET: RequestHandler = async ({ locals }) => {
       // Otherwise, only show non-hidden teachers
       return !s.hidden;
     })
-    .map(_idToString);
+    .map(_idToString)
+    .map(fillInTeacherBlanks);
 
   const studio_ids = studios.map((s) => s._id.toString());
   const teacher_ids = teachers.map((s) => s._id.toString());

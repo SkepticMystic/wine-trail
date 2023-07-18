@@ -5,6 +5,7 @@ export const YOGA_STYLES = [
   "beginners",
   "budokon",
   "children's",
+  "face",
   "forrest",
   "gentle",
   "hatha",
@@ -27,15 +28,16 @@ export const YOGA_STYLES = [
 export type YogaStyle = typeof YOGA_STYLES[number];
 
 export const YOGA_STYLE_EMOJI: Record<YogaStyle, string> = {
-  acro: "✈️",
+  acro: "👯",
   aerial: "🧚",
   ashtanga: "☸️",
   beginners: "🆕",
   budokon: "🥋",
   "children's": "👶",
+  face: "🤤",
   forrest: "🌳",
   gentle: "🥰",
-  hatha: "⚡",
+  hatha: "♎",
   hot: "🔥",
   iyengar: "📐",
   jnana: "🧠",

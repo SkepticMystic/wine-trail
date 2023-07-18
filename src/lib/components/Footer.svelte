@@ -1,9 +1,21 @@
+<script>
+  import { RESOURCE_KINDS } from "$lib/const/resources";
+</script>
+
 <footer class="footer p-10 bg-base-100 text-base-content border-t shadow">
   <div>
     <a href="/" class="text-3xl">☯️</a>
     <a href="/" class="link text-xl">Yoga List</a>
   </div>
 
+  <div>
+    <span class="footer-title">Resources</span>
+    {#each RESOURCE_KINDS as resource_kind}
+      <a href="/{resource_kind}s" class="link link-hover capitalize">
+        {resource_kind}s
+      </a>
+    {/each}
+  </div>
   <div>
     <span class="footer-title">Company</span>
     <a href="/about" class="link link-hover">About us</a>

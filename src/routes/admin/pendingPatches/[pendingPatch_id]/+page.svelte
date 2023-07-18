@@ -14,6 +14,7 @@
   import { fillInStudioBlanks } from "$lib/utils/resources/studios/index.js";
   import axios from "axios";
 
+  // TODO: This does not generalise to other resource_kinds
   export let data;
 
   let { loadObj } = getProps<`submit:${PendingPatchStatus}`>();
@@ -69,7 +70,7 @@
 </script>
 
 {#if data.pendingPatch.resource_kind === "studio"}
-  <StudioPage reviewMode studio={data.pendingPatch.patch}  />
+  <StudioPage reviewMode studio={data.pendingPatch.patch} />
 {:else}
   <p class="text-error">
     Unhandled resource kind: {data.pendingPatch.resource_kind}
