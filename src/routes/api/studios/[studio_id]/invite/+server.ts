@@ -1,6 +1,6 @@
 import { Users } from "$lib/auth/lucia";
 import { getUser } from "$lib/auth/server";
-import { OTP, OTPs } from "$lib/models/OTPs";
+import { OTPUtils, OTPs } from "$lib/models/OTPs";
 import { Studios } from "$lib/models/Studio";
 import { Parsers } from "$lib/schema/parsers";
 import { suc } from "$lib/utils";
@@ -47,7 +47,7 @@ export const POST: RequestHandler = async (
     throw error(400, "User already owns this studio");
   }
 
-  const emailSend = await OTP.handleLinks["studio-owner-invite"]({
+  const emailSend = await OTPUtils.handleLinks["studio-owner-invite"]({
     url,
     idValue: invite.email,
     studio_name: studio.name,

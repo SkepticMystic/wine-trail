@@ -1,6 +1,6 @@
 import { Users } from "$lib/auth/lucia";
 import { getUser } from "$lib/auth/server";
-import { OTP, OTPs } from "$lib/models/OTPs";
+import { OTPUtils, OTPs } from "$lib/models/OTPs";
 import { Teachers } from "$lib/models/Teachers";
 import { Parsers } from "$lib/schema/parsers";
 import { suc } from "$lib/utils";
@@ -47,7 +47,7 @@ export const POST: RequestHandler = async (
     throw error(400, "User already owns this teacher");
   }
 
-  await OTP.handleLinks["teacher-invite"]({
+  await OTPUtils.handleLinks["teacher-invite"]({
     url,
     idValue: invite.email,
     teacher_name: teacher.name,

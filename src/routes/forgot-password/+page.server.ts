@@ -1,5 +1,5 @@
 import { Users } from "$lib/auth/lucia";
-import { OTP } from "$lib/models/OTPs";
+import { OTPUtils } from "$lib/models/OTPs";
 import { Parsers } from "$lib/schema/parsers";
 import type { Actions } from "@sveltejs/kit";
 import { z } from "zod";
@@ -19,7 +19,7 @@ export const actions: Actions = {
       return { ok: true };
     }
 
-    await OTP.handleLinks["password-reset"]({
+    await OTPUtils.handleLinks["password-reset"]({
       url,
       email,
       idValue: user._id.toString(),

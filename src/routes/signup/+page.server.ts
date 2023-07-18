@@ -1,6 +1,6 @@
 import { auth } from "$lib/auth/lucia";
 import {
-  OTP,
+  OTPUtils,
   OTPs,
   type StudioOwnerInviteOTP,
   type TeacherInviteOTP,
@@ -99,7 +99,7 @@ export const actions: Actions = {
       const [session] = await Promise.all([
         auth.createSession(userId),
         !attributes.emailVerified
-          ? OTP.handleLinks["email-verification"]({
+          ? OTPUtils.handleLinks["email-verification"]({
             url,
             email,
             idValue: userId,

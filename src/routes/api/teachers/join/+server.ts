@@ -1,5 +1,5 @@
 import { auth } from "$lib/auth/lucia";
-import { OTP, type TeacherInviteOTP } from "$lib/models/OTPs";
+import { OTPUtils, type TeacherInviteOTP } from "$lib/models/OTPs";
 import { Teachers } from "$lib/models/Teachers";
 import { Parsers } from "$lib/schema/parsers";
 import { error, redirect } from "@sveltejs/kit";
@@ -40,7 +40,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
     }
   }
 
-  const checkToken = await OTP.validateToken<TeacherInviteOTP>({
+  const checkToken = await OTPUtils.validateToken<TeacherInviteOTP>({
     token,
     kind: "teacher-invite",
   });
@@ -50,7 +50,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
   }
   const otp = checkToken.data;
 
-  const checkUser = await OTP.getTokenUser(otp);
+  const checkUser = await OTPUtils.getTokenUser(otp);
   if (!checkUser.ok) {
     if (checkUser.error.message === "user_not_found") {
       console.log("Valid token, no existing user");

@@ -257,7 +257,7 @@ const handleLinks = {
     // We know there were no existing email-verification OTPs,
     //   since we just created the user
     //   so we can create a new one without checking for existing
-    const otp = await OTP.create({
+    const otp = await create({
       identifier: `_id:${idValue}`,
       kind: "email-verification",
     });
@@ -282,7 +282,7 @@ const handleLinks = {
   ) => {
     const { url, idValue, email } = input;
 
-    const otp = await OTP.getOrCreate({
+    const otp = await getOrCreate({
       identifier: `_id:${idValue}`,
       kind: "password-reset",
     });
@@ -313,7 +313,7 @@ const handleLinks = {
   ) => {
     const { url, idValue, data, studio_name } = input;
 
-    const otp = await OTP.getOrCreate({
+    const otp = await getOrCreate({
       identifier: `email:${idValue}`,
       kind: "studio-owner-invite",
 
@@ -352,7 +352,7 @@ const handleLinks = {
   ) => {
     const { url, idValue, data, teacher_name } = input;
 
-    const otp = await OTP.getOrCreate({
+    const otp = await getOrCreate({
       identifier: `email:${idValue}`,
       kind: "teacher-invite",
       data,
@@ -380,7 +380,7 @@ const handleLinks = {
   (input: any) => Promise<Message>
 >;
 
-export const OTP = {
+export const OTPUtils = {
   isExpired,
   create,
   getOrCreate,
