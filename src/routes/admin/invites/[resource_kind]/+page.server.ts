@@ -30,7 +30,7 @@ export const load = (async ({ locals, url, params }) => {
     Users.find(
       // It's a bit harder to filter on users (based on resource_kind), so just show all users, and filter on the frontend
       {},
-      { email: 1, studio_ids: 1 },
+      { email: 1, studio_ids: 1, teacher_ids: 1 },
     ).lean(),
   ]);
 

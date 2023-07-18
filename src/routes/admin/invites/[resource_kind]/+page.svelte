@@ -1,29 +1,37 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import Table from "$lib/components/table.svelte";
-  import { studios } from "$lib/stores/studios.js";
-  import { teachers } from "$lib/stores/teachers.js";
+  import { studios } from "$lib/stores/studios";
+  import { teachers } from "$lib/stores/teachers";
 
   export let data;
 
-  const resourceList = data.resource_kind === "studio" ? $studios : $teachers;
-  const resource_kind_id = data.resource_kind + "_id";
+  const resourceList =
+    data.resource_kind === "studio"
+      ? $studios
+      : data.resource_kind === "teacher"
+      ? $teachers
+      : null;
 
-  const rows = resourceList.map((studio) => {
+  if (!resourceList) throw new Error("Invalid resource kind");
+
+  const resource_kind_id = `${data.resource_kind}_id` as const;
+
+  const rows = resourceList.map((resource) => {
     const pendingInvites = data.pendingInvites
-      .filter((invite) => invite.data?.[resource_kind_id] === studio._id)
+      .filter((invite) => invite.data?.[resource_kind_id] === resource._id)
       .map((invite) => "🕰️" + invite.identifier.split(":")[1])
       .join(", ");
 
     const acceptedInvites = data.users
-      .filter((user) => user.studio_ids?.includes(studio._id))
+      .filter((user) => user[`${resource_kind_id}s`]?.includes(resource._id))
       .map((user) => "✅" + user.email)
       .join(", ");
 
     return {
-      studio_id: studio._id,
-      name: studio.name,
-      slug: studio.slug,
+      resource_id: resource._id,
+      name: resource.name,
+      slug: resource.slug,
       acceptedInvites,
       pendingInvites,
     };

@@ -17,8 +17,10 @@
     side: "center" | "right";
     label: string;
     href: string;
-    /** Only show if user is authenticated */
-    authed: boolean;
+    /** Only show if user is authenticated
+     * undefined means it doesn't matter
+     */
+    authed?: boolean;
     admin?: boolean;
   }
 
@@ -27,7 +29,7 @@
       side: <const>"center",
       label: kind + "s",
       href: `/${kind}s`,
-      authed: false,
+      authed: undefined,
     })),
 
     {
@@ -63,8 +65,11 @@
     side?: Route["side"]
   ) => {
     if (side && route.side !== side) return false;
-    if (route.authed !== !!user) return false;
     if (route.admin && !user?.admin) return false;
+
+    if (route.authed === undefined) {
+    } else if (route.authed && !user) return false;
+    else if (!route.authed && user) return false;
 
     return true;
   };
