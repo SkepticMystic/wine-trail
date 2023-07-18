@@ -83,7 +83,7 @@ export const teachers = {
       console.log(data);
 
       if (data.ok) {
-        if (data.data.teacher) {
+        if (data.data?.teacher) {
           const newTeacher = data.data.teacher;
           store.update((teachers) =>
             teachers.map((teacher) =>
