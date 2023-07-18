@@ -32,7 +32,7 @@ But you can view and edit the studios you own, in the mean time.`,
 <StudioFilters bind:filtered />
 
 <div
-  class="my-5 flex flex-wrap gap-7 justify-center p-6 bg-base-100 border rounded-box w-fit"
+  class="my-5 flex flex-wrap gap-5 sm:gap-7 justify-center basic-card p-2 sm:p-6 w-fit"
 >
   {#if filtered.length}
     {#each filtered as studio, i (studio.slug)}

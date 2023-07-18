@@ -59,3 +59,24 @@ export const makeSlug = (str: string) =>
     .toLowerCase()
     .replace(/[^a-z0-9 -]/g, "")
     .replace(/\s+/g, "-");
+
+export const groupBy = <T extends P, S extends string, P = T>(
+  list: T[],
+  valueGetter: (item: T) => S,
+  projector: (item: T) => P = (x) => x as P,
+) => {
+  const grouped: Partial<Record<S, P[]>> = {};
+
+  list.forEach((item) => {
+    const key = valueGetter(item);
+    // WARN: Doesn't group undefined values
+    if (key === undefined) return;
+
+    const projected = projector(item);
+    const group = grouped[key];
+    if (!group) grouped[key] = [projected];
+    else group.push(projected);
+  });
+
+  return grouped;
+};

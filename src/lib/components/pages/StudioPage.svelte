@@ -17,6 +17,8 @@
   import { teachers } from "$lib/stores/teachers";
   import { getProps } from "$lib/utils";
   import { optimiseUploadJSImg } from "$lib/utils/UploadJS/optimisation";
+  import OtherImages from "../images/OtherImages.svelte";
+  import ResourceMetaTags from "../listings/ResourceMetaTags.svelte";
   import StudioSchedule from "../listings/StudioSchedule.svelte";
 
   let { loadObj } = getProps();
@@ -24,10 +26,11 @@
   export let studio: SID<ModifyStudio> | undefined;
   export let reviewMode = false;
 
-  const studioImages = studio?._id
-    ? images.getResourceImages("studio", studio?._id)
-    : [];
-  const otherImages = studioImages.filter((i) => i.image_kind === "other");
+  const {
+    logo: logoImages,
+    other: otherImages,
+    schedule: scheduleImages,
+  } = images.getResourceImageUrls("studio", studio?._id);
 
   const studioTeachers = studio?._id
     ? $teachers.filter((teacher) => teacher.studio_ids?.includes(studio?._id!))
@@ -61,10 +64,13 @@
   $: anyLoading = Object.values(loadObj).some((v) => v);
 </script>
 
-{#if studio}
-  {@const logo = studioImages.find((i) => i.image_kind === "logo")?.data
-    .fileUrl}
+<svelte:head>
+  {#if studio}
+    <ResourceMetaTags resource={studio} logoFileUrl={logoImages?.[0]} />
+  {/if}
+</svelte:head>
 
+{#if studio}
   <div class="flex flex-col items-center">
     <h1
       class="text-3xl font-semibold text-center flex flex-wrap justify-center items-center gap-2"
@@ -132,10 +138,12 @@
 
     <div class="flex flex-wrap gap-7 my-7 justify-center">
       <img
-        src={logo ? optimiseUploadJSImg(logo, { w: 400, h: 400 }) : ""}
+        src={logoImages
+          ? optimiseUploadJSImg(logoImages[0], { w: 400, h: 400 })
+          : ""}
         width={400}
         height={400}
-        class="self-start rounded-box w-[250px] h-[250px] sm:w-[400px] sm:h-[400px]"
+        class="self-start rounded-box w-[270px] h-[270px] sm:w-[400px] sm:h-[400px]"
         alt="{studio.name} logo"
       />
 
@@ -187,36 +195,18 @@
       </div>
     </div>
 
-    {#if otherImages.length}
-      <div class="flex flex-wrap justify-center gap-3 my-5">
-        {#each otherImages as img}
-          <div class="overflow-hidden rounded-box">
-            <img
-              width={384}
-              class="aspect-square object-cover hover:scale-110 transition-all"
-              src={optimiseUploadJSImg(img.data.fileUrl, {
-                w: 384,
-                h: 384,
-                crop: "smart",
-              })}
-              alt="{studio.name} image"
-            />
-          </div>
-        {/each}
-      </div>
+    {#if otherImages?.length}
+      <OtherImages {otherImages} resource_name={studio.name} />
     {/if}
   </div>
 
   {#if studio.schedule.kind === "image"}
-    {@const scheduleImage = studioImages.find(
-      (i) => i.image_kind === "schedule"
-    )?.data.fileUrl}
-    {#if scheduleImage}
+    {#if scheduleImages}
       <div class="flex flex-col gap-3 items-center my-5">
         <h2 class="text-2xl">Schedule</h2>
         <img
           class="md:w-[700px] sm:w-[500px] w-[300px] rounded-box"
-          src={optimiseUploadJSImg(scheduleImage, {
+          src={optimiseUploadJSImg(scheduleImages[0], {
             w: 700,
             crop: undefined,
             fit: "max",

@@ -27,7 +27,7 @@
 
 <!-- TODO: Add TeacherFilters -->
 <div
-  class="my-5 flex flex-wrap gap-7 justify-center p-6 bg-base-100 border rounded-box w-fit"
+  class="my-5 flex flex-wrap gap-5 sm:gap-7 justify-center basic-card p-2 sm:p-6 w-fit"
 >
   {#if $teachers.length}
     {#each $teachers as teacher, i (teacher.slug)}

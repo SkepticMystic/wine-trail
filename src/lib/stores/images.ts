@@ -2,7 +2,7 @@ import type { ImageKind } from "$lib/const/images";
 import type { ResourceKind } from "$lib/const/resources";
 import type { Result, SID } from "$lib/interfaces";
 import type { Image } from "$lib/models/Images";
-import { err } from "$lib/utils";
+import { err, groupBy } from "$lib/utils";
 import { getHTTPErrorMsg } from "$lib/utils/errors";
 import axios from "axios";
 import { get, writable } from "svelte/store";
@@ -15,24 +15,40 @@ const store = writable<
       "data" | "host" | "image_kind" | "resource_id" | "resource_kind"
     >
   >[]
->(
-  [],
-);
+>([]);
+
+const getResourceImages = (
+  resource_kind: ResourceKind,
+  resource_id: string | undefined,
+  image_kinds?: ImageKind[],
+) =>
+  get(store).filter(
+    (image) =>
+      image.resource_kind === resource_kind &&
+      image.resource_id === resource_id &&
+      (image_kinds ? image_kinds.includes(image.image_kind) : true),
+  );
 
 export const images = {
   ...store,
 
-  getResourceImages: (
+  getResourceImages,
+
+  getResourceImageUrls: (
     resource_kind: ResourceKind,
-    resource_id: string,
+    resource_id: string | undefined,
     image_kinds?: ImageKind[],
   ) => {
-    const images = get(store);
-    return images.filter(
-      (image) =>
-        image.resource_kind === resource_kind &&
-        image.resource_id === resource_id &&
-        (image_kinds ? image_kinds.includes(image.image_kind) : true),
+    const resourceImages = getResourceImages(
+      resource_kind,
+      resource_id,
+      image_kinds,
+    );
+
+    return groupBy(
+      resourceImages,
+      (image) => image.image_kind,
+      (image) => image.data.fileUrl,
     );
   },
 

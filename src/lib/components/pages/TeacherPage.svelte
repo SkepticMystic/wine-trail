@@ -16,15 +16,18 @@
   import { teachers } from "$lib/stores/teachers";
   import { getProps } from "$lib/utils";
   import { optimiseUploadJSImg } from "$lib/utils/UploadJS/optimisation";
-
-  let { loadObj } = getProps();
+  import OtherImages from "../images/OtherImages.svelte";
+  import ResourceMetaTags from "../listings/ResourceMetaTags.svelte";
 
   export let teacher: SID<ModifyTeacher> | undefined;
   export let reviewMode = false;
 
-  const teacherImages = teacher?._id
-    ? images.getResourceImages("teacher", teacher?._id)
-    : [];
+  let { loadObj } = getProps();
+
+  const { logo: logoImages, other: otherImages } = images.getResourceImageUrls(
+    "teacher",
+    teacher?._id
+  );
 
   const teacherStudios =
     (teacher?.studio_ids
@@ -59,10 +62,13 @@
   $: anyLoading = Object.values(loadObj).some((v) => v);
 </script>
 
-{#if teacher}
-  {@const logo = teacherImages.find((i) => i.image_kind === "logo")?.data
-    .fileUrl}
+<svelte:head>
+  {#if teacher}
+    <ResourceMetaTags resource={teacher} logoFileUrl={logoImages?.[0]} />
+  {/if}
+</svelte:head>
 
+{#if teacher}
   <div class="flex flex-col items-center">
     <!-- TODO: This header row can be a resource-wide component -->
     <h1
@@ -131,7 +137,9 @@
 
     <div class="flex flex-wrap gap-7 my-7 justify-center">
       <img
-        src={logo ? optimiseUploadJSImg(logo, { w: 400, h: 400 }) : ""}
+        src={logoImages
+          ? optimiseUploadJSImg(logoImages[0], { w: 400, h: 400 })
+          : ""}
         width={400}
         height={400}
         class="self-start rounded-box w-[250px] h-[250px] sm:w-[400px] sm:h-[400px]"
@@ -177,22 +185,9 @@
       </div>
     </div>
 
-    <div class="flex flex-wrap justify-center gap-3 my-5">
-      {#each teacherImages.filter((i) => i.image_kind === "other") as img}
-        <div class="overflow-hidden rounded-box">
-          <img
-            width={384}
-            class="aspect-square object-cover hover:scale-110 transition-all"
-            src={optimiseUploadJSImg(img.data.fileUrl, {
-              w: 384,
-              h: 384,
-              crop: "smart",
-            })}
-            alt="{teacher.name} image"
-          />
-        </div>
-      {/each}
-    </div>
+    {#if otherImages?.length}
+      <OtherImages {otherImages} resource_name={teacher.name} />
+    {/if}
   </div>
 {:else}
   <p>Teacher not found</p>
