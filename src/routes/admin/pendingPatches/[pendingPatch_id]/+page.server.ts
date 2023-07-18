@@ -1,5 +1,6 @@
 import { getUser } from "$lib/auth/server";
-import { PendingPatches } from "$lib/models/PendingPatches";
+import type { SID } from "$lib/interfaces";
+import { type PendingPatch, PendingPatches } from "$lib/models/PendingPatches";
 import { _idToString } from "$lib/utils";
 import { error } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
@@ -17,6 +18,6 @@ export const load = (async ({ locals, params }) => {
   }
 
   return {
-    pendingPatch: _idToString(pendingPatch),
+    pendingPatch: _idToString(pendingPatch) as SID<PendingPatch>,
   };
 }) satisfies PageServerLoad;

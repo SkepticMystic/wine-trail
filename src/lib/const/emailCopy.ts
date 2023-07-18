@@ -180,7 +180,68 @@ Yoga List ☯️
 
         <p>
           You can submit a new edit <a href="${APP_URL}/studios/${studio_slug}/edit">here</a>.
-            Please feel free to reach out if you have any questions or need assistance.
+          Please feel free to reach out if you have any questions or need assistance.
+        </p>
+
+        <p>
+          Warm regards,<br />
+          Yoga List ☯️
+        </p>
+        `,
+      },
+    },
+
+    teacher: {
+      approved: {
+        subject: "Your teacher updates have been approved",
+        body: (
+          { teacher_name, teacher_slug }: {
+            teacher_name: string;
+            teacher_slug: string;
+            reason: string | undefined;
+          },
+        ) => `
+        <p>Hello there,</p>
+
+        <p>
+            We're happy to let you know that your changes to ${teacher_name} have been approved!
+        </p>
+
+        <p>
+            You can view your teacher's page here: <a href="${APP_URL}/teachers/${teacher_slug}">${teacher_name}</a>
+        </p>
+
+        <p>
+            Thank you for your contribution to the growing yoga community in South Africa.
+        </p>
+
+        <p>
+            Warm regards,<br />
+            Yoga List ☯️
+        </p>
+                `,
+      },
+
+      rejected: {
+        subject: "Your teacher update has been rejected",
+        body: (
+          { teacher_name, teacher_slug, reason }: {
+            teacher_name: string;
+            teacher_slug: string;
+            reason: string | undefined;
+          },
+        ) => `
+        <p>Hello there,</p>
+
+        <p>
+          We're sorry to let you know that your changes to ${teacher_name} have been rejected. For the following reason(s):
+        </p>
+
+        <blockquote>${reason}</blockquote>
+
+        <p>
+          You can submit a new edit <a href="${APP_URL}/teachers/${teacher_slug}/edit">here</a>.
+          Please feel free to reach out if you have any questions or need assistance.
         </p>
 
         <p>

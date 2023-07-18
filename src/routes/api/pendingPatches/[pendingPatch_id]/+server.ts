@@ -3,6 +3,7 @@ import { getUser } from "$lib/auth/server";
 import { EMAIL_COPIES } from "$lib/const/emailCopy";
 import { PendingPatches } from "$lib/models/PendingPatches";
 import { Studios } from "$lib/models/Studio";
+import { Teachers } from "$lib/models/Teachers";
 import { Parsers } from "$lib/schema/parsers";
 import { suc } from "$lib/utils";
 import { sendEmail } from "$lib/utils/email";
@@ -72,6 +73,42 @@ export const PATCH: RequestHandler = async ({ locals, request, params }) => {
       }
 
       return json(suc(studio));
+    }
+
+    case "teacher": {
+      // Apply the patch
+      const [teacherUser, teacher] = await Promise.all([
+        Users.findOne(
+          { _id: pendingPatch.user_id },
+          { email: 1 },
+        ),
+        Teachers.findOneAndUpdate(
+          { _id: pendingPatch.resource_id },
+          { $set: pendingPatch.patch },
+          { new: true },
+        ),
+      ]);
+
+      const emailData =
+        EMAIL_COPIES.pendingPatch[pendingPatch.resource_kind][input.status];
+
+      // Send email to studio owner
+      if (teacherUser && teacher) {
+        await sendEmail({
+          to: teacherUser.email,
+          subject: emailData.subject,
+          attachment: [{
+            alternative: true,
+            data: emailData.body({
+              teacher_name: teacher.name,
+              teacher_slug: teacher.slug,
+              reason: input.reason,
+            }),
+          }],
+        });
+      }
+
+      return json(suc(teacher));
     }
 
     default:

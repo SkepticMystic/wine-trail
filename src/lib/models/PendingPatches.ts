@@ -2,22 +2,33 @@ import {
   PENDING_PATCH_STATUSES,
   type PendingPatchStatus,
 } from "$lib/const/pendingPatches";
-import { RESOURCE_KINDS } from "$lib/const/resources";
+import { RESOURCE_KINDS, type ResourceKind } from "$lib/const/resources";
 import type { SID } from "$lib/interfaces";
 import mongoose from "mongoose";
 import type { ModifyStudio } from "./Studio";
+import type { ModifyTeacher } from "./Teachers";
 
-type PendingStudioPatch = {
-  resource_kind: "studio";
-  patch: SID<ModifyStudio>;
-};
-
-export type PendingPatch = {
+type PendingPatchBase = {
   /** The YogaList user that owns the resource and last updated or created the patch */
   user_id: string;
   status: PendingPatchStatus;
   resource_id: string;
-} & PendingStudioPatch;
+  resource_kind: ResourceKind;
+};
+
+type PendingStudioPatch = PendingPatchBase & {
+  resource_kind: "studio";
+  patch: SID<ModifyStudio>;
+};
+
+type PendingTeacherPatch = PendingPatchBase & {
+  resource_kind: "teacher";
+  patch: SID<ModifyTeacher>;
+};
+
+export type PendingPatch =
+  | PendingStudioPatch
+  | PendingTeacherPatch;
 
 const modelName = "PendingPatches";
 export const PendingPatches = mongoose.model<PendingPatch>(

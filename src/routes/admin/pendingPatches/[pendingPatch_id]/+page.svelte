@@ -4,14 +4,20 @@
   import Modal from "$lib/components/Modal.svelte";
   import Label from "$lib/components/label.svelte";
   import StudioPage from "$lib/components/pages/StudioPage.svelte";
+  import TeacherPage from "$lib/components/pages/TeacherPage.svelte";
   import type { PendingPatchStatus } from "$lib/const/pendingPatches";
   import type { Result, SID } from "$lib/interfaces/index";
-  import type { Studio } from "$lib/models/Studio.js";
-  import { studios } from "$lib/stores/studios.js";
-  import { addToast } from "$lib/stores/toast.js";
-  import { getHTTPErrorMsg } from "$lib/utils/errors.js";
+  import type { Studio } from "$lib/models/Studio";
+  import type { Teacher } from "$lib/models/Teachers";
+  import { studios } from "$lib/stores/studios";
+  import { teachers } from "$lib/stores/teachers";
+  import { addToast } from "$lib/stores/toast";
+  import { getHTTPErrorMsg } from "$lib/utils/errors";
   import { getProps } from "$lib/utils/index";
-  import { fillInStudioBlanks } from "$lib/utils/resources/studios/index.js";
+  import {
+    fillInStudioBlanks,
+    fillInTeacherBlanks,
+  } from "$lib/utils/resources/studios/index";
   import axios from "axios";
 
   // TODO: This does not generalise to other resource_kinds
@@ -28,18 +34,27 @@
     loadObj[`submit:${status}`] = true;
 
     try {
-      const response = await axios.patch<Result<SID<Studio>, string>>(
+      const response = await axios.patch<Result<SID<Studio | Teacher>, string>>(
         `/api/pendingPatches/${data.pendingPatch._id}`,
         { status, reason }
       );
 
       if (response.data.ok) {
-        const newStudio = response.data.data;
-        $studios = $studios.map((studio) =>
-          studio._id === data.pendingPatch.resource_id
-            ? fillInStudioBlanks(newStudio)
-            : studio
-        );
+        if (data.pendingPatch.resource_kind === "studio") {
+          const newStudio = response.data.data as SID<Studio>;
+          $studios = $studios.map((studio) =>
+            studio._id === data.pendingPatch.resource_id
+              ? fillInStudioBlanks(newStudio)
+              : studio
+          );
+        } else if (data.pendingPatch.resource_kind === "teacher") {
+          const newTeacher = response.data.data as SID<Teacher>;
+          $teachers = $teachers.map((teacher) =>
+            teacher._id === data.pendingPatch.resource_id
+              ? fillInTeacherBlanks(newTeacher)
+              : teacher
+          );
+        }
 
         addToast({
           type: "success",
@@ -71,6 +86,8 @@
 
 {#if data.pendingPatch.resource_kind === "studio"}
   <StudioPage reviewMode studio={data.pendingPatch.patch} />
+{:else if data.pendingPatch.resource_kind === "teacher"}
+  <TeacherPage reviewMode teacher={data.pendingPatch.patch} />
 {:else}
   <p class="text-error">
     Unhandled resource kind: {data.pendingPatch.resource_kind}
