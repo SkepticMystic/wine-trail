@@ -18,7 +18,7 @@ export const EMAIL_COPIES = {
     </p>
     
     <p>
-      We're offering you a <strong>free</strong> listing for a limited time, where
+      We're offering you a <strong>free</strong> listing, where
       you can showcase ${studio_name} and attract more yogis. To include your studio,
       please <a href="${invite_link}">click here</a> to complete our form with:
     </p>
@@ -58,7 +58,7 @@ export const EMAIL_COPIES = {
       
 I hope this email finds you well. I'm Ross from Yoga List, a platform connecting yogis with the best studios in South Africa.
 
-We're offering you a free listing for a limited time, where you can showcase ${studio_name} and attract more yogis. 
+We're offering you a free listing, where you can showcase ${studio_name} and attract more yogis. 
 To include your studio, please click here to complete our form:
 
 ${invite_link}
@@ -98,7 +98,7 @@ Yoga List ☯️
     </p>
     
     <p>
-      We're offering you a <strong>free</strong> listing for a limited time, where
+      We're offering you a <strong>free</strong> listing, where
       you can showcase yourself and attract more yogis. To get listed,
       please <a href="${invite_link}">click here</a> to complete our form with:
     </p>
